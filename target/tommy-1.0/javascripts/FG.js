@@ -63,7 +63,7 @@ var loaderOn = function () {
     $('#div_loader').fadeIn();
 };
 var loaderOff = function () {
-    $('#div_loader').fadeOut();
+    $('#div_loader').fadeOut(); 
     $("body").remove("#div_loader");
 };
 
@@ -74,7 +74,8 @@ var fgAlert = function (msg) {
                 '<button type="button" class="close" data-dismiss="alert">&nbsp;&nbsp;×</button><h5>' + msg + '</h5></div>');
     }
     $('#fgalert').show();
-    $('#fgalert').fadeOut(10000);//.effect('shake', 500);//.hide(5000);
+    //diabled for QA since testers can't grab screen shots
+    //$('#fgalert').fadeOut(10000);//.effect('shake', 500);//.hide(5000);
 };
 
 fgModal = function (size, header, content, url, footer) {

@@ -47,7 +47,7 @@ public class PublicAccessREST {
             map.put("businessName", bus.getBusinessName());
             map.put("summary", bus.getSummary());
             Location loc = lf.findByUser(bus.getUserId());
-            if(loc!=null){
+            if (loc != null) {
                 map.put("address", loc.getAddress());
                 map.put("city", loc.getCity());
                 map.put("state", loc.getState());
@@ -77,15 +77,17 @@ public class PublicAccessREST {
         map.put("summary", bus.getSummary());
         map.put("description", bus.getDescription());
         Location loc = lf.findByUser(bus.getUserId());
-        map.put("address", loc.getAddress());
-        map.put("city", loc.getCity());
-        map.put("state", loc.getState());
-        map.put("zip", loc.getZip());
-        map.put("ws", loc.getWebsite());
-        map.put("fb", loc.getFacebook());
-        map.put("tw", loc.getTwitter());
-        map.put("gp", loc.getGooglePlus());
-        map.put("lk", loc.getLinkedin());
+        if (loc != null) {
+            map.put("address", loc.getAddress());
+            map.put("city", loc.getCity());
+            map.put("state", loc.getState());
+            map.put("zip", loc.getZip());
+            map.put("ws", loc.getWebsite());
+            map.put("fb", loc.getFacebook());
+            map.put("tw", loc.getTwitter());
+            map.put("gp", loc.getGooglePlus());
+            map.put("lk", loc.getLinkedin());
+        }
         map.put("targetAmount", bus.getTargetAmount());
         map.put("amountInvested", ivf.findSumByBusiness(bus.getId()));
         return map;
@@ -108,15 +110,17 @@ public class PublicAccessREST {
         map.put("email", user.getEmail());
         map.put("aboutMe", user.getAboutMe());
         Location loc = lf.findByUser(user.getId());
-        map.put("address", loc.getAddress());
-        map.put("city", loc.getCity());
-        map.put("state", loc.getState());
-        map.put("zip", loc.getZip());
-        map.put("ws", loc.getWebsite());
-        map.put("fb", loc.getFacebook());
-        map.put("tw", loc.getTwitter());
-        map.put("gp", loc.getGooglePlus());
-        map.put("lk", loc.getLinkedin());
+        if (loc != null) {
+            map.put("address", loc.getAddress());
+            map.put("city", loc.getCity());
+            map.put("state", loc.getState());
+            map.put("zip", loc.getZip());
+            map.put("ws", loc.getWebsite());
+            map.put("fb", loc.getFacebook());
+            map.put("tw", loc.getTwitter());
+            map.put("gp", loc.getGooglePlus());
+            map.put("lk", loc.getLinkedin());
+        }
         return map;
     }
 }
