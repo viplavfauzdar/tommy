@@ -47,10 +47,12 @@ public class PublicAccessREST {
             map.put("businessName", bus.getBusinessName());
             map.put("summary", bus.getSummary());
             Location loc = lf.findByUser(bus.getUserId());
-            map.put("address", loc.getAddress());
-            map.put("city", loc.getCity());
-            map.put("state", loc.getState());
-            map.put("zip", loc.getZip());
+            if(loc!=null){
+                map.put("address", loc.getAddress());
+                map.put("city", loc.getCity());
+                map.put("state", loc.getState());
+                map.put("zip", loc.getZip());
+            }
             map.put("targetAmount", bus.getTargetAmount());
             map.put("amountInvested", ivf.findSumByBusiness(bus.getId()));
             mapList.add(map);
