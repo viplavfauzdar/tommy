@@ -1,0 +1,76 @@
+<!-- Registration -->
+<section id='business'>
+    <div class='row-fluid'>
+        <div class='col-md-12 text-center'>
+            <div class='row'>
+<!--                <div class='col-md-3 text-left'>
+                    <h2>Step 02</h2>
+                    <p>Please tell us about your business.</p>
+
+                </div>-->
+
+                <div class='col-md-9 text-left'>
+                    <form action='#' class='row' id='frmBusiness' name='frmBusiness'>
+<!--                        <input type="text" id="userId" name="userId">-->
+                        <div class='input-group'>
+                            <h4>Your Business Name</h4>
+                            <input class='form-control' placeholder='Your Business Name' id="businessName" name="businessName" type='text'>
+                            <span class='glyphicon glyphicon-remove form-control-feedback'></span>
+                        </div>
+                        <div class='input-group'>
+                            <h4>Your Service or Product</h4>
+                            <textarea class="form-control" placeholder='Your Service or Product' id="summary" name="summary" rows="4" cols="100" maxlength="500"></textarea>
+                            <span class='glyphicon glyphicon-remove form-control-feedback'></span>
+                        </div>
+                        <div class='input-group'>
+                            <h4>About Your Company</h4>
+                            <textarea class="form-control" placeholder='About Your Company' id="description" name="description" rows="15" cols="100" maxlength="4000"></textarea>
+                            <span class='glyphicon glyphicon-remove form-control-feedback'></span>
+                        </div>
+                        <div class='input-group'>
+                            <h4>Amount You Want to Raise</h4>
+                            <input class='form-control' placeholder='Target Amount' id="targetAmount" name="targetAmount" type='number'>
+                            <span class='glyphicon glyphicon-remove form-control-feedback'></span>
+                        </div>
+                        <div class='input-group'>
+                            <h4>Equity You Are Offering</h4>
+                            <input class='form-control' placeholder='Equity Offered' id="equityOffered" name="equityOffered" type='number'>
+                            <span class='glyphicon glyphicon-remove form-control-feedback'></span>
+                        </div>
+                        <button class='btn btn-default orange' id="btnBusiness" name="btnBusiness" >Submit</button>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+
+</section>
+
+<script>
+    //$("html, body").animate({ scrollTop: 0 }, "slow");
+    //document.getElementById("userId").value = userId;
+    $("#btnBusiness").click(function (e) {
+    //$('form').submit(function (e) {
+        e.preventDefault();
+        register("/rs/business/create", "uploadfiles.html",$("#userId").val());
+    });
+//        var formData = JSON.stringify($("#frmBusiness").serializeObject());
+//        $("<div id='res' title='Message!'>" + formData + "</div>").dialog();
+//        $.ajax({
+//            type: "POST",
+//            url: "/rs/business/create",
+//            contentType: "application/json",
+//            data: formData,
+//            async: true,
+//            encode: true,
+//            complete: function (res) {                                
+//                console.log(JSON.stringify(res));
+//            },
+//            success: function (res1) {
+//                $("html, body").animate({ scrollTop: 0 }, "slow");
+//                $("<div id='res' title='Message!'>" + JSON.stringify(res1) + "</div>").dialog(); 
+//                $("#register").load("uploadfiles.html");
+//            }
+//        });
+//    });
+</script>

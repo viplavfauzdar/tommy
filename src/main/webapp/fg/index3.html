@@ -1,0 +1,258 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <title>Finance Georgia</title>
+        <meta charset='utf-8'>
+        <meta content='Description' name='description'>
+        <meta content='1 day' name='revisit-after'>
+        <meta content='width=device-width, initial-scale=1' name='viewport'>
+        <link href="stylesheets/font-awesome.min.css" media="screen" rel="stylesheet" type="text/css" />
+        <link href="stylesheets/bootstrap.min.css" media="screen" rel="stylesheet" type="text/css" />
+        <link href='http://fonts.googleapis.com/css?family=Lato:100,300,400,300italic,400italic,700,700italic,900' rel='stylesheet'>
+        <link href='http://fonts.googleapis.com/css?family=Raleway:400,600,700' rel='stylesheet'>
+        <link href="stylesheets/style.css" media="screen" rel="stylesheet" type="text/css" />   
+        
+        <link rel="stylesheet" href="//ajax.googleapis.com/ajax/libs/jqueryui/1.11.2/themes/smoothness/jquery-ui.css" />   
+        <script src="//ajax.googleapis.com/ajax/libs/jquery/2.1.1/jquery.min.js"></script>                         
+        <script src="//ajax.googleapis.com/ajax/libs/jqueryui/1.11.2/jquery-ui.min.js"></script>
+        
+        <style>
+            a:link {
+                text-decoration: none;
+            }
+            a:visited {
+                text-decoration: none;
+            }
+        </style>
+    </head>
+    <body>
+        <!-- Light box -->
+        <div class='lightbox'>
+            <div class='counter'>
+                <h1>
+                    <span class='count'>0</span>
+                    <span>/</span>
+                    <span class='total'>0</span>
+                </h1>
+            </div>
+            <img alt='' class='show' src='Assets/Slider/slider-01.jpg'>
+            <div class='title'>
+                <h3>Title</h3>
+            </div>
+            <div class='description'>
+                <p></p>
+            </div>
+            <div class='next'>
+                <div class='bar'></div>
+                <div class='bar middle'></div>
+                <div class='bar'></div>
+            </div>
+            <div class='prev'>
+                <div class='bar'></div>
+                <div class='bar middle'></div>
+                <div class='bar'></div>
+            </div>
+            <div class='x'>
+                <div class='bar'></div>
+                <div class='bar'></div>
+            </div>
+        </div>
+        <div class='wrapper'>
+            <!-- Topbar -->
+            <div class='top' data-spy='affix'>
+                <div class='row-fluid'>
+                    <div class='branding text-left'>
+                        <a href='index.html'><img src="Assets/Finance-Georgia-Logo.png" alt="Finance Georgia"/></a>
+                    </div>
+                    <nav>
+                        <a class='menu-toggle toggle' href='#'>
+                            <div class='bar'></div>
+                            <div class='bar'></div>
+                            <div class='bar'></div>
+                        </a>
+                        <ul>
+                            <li>
+                                <a class='home' href='#/'>Home</a>
+                            </li>
+                            <li>
+                                <a class='portfolio' id="navPortfolio" href='#/portfolio' onclick="getPartial('partials/portfolio.html');toggleSections();">Portfolio</a>
+                            </li>
+                            <li>
+                                <a class='frequently-asked-questions' href='#/faq' onclick="getPartial('partials/faq.html');toggleSections();">F.A.Q.</a>
+                            </li>
+                            <li>
+                                <a class='about' href='#/about' onclick="getPartial('partials/about.html');toggleSections();">About</a>
+                            </li>
+                            <li>
+                                <a class='contact' href='#contact' onclick="toggleSections('contact')">Contact</a>
+                            </li>
+                            <li>
+                                <a class='Sign-Up' href='#/register' id="signup" onclick="getPartial('partials/register.html');toggleSections('register');">Sign Up</a>
+                            </li>
+                            <li>
+                                <a class='Sign-In' href='#/login' id="signin" onclick="getPartial('partials/account.html');toggleSections('login');">Sign-in</a>
+                            </li>
+                            <li>
+                                <a class='Sign-In' href='#/account' id="signin" onclick="getPartial('partials/account.html');toggleSections('login');">Account</a>
+                            </li>
+                            <li class='toggle-close toggle'>
+                                <a href='#'>
+                                    <span class='fa fa-times'></span>
+                                </a>
+                            </li>
+                        </ul>
+                    </nav>
+                </div>
+            </div>           
+
+            <!-- Flexslider -->
+            <section class='jumbotron' id='mainJumbotron'>
+                <div class='flexslider' id='mainFlexslider'>
+                    <ul class='slides'>
+
+                        <li class='slide dark'>
+                            <img alt='' class='fs fo' src='Assets/Slider/slider-01.jpg'>
+                            <div class='centered text-center fo'>
+                                <br>
+                                <br>
+                                <h1>Get the exclusive opportunity to invest in companies before they go public.</h1>
+                                <p></p>
+                                <a class='btn btn-default' href='#/register' onclick="getPartial('partials/register.html');toggleSections('register');">Get Started</a>
+                            </div>
+                        </li>
+                        <li class='slide dark'> <!-- light removed -->
+                            <img alt='' class='fs fo' src='Assets/Slider/slider-02.jpg'>
+                            <div class='centered text-center fo'>
+                                <br>
+                                <br>
+                                <h1>Get the exclusive opportunity to invest in companies before they go public.</h1>
+                                <p></p>
+                                <a class='btn btn-default' href='/rs/user/getme'>Get Started</a>
+                            </div>
+                        </li>
+
+                    </ul>
+                </div>
+            </section>
+
+            <!-- Small slider -->
+            <section class='jumbotronsmall' id='smallJumbotron'>
+                <div class='flexslider' id='smallFlexslider'>
+                    <ul class='slides'>
+                        <li class='slide light'>
+                            <img alt='' class='fs fo' src='Assets/Slider/slider-03.jpg'>
+                        </li>
+                        <li class='slide light'>
+                            <img alt='' class='fs fo' src='Assets/Slider/slider-04.jpg'>
+                        </li>
+                        <li class='slide light'>
+                            <img alt='' class='fs fo' src='Assets/Slider/slider-05.jpg'>
+                        </li>
+                        <li class='slide light'>
+                            <img alt='' class='fs fo' src='Assets/Slider/slider-06.jpg'>
+                        </li>
+                        <li class='slide light'>
+                            <img alt='' class='fs fo' src='Assets/Slider/slider-07.jpg'>
+                        </li>
+                    </ul>
+                </div>
+            </section>
+
+            <div id="js-view"></div>
+
+            <div id="intro"></div>
+            
+            <div id="portfoliosmall"></div>
+            
+            <div id="contact"></div>
+
+            <div id="banner"></div>
+            
+            <div id="footer"></div>
+
+
+            <!-- Copyright -->
+            <footer class='copy'>
+                <div class='row-fluid'>
+                    <div class='col-md-6 col-xs-4'>
+                        <p>Finance Georgia &copy; 2014</p>
+                    </div>
+                    <div class='col-md-6 col-xs-8 text-right'>
+                        &nbsp;
+                    </div>
+                </div>
+            </footer>
+        </div>
+        <!-- jQuery -->           
+        <script src="javascripts/jquery.min.js" type="text/javascript"></script>
+        <!-- Easing -->
+        <script src="javascripts/jquery.easing.1.3.js" type="text/javascript"></script>
+        <!-- Flexslider -->
+        <script src="javascripts/jquery.flexslider.js" type="text/javascript"></script>
+        <!-- Bootstrap JS -->
+        <script src="javascripts/bootstrap.min.js" type="text/javascript"></script>      
+        <!-- Waypoints -->
+        <script src="javascripts/waypoints.min.js" type="text/javascript"></script>
+        <!-- Maps -->
+        <script src="https://maps.googleapis.com/maps/api/js" type="text/javascript"></script>
+        <!-- Functions -->
+        <script src="javascripts/functions.js" type="text/javascript"></script>         
+        <!-- FG -->
+        <script src="javascripts/FG.js" type="text/javascript"></script>
+        
+        <script>
+//                                    $.get("/test/getloggedinuser.jsp", function(data) {
+//                                        console.log(data);
+//                                        if (data != 'null') {
+//                                            $('#signin').html('Sign Out');
+//                                            $('#signin').attr('href', '/test/logout.jsp');
+//                                            $('#signup').html('Account');
+//                                            $('#signup').attr('href', 'userprofile.html');
+//                                        }
+//                                    });
+////            $('#smallJumbotron').hide();
+//            $('#navPortfolio').click(function () {
+//                $('#smallJumbotron').show();
+//            });
+                                    //document.getElementById('smallJumbotron').style.display = 'block';
+                                    //console.log(window.location);
+        </script> 
+
+        <!-- JS Route -->
+        <script src="javascripts/JS-route.js" type="text/javascript"></script>
+
+        <script>
+            //document.getElementById('mainJumbotron').style.display='none';document.getElementById('smallJumbotron').style.display='block';
+            var smallJumbotronHeight = $('#smallJumbotron').height();//document.getElementById('smallJumbotron').style.height;            
+            console.log(smallJumbotronHeight);
+            var mainJumbotronHeight = $('#mainJumbotron').height();
+            console.log(mainJumbotronHeight);
+            $('#smallJumbotron').height(0);
+//            $('#mainJumbotron').height(0);
+//            $('#mainJumbotron').width(0);
+            //document.getElementById('smallJumbotron').style.height=0;   
+            function toggleSections(section) {
+                $('#smallJumbotron').height(smallJumbotronHeight);
+                $('#mainJumbotron').hide();
+                $('#intro').hide();
+                $('#portfoliosmall').hide();
+                $('#contact').hide();
+                $('#banner').show();
+                if(section==='contact'){                 
+                    $('#contact').show();
+                }
+                if(section==='login' || section==='register'){
+                    $('#banner').hide();
+                }
+            }
+
+            //load all static content for index screen
+            $('#intro').load('partials/intro.html');
+            $('#portfoliosmall').load('partials/portfoliosmall.html');
+            $('#contact').load('partials/contact.html');
+            $('#banner').load('partials/banner.html');
+            $('#footer').load('partials/footer.html');
+        </script>
+
+    </body>
+</html>

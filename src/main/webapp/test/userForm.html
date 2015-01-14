@@ -1,0 +1,80 @@
+<!DOCTYPE html>
+<!--
+To change this license header, choose License Headers in Project Properties.
+To change this template file, choose Tools | Templates
+and open the template in the editor.
+-->
+<html>
+    <head>
+        <title>User Form</title>
+        <meta charset="UTF-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+        <script src="http://ajax.googleapis.com/ajax/libs/jquery/2.1.1/jquery.min.js"></script>
+    </head>
+    <body>
+        <form name="userForm" id="userForm">
+            <div id="d1">                
+                <table><tbody><tr><td style="text-transform: capitalize">aboutMe</td><td><input name="aboutMe" id="aboutMe" value="" style="text-transform: capitalize"></td></tr><tr><td style="text-transform: capitalize">dob</td><td><input name="dob" id="dob" value="" style="text-transform: capitalize"></td></tr><tr><td style="text-transform: capitalize">email</td><td><input name="email" id="email" style="text-transform: capitalize"></td></tr><tr><td style="text-transform: capitalize">firstName</td><td><input name="firstName" id="firstName" value="" style="text-transform: capitalize"></td></tr><tr><td style="text-transform: capitalize">id</td><td><input name="id" id="id" style="text-transform: capitalize"></td></tr><tr><td style="text-transform: capitalize">lastName</td><td><input name="lastName" id="lastName" value="" style="text-transform: capitalize"></td></tr><tr><td style="text-transform: capitalize">locked</td><td><input name="locked" id="locked" value="" style="text-transform: capitalize"></td></tr><tr><td style="text-transform: capitalize">mi</td><td><input name="mi" id="mi" value="" style="text-transform: capitalize"></td></tr><tr><td style="text-transform: capitalize">passresetKey</td><td><input name="passresetKey" id="passresetKey" value="" style="text-transform: capitalize"></td></tr><tr><td style="text-transform: capitalize">password1</td><td><input name="password1" id="password1" style="text-transform: capitalize"></td></tr><tr><td style="text-transform: capitalize">pptosnda</td><td><input name="pptosnda" id="pptosnda" value="" style="text-transform: capitalize"></td></tr><tr><td style="text-transform: capitalize">userType</td><td><input name="userType" id="userType" value="" style="text-transform: capitalize"></td></tr></tbody></table>
+            </div>            
+        </form>
+        <button name="get1" id="get1">Get ID</button><button name="insert" id="insert">Insert</button><button name="update" id="update">Update</button>
+        <div id="msg"></div>
+        <script>
+            $.fn.serializeObject = function() {
+                var o = {};
+                var a = this.serializeArray();
+                $.each(a, function() {
+                    if (o[this.name] !== undefined) {
+                        if (!o[this.name].push) {
+                            o[this.name] = [o[this.name]];
+                        }
+                        o[this.name].push(this.value || null);
+                    } else {
+                        o[this.name] = this.value || null;
+                    }
+                });
+                return o;
+            };            
+            $("#get1").click(function() {
+                $.getJSON("http://localhost:8080/webresources/com.financegeorgia.entities.user/" + $("#id").val(), function(res) {
+                    console.log(JSON.stringify(res));
+                    $.each(res, function(key, value) {
+                        $('#' + key).val(value);
+                    });
+                });
+            });
+            $("#insert").click(function() {
+                $("#id1").val("");                              
+                var formData = JSON.stringify($("form").serializeObject());
+                alert("Inserting... " + formData);
+                console.log(formData);
+                $.ajax({
+                    type: "POST",
+                    url: "/webresources/com.financegeorgia.entities.user",
+                    contentType: "application/json",
+                    dataType: "json",
+                    data: formData,
+                    complete: function(res) {
+                        $("#msg").html(JSON.stringify(res));
+                        console.log(JSON.stringify(res));
+                    }
+                });
+            });
+            $("#update").click(function() {
+                var formData = JSON.stringify($("form").serializeObject());
+                alert("Updating... " + formData);
+                $.ajax({
+                    type: "PUT",
+                    url: "http://localhost:8080/webresources/com.financegeorgia.entities.user/" + $("#id").val(),
+                    contentType: "application/json",
+                    dataType: "json",
+                    data: formData,
+                    complete: function(res) {
+                        $("#msg").html(JSON.stringify(res));
+                        console.log(res);
+                    }
+                });
+            });
+        </script>
+    </body>
+</html>

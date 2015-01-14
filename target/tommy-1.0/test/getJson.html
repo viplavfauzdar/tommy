@@ -1,0 +1,33 @@
+<!DOCTYPE html>
+<!--
+To change this license header, choose License Headers in Project Properties.
+To change this template file, choose Tools | Templates
+and open the template in the editor.
+-->
+<html>
+    <head>
+        <title>TODO supply a title</title>
+        <meta charset="UTF-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+        <script src="http://ajax.googleapis.com/ajax/libs/jquery/2.1.1/jquery.min.js"></script>
+    </head>
+    <body>
+        <input type="text" name="id1" id="id1">
+        <button id="b1">Get User</button>
+        <div id="d1"></div>
+        <script>
+            $("#b1").click(function() {
+                alert('Getting....')
+                $.getJSON("http://localhost:8080/webresources/com.financegeorgia.entities.user/" + $("#id1").val(), function(res) {
+                    console.log(JSON.stringify(res));
+                    var inputs = [];
+                    for (var i in res) {
+                        if(res[i]==null) res[i]="";
+                        inputs.push('<tr><td style="text-transform: capitalize">' + i + '<td><input name="' + i + '" id="' + i + '" value="' + res[i] + '" style="text-transform: capitalize">');
+                    }
+                    $("#d1").html("<table>" + inputs.join("") + "</table>");
+                });
+            });
+        </script>
+    </body>
+</html>

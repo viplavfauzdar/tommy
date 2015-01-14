@@ -1,0 +1,300 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <title>Finance Georgia | Document Uploads</title>
+        <meta charset='utf-8'>
+        <meta content='Description' name='description'>
+        <meta content='1 day' name='revisit-after'>
+        <meta content='width=device-width, initial-scale=1' name='viewport'>
+        <link href="stylesheets/font-awesome.min.css" media="screen" rel="stylesheet" type="text/css" />
+        <link href="stylesheets/bootstrap.min.css" media="screen" rel="stylesheet" type="text/css" />
+        <link href='http://fonts.googleapis.com/css?family=Lato:100,300,400,300italic,400italic,700,700italic,900' rel='stylesheet'>
+        <link href='http://fonts.googleapis.com/css?family=Raleway:400,600,700' rel='stylesheet'>
+        <link href="stylesheets/style.css" media="screen" rel="stylesheet" type="text/css" />
+
+
+    </head>
+    <body>
+
+
+        <div class='wrapper'>
+            <!-- Topbar -->
+            <div class='top' data-spy='affix'>
+                <div class='row-fluid'>
+                    <div class='branding text-left'>
+                        <a href='index.html'><img src="Assets/Finance-Georgia-Logo.png" alt="Finance Georgia"/></a>
+                    </div>
+                    <nav>
+                        <a class='menu-toggle toggle' href='#'>
+                            <div class='bar'></div>
+                            <div class='bar'></div>
+                            <div class='bar'></div>
+                        </a>
+                        <ul>
+                            <li>
+                                <a class='home' href='index.html'>Home</a>
+                            </li>
+                            <li>
+                                <a class='portfolio' href='portfolio.html'>Portfolio</a>
+                            </li>
+                            <li>
+                                <a class='frequently-asked-questions' href='frequently-asked-questions.html'>F.A.Q.</a>
+                            </li>
+                            <li>
+                                <a class='about' href='about.html'>About</a>
+                            </li>
+                            <li>
+                                <a class='contact' href='contact.html'>Contact</a>
+                            </li>
+                            <li>
+                                <a class='Sign-Up' href='user.html'>Sign Up</a>
+                            </li>
+                            <li>
+                                <a class='Sign-In' href='/rs/user/getme'>Sign-in</a>
+                            </li>
+                            <li class='toggle-close toggle'>
+                                <a href='#'>
+                                    <span class='fa fa-times'></span>
+                                </a>
+                            </li>
+                        </ul>
+                    </nav>
+                </div>
+            </div>
+            <section class='jumbotronsmall' id='home'>
+                <div class='flexslider' id='flexslider'>
+                    <ul class='slides'>
+
+                        <li class='slide light'>
+                            <img alt='' class='fs fo' src='Assets/Slider/header-06.jpg'>
+
+                        </li>
+                    </ul>
+                </div>
+            </section>
+
+
+            <!-- Registration -->
+            <section>
+                <div class='row-fluid'>
+                    <div class='col-md-12 text-center'>
+                        <div class='row'>
+                            <div class='col-md-3 text-left'>
+                                <h2>Upload Business Documents</h2>
+
+                            </div>                            
+                            <div class='col-md-9 text-left'>                                                               
+                                <form>
+                                    <table>
+                                        <tr>
+                                            <td>
+                                                <div class='input-group' id="profPic">
+                                                    <h4>Profile Picture</h4>
+                                                    <h5>Please upload a profile picture</h5>
+                                                    <table id="fileuploader">
+                                                        <tr><td><input class="form-control" type='file' id="file1" accept="image/gif, image/jpeg, image/png, application/pdf" data-url="/Uploader?action=upload">                                                                                                        
+                                                                <button class='btn btn-default orange' id="btnUpload1">Upload</button>
+                                                                <button class='btn btn-default' id="btnDelete1">Delete</button>
+                                                                <div class="progress">
+                                                                    <div class="progress-bar" role="progressbar" style="width: 0%;">
+                                                                        0%
+                                                                    </div>
+                                                                </div>                                                                
+                                                            <td><img id="img1" data-toggle="tooltip" data-placement="left" title="This tooltip is on the right!" class="thumbnail" style="height: 200px; width: 200px" onclick="window.open(this.src, '_blank')">                                                                                                        
+                                                    </table>                                                                                                         
+                                                
+                                                </div>
+
+                                                <div class='input-group'>
+                                                    <button class='btn btn-default' id="btnTest">Test</button>
+                                                    <span id="test"></span>  
+                                                </div>
+
+                                                <div class='input-group'>
+                                                    <h4>File #2</h4>
+                                                    <input class='form-control' placeholder='File Name' type='text' >
+                                                    <input class='form-control' type='file'>
+                                                    <textarea class="form-control" name="About This File" cols="20" rows="5"></textarea>
+                                                </div>
+                                                <div class='input-group'>
+                                                    <h4>File #3</h4>
+                                                    <input class='form-control' placeholder='File Name' type='text' >
+                                                    <input class='form-control' type='file'>
+                                                    <textarea class="form-control" name="About This File" cols="20" rows="5"></textarea>
+                                                </div>
+                                                <div class='input-group'>
+                                                    <h4>File #4</h4>
+                                                    <input class='form-control' placeholder='File Name' type='text' >
+                                                    <input class='form-control' type='file'>
+                                                    <textarea class="form-control" name="About This File" cols="20" rows="5"></textarea>
+                                                </div>
+
+                                            </td>
+                                        </tr>
+                                        <br>
+
+                                        <td>
+                                            <button class='btn btn-default' id="btnUpload">Upload & Continue</button>
+                                        </td>
+                                        </tr>
+                                    </table>
+
+                                </form>                                
+
+
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </section>
+
+
+
+            <!-- Footer -->
+            <footer class='separator'>
+                <div class='row-fluid'>
+                    <div class='col-md-3'>
+                        <h4>Finance Georgia</h4>
+                        <p>Why invest on Wall Street, when you can invest in Peachtree Street?</p>
+                        <br>
+                        <a class='btn btn-default' href='#'>
+                            Sign Up
+                        </a>
+                        <a class='btn btn-default' href='#'>
+                            Learn More
+                        </a>
+                    </div>
+                    <div class='col-md-3'>
+                        <h4>Newsletter</h4>
+                        <p>
+                            Get notified when we have a new company to finance. Sign up for our Monthly newsletter below.
+                        </p>
+                        <form>
+                            <div class='input-group'>
+                                <input class='form-control' placeholder='Your E-mail address' type='text'>
+                                <span class='input-group-btn'>
+                                    <a class='btn btn-default fa fa-envelope-o' href='#'></a>
+                                </span>
+                            </div>
+                        </form>
+                    </div>
+                    <div class='col-md-6'>
+                        <h5>Conceived and built in Georgia</h5>
+                        <p>
+                            This website and all investment opportunities and information are intended for use by Georgia residents only.
+                        </p>
+
+                    </div>
+
+                </div>
+            </footer>
+            <!-- Copyright -->
+            <footer class='copy'>
+                <div class='row-fluid'>
+                    <div class='col-md-6 col-xs-4'>
+                        <p>Finance Georgia &copy; 2014</p>
+                    </div>
+                    <div class='col-md-6 col-xs-8 text-right'>
+                        &nbsp;
+                    </div>
+                </div>
+            </footer>
+        </div>
+
+
+
+        <!-- jQuery -->
+        <script src="javascripts/jquery-1.11.1.min.js" type="text/javascript"></script>
+        <!-- Easing -->
+        <script src="javascripts/jquery.easing.1.3.js" type="text/javascript"></script>
+        <!-- Flexslider -->
+        <script src="javascripts/jquery.flexslider.js" type="text/javascript"></script>
+        <!-- Bootstrap JS -->
+        <script src="javascripts/bootstrap.min.js" type="text/javascript"></script>
+        <!-- Waypoints -->
+        <script src="javascripts/waypoints.min.js" type="text/javascript"></script>
+        <!-- Contactform -->
+        <script src="javascripts/validation.js" type="text/javascript"></script>
+        <!-- Maps -->
+
+        <!-- Functions -->
+        <script src="javascripts/functions.js" type="text/javascript"></script>
+        <script src="https://maps.googleapis.com/maps/api/js" type="text/javascript"></script>
+        <script>
+                                                                var myLatlng = new google.maps.LatLng(33.761348, -84.387899);
+                                                                var mapOptions = {
+                                                                    zoom: 14,
+                                                                    center: myLatlng,
+                                                                    scrollwheel: false,
+                                                                    disableDefaultUI: true,
+                                                                    draggable: false,
+                                                                    mapTypeId: google.maps.MapTypeId.ROADMAP,
+                                                                    streetViewControl: false
+                                                                };
+                                                                var map = new google.maps.Map(document.getElementById("maps"), mapOptions);
+        </script>
+
+        <script>
+
+            $("[data-toggle=tooltip]").tooltip();
+
+            $("#btnUpload1").click(function (e) {
+                e.preventDefault();
+                upload("fileuploader", "");
+            });
+
+            function upload(elemId, filename) {
+                var fileSelect = document.getElementById($("#" + elemId).find("input").attr("id"));
+                //alert($("#" + elemId).find("#btnUpload1").attr("id"));
+                if (fileSelect.value == "")
+                    fgAlert("Please select a file first! ");
+                var files = fileSelect.files;
+                var formData = new FormData();
+                formData.append('myfile', files[0], files[0].name);
+                var xmlhttp = new XMLHttpRequest();
+                i = 0;
+                xmlhttp.onreadystatechange = function () {
+                    if (xmlhttp.readyState == 4 && xmlhttp.status == 200) {
+                        console.log(xmlhttp.responseText);
+                        if (xmlhttp.responseText.match("uploaded")) {
+                            $("#" + elemId).find("img").attr("src", window.location.origin + "/Uploader?action=stream&filename=" + files[0].name);
+                            $("#" + elemId).find(".progress-bar").css("width", "100%");
+                            $("#" + elemId).find(".progress-bar").html("100%");
+                        }
+                    } else {
+                        i++;
+                        $("#" + elemId).find(".progress-bar").css("width", i * 25 + "%");
+                        $("#" + elemId).find(".progress-bar").html(i * 25 + "%");
+                    }
+                }
+                xmlhttp.open("POST", "/Uploader?action=upload", true);
+                xmlhttp.send(formData);
+            }
+
+            var fgAlert = function (msg) {
+                $("body").append('<div id="fgalert" class="alert alert-info fade in" style="position:absolute;top:40%;left:40%;z-index:100">' +
+                        '<button type="button" class="close" data-dismiss="alert">&nbsp;&nbsp;×</button>' + msg + '</div>');
+                $('fgalert').show();
+            }
+
+            var fgUploader = function (elem) {
+                var uplmarkup = '<table>' +
+                        '<tr><td><input class="form-control" type="file" id="file1" accept="image/gif, image/jpeg, image/png, application/pdf" data-url="/Uploader?action=upload">' +
+                        '<button class="btn btn-default orange" id="btnUpload">Upload</button>' +
+                        '<button class="btn btn-default" id="btnDelete">Delete</button>' +
+                        '<div class="progress">' +
+                        '<div class="progress-bar" role="progressbar" style="width: 0%;"></div>' +
+                        '</div>' +
+                        '<td><img id="img1" data-toggle="tooltip" data-placement="left" title="This tooltip is on the right!" class="thumbnail" style="height: 200px; width: 200px" onclick="window.open(this.src, "_blank")">' +
+                        '</table>';
+                $(elem).html(uplmarkup);
+            }
+
+            $("#btnTest").click(function () {
+                fgUploader($("#test"));
+            });
+        </script>
+
+
+    </body>
+</html>

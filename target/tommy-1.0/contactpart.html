@@ -1,0 +1,174 @@
+<!--<section id='contact'>
+    <div id='maps'></div>-->
+<div class='info'>
+    <!-- Contact form -->
+    <form class='row' id='frmContact' name='frmContact'>
+        <div class='col-md-3'>
+            <h2>Contact Finance Georgia</h2>
+            <h4>Have a question?</h4>
+            <p>For more information visit our Frequently Asked Questions</p>
+
+            <a class='icon fa fa-facebook' href='https://twitter.com/financegeorgia'></a>
+            <a class='icon fa fa-twitter' href='https://www.facebook.com/financegeorgia'></a>                
+            <a class='icon fa fa-linkedin' href='https://www.linkedin.com/company/finance-georiga-inc-' target="_blank"></a>
+        </div>
+        <div class='col-md-8 col-md-offset-1'>
+            <div class='row'>
+                <div class='col-md-6'>
+                    <div class='form-group'>
+                        <input class='form-control' id='cntname' name='cntname' placeholder='Name' type='text' required minlength="5" lettersonly="true" >
+                        <span class='glyphicon glyphicon-remove form-control-feedback'></span>
+                    </div>
+                    <div class='form-group'>
+                        <input class='form-control' id='cntemail' name='cntemail' placeholder='E-mail' type='email' required>
+                        <span class='glyphicon glyphicon-remove form-control-feedback'></span>
+                    </div>
+                    <div class='form-group'>
+                        <input class='form-control' id='cntphone' name='cntphone' placeholder='Phone' type='text' phoneUS="true">
+                        <span class='glyphicon glyphicon-remove form-control-feedback'></span>
+                    </div>
+                </div>
+                <div class='col-md-6'>
+                    <div class='form-group'>
+                        <textarea class='form-control' id='cntmessage' name='cntmessage' placeholder='Message' required minlength="10" maxlength="1000"></textarea>
+                        <span class='glyphicon glyphicon-remove form-control-feedback'></span>
+                    </div>
+                </div>
+                <div class='col-md-12'>
+                    <!-- Send message -->
+                    <input class='form-control' type='submit'>
+                </div>
+            </div>
+        </div>
+    </form>
+</div>
+<!--</section>-->
+
+<script>
+
+    //this one works good except the class add/remove doesnt
+    //popover placelemt and messages are right only in this one
+    var validateForm = function (formname, plcmnt) {
+        $(formname).validate({
+            showErrors: function (errorMap, errorList) {
+                $.each(this.successList, function (index, value) {
+                    $(value.element).parent().removeClass('has-error has-feedback');
+                    $(value.element).parent().addClass('has-success has-feedback');
+                    $(value.element).next('span').removeClass('glyphicon-remove');
+                    $(value.element).next('span').addClass('glyphicon-ok');
+                    return $(value).popover("hide");
+                });
+                return $.each(errorList, function (index, value) {
+                    $(value.element).parent().removeClass('has-success has-feedback');
+                    $(value.element).parent().addClass('has-error has-feedback');
+                    $(value.element).next('span').removeClass('glyphicon-ok');
+                    $(value.element).next('span').addClass('glyphicon-remove');
+                    var _popover;
+                    _popover = $(value.element).popover({
+                        trigger: "manual",
+                        placement: plcmnt,
+                        content: value.message,
+                        template: "<div class=\"popover\"><div class=\"arrow\"></div><div class=\"popover-inner\"><div class=\"popover-content\"><p></p></div></div></div>"
+                    });
+                    _popover.data("bs.popover").options.content = value.message;
+                    return $(value.element).popover("show");
+                });
+            }
+        });
+    };
+
+    //validateForm('#frmContact', 'right');
+
+    //This seems to work just right
+    $('#frmContact').validate({
+        errorPlacement: function (error, element) {
+            $(element).attr('data-toggle', "popover");
+            $(element).attr('data-content', error.text());
+            $(element).attr('data-placement', "right");
+//            $(element).after('<div class="popover" role="tooltip"><div class="arrow"></div><h3 class="popover-title"></h3><div class="popover-content">asas</div></div>');
+            $(element).popover({trigger: 'manual'});
+            $(element).popover('show');
+//            $(element).popover({
+//                trigger: "manual",
+//                placement: "right",
+//                content: error.text()                
+//            });            
+//            $(element).focus();
+//            $(element).popover("show");
+//            var err = error.text();
+//            error.hide();
+//            $(element).next('span').html(err);
+        }, highlight: function (element, errClass) {
+            $(element).parent().removeClass('has-success has-feedback');
+            $(element).parent().addClass('has-error has-feedback');
+            $(element).next('span').removeClass('glyphicon-ok');
+            $(element).next('span').addClass('glyphicon-remove');
+        }, unhighlight: function (element, errClass) {
+            //console.log(label);
+//            $(element).next('input').focus();
+            $(element).popover('hide');
+            $(element).next('span').html('');
+            $(element).parent().removeClass('has-error has-feedback');
+            $(element).parent().addClass('has-success has-feedback');
+            $(element).next('span').removeClass('glyphicon-remove');
+            $(element).next('span').addClass('glyphicon-ok');
+        }
+    });
+
+//    $('#frmContact').validate({
+//        errorPlacement: function (error, element) {
+//            $(element).parent().addClass('has-error has-feedback');
+//            $(element).next().removeClass('glyphicon-ok');
+//            $(element).next().addClass('glyphicon-remove');
+//            //$(element).after(error);
+//            //error.insertAfter(element);
+//            //fgPop(element,error);
+////                    $(element).attr('data-toggle', "popover");
+////                    $(element).attr('data-content', error.text());
+////                    $(element).attr('data-placement', "right");
+////                    $(element).popover({trigger: 'manual'});
+////                    $(element).popover('show');
+//
+//            $(element).attr('data-toggle', "tooltip");
+//            $(element).attr('title', error.text());
+//            $(element).attr('data-placement', "right");
+//            $(element).tooltip({trigger: 'manual'});
+//            $(element).tooltip('show');
+//        },
+//        success: function (label, element) {
+//            //console.log($(element).next());
+//            $(element).next().removeClass('glyphicon-remove');
+//            $(element).next().addClass('glyphicon-ok');
+//            $(element).parent().removeClass('has-error');
+//            $(element).parent().addClass('has-success');
+//            //$(element).popover('hide');
+//            $(element).tooltip('hide');
+//        }
+//    });
+
+    $("#frmContact").submit(function (e) {
+        //$("html, body").animate({scrollTop: 0}, "slow");    
+        e.preventDefault();
+//        if ($('#cntname').val() == '') {
+//            $('#cntname').parent().addClass('has-error has-feedback');
+//        } else {
+//            $('#cntname').parent().removeClass('has-error has-feedback');
+//            $('#cntname').parent().addClass('has-success has-feedback');
+//            $('#cntname').next('span').removeClass('glyphicon-remove');
+//            $('#cntname').next('span').addClass('glyphicon-ok');
+//        }
+
+
+        if ($("#frmContact").valid()) {
+            loaderOn();
+            var message = "Name: " + $('#cntname').val() + "<br>Email: " + $('#cntemail').val() + "<br>Phone: " + $('#cntphone').val() + "<br>Message: " + $('#cntmessage').val();
+            $.get('/SendMail?type=contact&toAddress=' + $('#cntemail').val() + '&message=' + message, function (res) {
+                console.log(res);
+                //if(res.match('Message sent!'))
+                fgAlert(res);
+                loaderOff();
+            });
+        }
+    });
+
+</script>

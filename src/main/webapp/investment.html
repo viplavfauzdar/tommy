@@ -1,0 +1,65 @@
+<!-- User -->
+<div class='container-fluid'>
+    <div class='col-md-3 text-left'>
+        <h2>Investment Info</h2>
+        <p id='invstDesc'></p>        
+    </div>
+    <div class='col-md-6 text-left'>
+        <div class='row-fluid'>
+            <table class="table table-condensed  table-striped" id='divInvst'>
+
+            </table>
+        </div>
+    </div>
+</div>
+<script>
+    if ($('#userType').val() === 'B') {
+        $('#invstDesc').html('Here is a look at Investments made in your business');
+        $.getJSON("/rs/investment/getinme", function (data) {
+            var invst = '<thead><tr><th>#<th>Investor<th>Amount<th>Equity</thead>';
+            var totalInvst = 0, totalEqty = 0;
+            $.each(data, function (key, value) {
+                var firstName = '', lastName = '';
+                $.ajax({
+                    dataType: "json",
+                    url: '/rs/public/user/' + value.userId,
+                    async: false,
+                    success: function(res){
+                        firstName = res.firstName;
+                        lastName = res.lastName;
+                    }
+                });
+                invst = invst + '<tr><td>' + (key + 1) + '<td>' + lastName + ', ' + firstName + '<td>' + value.amountInvested + '<td>' + value.equityObtained;
+                totalInvst = totalInvst + value.amountInvested;
+                totalEqty = totalEqty + value.equityObtained;
+            });
+            invst = invst + '<tfooter><tr><td>' + '<td><td><b>' + totalInvst + '<td><b>' + totalEqty;
+            $('#divInvst').html(invst);
+            console.log(JSON.stringify(data));
+        });
+    } else {
+        $('#invstDesc').html('Here is a look at investments made by you');
+        $.getJSON("/rs/investment/getbyme", function (data) {
+            var invst = '<thead><tr><th>#<th>Business<th>Amount<th>Equity</thead>';
+            var totalInvst = 0, totalEqty = 0;
+            $.each(data, function (key, value) {
+                var businessName = '';
+                $.ajax({
+                    dataType: "json",
+                    url: '/rs/public/business/' + value.businessId,
+                    async: false,
+                    success: function(res){
+                        businessName = res.businessName;
+                    }
+                });
+                invst = invst + '<tr><td>' + (key + 1) + '<td style="text-transform: capitalize"><a href="businessprofile.html#/' + value.businessId + '" target="_blank" >' + businessName + '</a><td>' + value.amountInvested + '<td>' + value.equityObtained;
+                totalInvst = totalInvst + value.amountInvested;
+                totalEqty = totalEqty + value.equityObtained;
+            });
+            invst = invst + '<tfooter><tr><td>' + '<td><td><b>' + totalInvst + '<td><b>' + totalEqty;
+            $('#divInvst').html(invst);
+            console.log(JSON.stringify(data));
+        });
+    }
+</script>
+

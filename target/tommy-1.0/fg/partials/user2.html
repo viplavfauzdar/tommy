@@ -1,0 +1,130 @@
+<!-- User -->
+<div class='container-fluid'>
+    <div class='col-md-3 text-left'>
+        <h2>Personal Info</h2>
+        <p>Please use the edit button below to add or update your information.</p>
+        <button class="btn btn-default editbtn">Edit</button>
+        <button class='btn btn-default orange savebtn' id="btnSaveUser" name="btnSaveUser">Save</button>
+    </div>
+    <div class='col-md-6 text-left'>
+        <!-- FIRST ROW -->
+        <form action="#" id='frmUser' name='frmUser'>
+            <div class="row">
+                <div class="col-md-4">
+                    <div class='input-group'>
+                        <h4>Your First Name</h4>
+                        <input class='form-control' disabled placeholder='Your First Name' id="firstName" name="firstName" type='text' style="text-transform: capitalize">
+                        <span class='glyphicon glyphicon-remove form-control-feedback'></span>
+                    </div>
+                </div>
+                <div class="col-md-3">
+                    <div class='input-group'>
+                        <h4>Middle </h4>
+                        <input class='form-control' placeholder='Middle' type='text' id="mi" name="mi" maxlength="1" style="text-transform: capitalize">
+                        <span class='glyphicon glyphicon-remove form-control-feedback'></span>
+                    </div>
+                </div>
+                <div class="col-md-5">
+                    <div class='input-group'>
+                        <h4>Your Last Name</h4>
+                        <input class='form-control' placeholder='Your Last Name' id="lastName" name="lastName" type='text' style="text-transform: capitalize">
+                        <span class='glyphicon glyphicon-remove form-control-feedback'></span>
+                    </div>
+                </div>
+            </div>
+            <!-- END FIRST ROW -->
+            <!-- second ROW -->
+            <!--        <div class="row">
+                        <div class="col-md-3">
+                            <div class='input-group'>
+                                <h4>Your Email</h4>
+                                <input class='form-control' placeholder='E-mail Address' id="email" name="email" type='text'><br>
+                                <span class='glyphicon glyphicon-remove form-control-feedback'></span>
+                            </div>
+                        </div>
+                        <div class="col-md-3">
+                            <div class='input-group'>
+                                <h4>Confirm Email</h4>
+                                <input class='form-control' placeholder='Confirm E-mail' type='text'><br>
+                                <span class='glyphicon glyphicon-remove form-control-feedback'></span>
+                            </div>
+                        </div>
+                    </div>-->
+            <!-- END ROW -->
+            <div class="row">
+                <div class="col-md-12">
+                    <div class='input-group'>
+                        <h4>Registration Type</h4>
+                        <select id="userType" name="userType">
+                            <option value="B">Business</option>
+                            <option value="A">Investor - Accredited</option>
+                            <option value="U">Investor - Un-Accredited</option>
+                        </select><br>
+
+                    </div>
+                </div>
+            </div>
+            <div class="row">
+                <div class="col-md-12">
+                    <div class='input-group'>
+                        <h4>Your Birthday</h4>                                                
+                        <input type="text" data-role="date" name="dob"  id="dob" placeholder="mm/dd/yyyy">
+                        <script>
+                            $("#dob").datepicker({
+                                changeYear: true,
+                                changeMonth: true,
+                                yearRange: '1950:2013'
+                            });//.datepicker("setDate", "01/01/1980");
+                        </script>
+                    </div>
+                </div>
+            </div>
+            <!-- END ROW -->
+            <!--        <div class="row">
+                        <div class="col-md-3">
+                            <div class='input-group'>
+                                <h4>Your Password</h4>
+                                <input class='form-control' placeholder='Your Password' id="password1" name="password1" type='password'><br>
+                                <span class='glyphicon glyphicon-remove form-control-feedback'></span>
+                            </div>
+                        </div>
+                        <div class="col-md-3">
+                            <div class='input-group'>
+                                <h4>Confirm Password</h4>
+                                <input class='form-control' placeholder='Your Password' type='password'><br>
+                                <span class='glyphicon glyphicon-remove form-control-feedback'></span>
+                            </div>
+                        </div>
+                    </div>-->
+
+            <div class='input-group'>
+                <h4>Tell us about yourself</h4>
+                <textarea class="form-control" name="aboutMe" id="aboutMe" cols="40" rows="5"></textarea>
+                <span class='glyphicon glyphicon-remove form-control-feedback'></span>
+            </div>            
+        </form>                                
+    </div>
+</div>
+<script>
+    $(".savebtn").hide();
+    $("input").attr("disabled", "disabled");
+    $("select").attr("disabled", "disabled");
+    $("textarea").attr("disabled", "disabled");
+    $('.editbtn').click(function () {
+        $("input").removeAttr("disabled");
+        $("select").removeAttr("disabled");
+        $("textarea").removeAttr("disabled");
+        $('.editbtn').hide();
+        $(".savebtn").show();
+    });
+    $("#btnSaveUser").click(function (e) {
+        e.preventDefault();
+        saveData("/rs/user/updateme", "#frmUser", "PUT");
+        $(".savebtn").hide();
+        $("input").attr("disabled", "disabled");
+        $("select").attr("disabled", "disabled");
+        $("textarea").attr("disabled", "disabled");
+        $('.editbtn').show();
+    });
+</script>
+

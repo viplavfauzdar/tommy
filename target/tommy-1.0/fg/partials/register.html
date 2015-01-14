@@ -1,0 +1,67 @@
+<style>
+    body {
+        font-family: "Trebuchet MS", "Helvetica", "Arial",  "Verdana", "sans-serif";
+        font-size: 72.5%;
+    }
+    input{
+        text-transform: capitalize; 
+    }
+</style>
+<!-- Registration -->
+<section id='about'>
+    <div class='row-fluid'>
+        <div class='col-md-12 text-center'>
+            <div class='row'>
+                <div class='col-md-3 text-left'>
+                    <h2>Create your Finance Georgia account</h2>
+
+                </div>
+                <div class='col-md-9 text-left' id="divSignup">
+
+                    <form id="frmSignup" name="frmSignup">
+                        <table>
+                            <tr>
+                                <td>
+                                    <div class='input-group'>
+                                        <h4>Your Email</h4>
+                                        <input class='form-control' placeholder='Your E-mail address' type='text' id="email" name="email" required><br>
+                                    </div>
+                                    <div class='input-group'>
+                                        <h4>Confirm Email</h4>
+                                        <input class='form-control' placeholder='Your E-mail address' type='text'><br>
+                                    </div>
+                                </td>
+                            </tr>
+                            <br>
+                            <tr>
+                                <td>
+                                    <div class='input-group'>
+                                        <h4>Your Password</h4>
+                                        <input class='form-control' placeholder='Your Password' type='password' id="password1" name="password1"><br>
+                                    </div>
+                                    <div class='input-group'>
+                                        <h4>Confirm Password</h4>
+                                        <input class='form-control' placeholder='Your Password' type='password'><br>
+                                        <!--<input type='hidden' value='user' is='role' name='role'>-->
+                                    </div>
+                                </td>
+                            </tr>
+                            <td>           
+                                <!--                                            <input type="checkbox" id="pptosnda" name="pptosnda" value="1" required>
+                                                                                I agree to the <a href="#" id="lnk_pp">privacy policy</a> and <a href="#" id="lnk_tos">terms of service</a>
+                                href jquery error from funcion.js line 39: Uncaught Error: Syntax error, unrecognized expression: [name=]-->
+
+                                <div class="g-recaptcha" data-sitekey="6Lf-Yf8SAAAAANSFoarf_Dx_t4mC4ZRB1hVxvlye"></div> 
+                                <button class='btn btn-default orange' id="btnCreateAcc">Create Account</button>
+                            </td>
+                            </tr>
+                        </table>                                      
+                    </form>                                                                                                
+                    <a href="#">Blah</a>
+                </div>
+            </div>
+        </div>
+    </div>
+</section> 
+<!-- reCaptcha -->
+<script src='https://www.google.com/recaptcha/api.js'></script>

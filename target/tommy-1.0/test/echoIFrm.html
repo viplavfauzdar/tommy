@@ -1,0 +1,30 @@
+<!DOCTYPE html>
+<!--
+To change this license header, choose License Headers in Project Properties.
+To change this template file, choose Tools | Templates
+and open the template in the editor.
+-->
+<html>
+    <head>
+        <title>Echosign with IFrame</title>
+        <meta charset="UTF-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+        <script src="http://ajax.googleapis.com/ajax/libs/jquery/2.1.1/jquery.min.js"></script>
+    </head>
+    <body>        
+        <iframe id="ifr1" src="https://secure.echosign.com/public/hostedForm?formid=B4MUAM42XA5P7Z" style='border: 1px solid red; width: 1000px; height: 1000px' scrolling='no'></iframe>        
+        <div id="msg"></div>
+        <script>
+            
+            var befCon = $("#ifr1").contents().find("h2").html();            
+            var intrvl = setInterval(function(){
+                console.log("checking iframe..html: " + $("#ifr1").contents().find("h2").html());
+                if($("#ifr1").contents().find("h2").html()!==befCon){                    
+                    $("#msg").html("IFrame content changed....!!.. " + $("#ifr1").contents().find("h2").html());
+                    clearInterval(intrvl);
+                }
+            },1000);
+            
+        </script>
+    </body>
+</html>
