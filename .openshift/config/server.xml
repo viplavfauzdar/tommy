@@ -39,11 +39,11 @@
     <!-- Editable user database that can also be used by
          UserDatabaseRealm to authenticate users
     -->
-    <Resource name="UserDatabase" auth="Container"
+    <!--<Resource name="UserDatabase" auth="Container"
               type="org.apache.catalina.UserDatabase"
               description="User database that can be updated and saved"
               factory="org.apache.catalina.users.MemoryUserDatabaseFactory"
-              pathname="conf/tomcat-users.xml" />
+              pathname="conf/tomcat-users.xml" />-->
   </GlobalNamingResources>
 
   <!-- A "Service" is a collection of one or more "Connectors" that share
@@ -119,8 +119,15 @@
              resources under the key "UserDatabase".  Any edits
              that are performed against this UserDatabase are immediately
              available for use by the Realm.  -->
-        <Realm className="org.apache.catalina.realm.UserDatabaseRealm"
-               resourceName="UserDatabase"/>
+        <!--<Realm className="org.apache.catalina.realm.UserDatabaseRealm"
+               resourceName="UserDatabase"/>-->
+		<Realm className="org.apache.catalina.realm.DataSourceRealm"
+			   dataSourceName="jdbc/MySQLDS"
+			   digest="SHA-512" 
+			   userTable="user" userNameCol="email" userCredCol="password1"
+			   userRoleTable="role" roleNameCol="role"
+			   ResourceName="DataSource"
+			   localDataSource="true"/>	 	   
       </Realm>
 
       <Host name="localhost"  appBase="webapps"
