@@ -48,17 +48,17 @@
 
     //this one works good except the class add/remove doesnt
     //popover placelemt and messages are right only in this one
-    var validateForm = function (formname, plcmnt) {
+    var validateForm = function(formname, plcmnt) {
         $(formname).validate({
-            showErrors: function (errorMap, errorList) {
-                $.each(this.successList, function (index, value) {
+            showErrors: function(errorMap, errorList) {
+                $.each(this.successList, function(index, value) {
                     $(value.element).parent().removeClass('has-error has-feedback');
                     $(value.element).parent().addClass('has-success has-feedback');
                     $(value.element).next('span').removeClass('glyphicon-remove');
                     $(value.element).next('span').addClass('glyphicon-ok');
                     return $(value).popover("hide");
                 });
-                return $.each(errorList, function (index, value) {
+                return $.each(errorList, function(index, value) {
                     $(value.element).parent().removeClass('has-success has-feedback');
                     $(value.element).parent().addClass('has-error has-feedback');
                     $(value.element).next('span').removeClass('glyphicon-ok');
@@ -81,7 +81,7 @@
 
     //This seems to work just right
     $('#frmContact').validate({
-        errorPlacement: function (error, element) {
+        errorPlacement: function(error, element) {
             $(element).attr('data-toggle', "popover");
             $(element).attr('data-content', error.text());
             $(element).attr('data-placement', "right");
@@ -98,12 +98,12 @@
 //            var err = error.text();
 //            error.hide();
 //            $(element).next('span').html(err);
-        }, highlight: function (element, errClass) {
+        }, highlight: function(element, errClass) {
             $(element).parent().removeClass('has-success has-feedback');
             $(element).parent().addClass('has-error has-feedback');
             $(element).next('span').removeClass('glyphicon-ok');
             $(element).next('span').addClass('glyphicon-remove');
-        }, unhighlight: function (element, errClass) {
+        }, unhighlight: function(element, errClass) {
             //console.log(label);
 //            $(element).next('input').focus();
             $(element).popover('hide');
@@ -146,7 +146,7 @@
 //        }
 //    });
 
-    $("#frmContact").submit(function (e) {
+    $("#frmContact").submit(function(e) {
         //$("html, body").animate({scrollTop: 0}, "slow");    
         e.preventDefault();
 //        if ($('#cntname').val() == '') {
@@ -158,15 +158,25 @@
 //            $('#cntname').next('span').addClass('glyphicon-ok');
 //        }
 
-
+        //below change to handle error not needed. servlet not returning any error message
         if ($("#frmContact").valid()) {
             loaderOn();
             var message = "Name: " + $('#cntname').val() + "<br>Email: " + $('#cntemail').val() + "<br>Phone: " + $('#cntphone').val() + "<br>Message: " + $('#cntmessage').val();
-            $.get('/SendMail?type=contact&toAddress=' + $('#cntemail').val() + '&message=' + message, function (res) {
-                console.log(res);
-                //if(res.match('Message sent!'))
-                fgAlert(res);
-                loaderOff();
+            $.ajax({
+                type: "GET",
+                url: '/SendMail?type=contact&toAddress=' + $('#cntemail').val() + '&message=' + message,
+                success: function(res) {
+                    console.log(res);
+                    //if(res.match('Message sent!'))
+                    fgAlert(res);
+                    loaderOff();
+                }, error: function(err) {
+                    console.log(err);
+                    fgAlert(err);
+                    loaderOff();
+                }, complete: function() {
+                    loaderOff();
+                }
             });
         }
     });

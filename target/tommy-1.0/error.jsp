@@ -6,8 +6,9 @@
 
   <pre>
   <%
-      out.println(exception);
-      exception.printStackTrace();
+      //out.println(exception);
+      //exception.printStackTrace();
+      exception.printStackTrace(response.getWriter());
 //  // unwrap ServletExceptions.
 //  while (exception instanceof ServletException)
 //    exception = ((ServletException) exception).getRootCause();

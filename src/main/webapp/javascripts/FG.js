@@ -159,7 +159,8 @@ var register = function(url, nextpage, uid) {
         contentType: "application/json",
         data: JSON.stringify(formData),
         async: false, //to get user id
-        encode: true,
+        //encode: true,
+        dataType: 'html',
         success: function(result) {
             loaderOff();
             $("html, body").animate({scrollTop: 0}, "slow");
@@ -170,8 +171,8 @@ var register = function(url, nextpage, uid) {
                 $("#register").load(nextpage);
         }, error: function(err) {
             loaderOff();
-            fgAlert(JSON.stringify(err));
-            console.log(JSON.stringify(err));
+            fgAlert(err.toString());
+            console.log(err);
         }, complete: function() {
             loaderOff();
         }

@@ -48,8 +48,8 @@ public class UserFacadeREST extends AbstractFacade<User> {
     @POST
     @Path("create")
     @Consumes({"application/json"}) //"application/xml", 
-    @Produces({"application/json"})
-    public User create1(User entity, @Context HttpServletRequest request) {
+    //@Produces({"application/json"})
+    public void create1(User entity, @Context HttpServletRequest request) {
         try {
             String email = entity.getEmail();
             String pass = entity.getPassword1();
@@ -72,7 +72,7 @@ public class UserFacadeREST extends AbstractFacade<User> {
             //log user in now
             request.login(email, pass);
             request.getSession().setAttribute("userId", user.getId());
-            return user;
+            //return user; //shouldn't return anything
         } catch (ServletException ex) {
             throw new FGException(ex);
         }
