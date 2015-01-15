@@ -71,6 +71,7 @@ public class UserFacadeREST extends AbstractFacade<User> {
             af.create1(audit, request);
             //log user in now
             request.login(email, pass);
+            request.getSession().setAttribute("userId", user.getId());
             return user;
         } catch (ServletException ex) {
             throw new FGException(ex);
@@ -137,7 +138,8 @@ public class UserFacadeREST extends AbstractFacade<User> {
         if (users.size() > 0) {
             user = users.get(0);
             request.getSession().setAttribute("userId", user.getId());
-        }        
+            //user.setPassword1("HIDDEN"); //don't want even encrypted password returned! - doesn't work. cause password to become HIDDEN
+        }              
         return user;
     }
         

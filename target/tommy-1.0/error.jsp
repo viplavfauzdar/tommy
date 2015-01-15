@@ -1,4 +1,4 @@
-<%@ page isErrorPage="true" import="java.io.PrintWriter" %>
+<%@page isErrorPage="true"%>
 
   <html><body>
 
@@ -6,12 +6,14 @@
 
   <pre>
   <%
-  // unwrap ServletExceptions.
-  while (exception instanceof ServletException)
-    exception = ((ServletException) exception).getRootCause();
-
-  // print stack trace.
-  exception.printStackTrace(new PrintWriter(out));
+      out.println(exception);
+      exception.printStackTrace();
+//  // unwrap ServletExceptions.
+//  while (exception instanceof ServletException)
+//    exception = ((ServletException) exception).getRootCause();
+//
+//  // print stack trace.
+//  exception.printStackTrace(new PrintWriter(out));
   %>
   </pre>
 

@@ -1,2 +1,5 @@
+<%@page import="com.financegeorgia.service.UserFacadeREST"%>
 <%=request.getRemoteUser()%>
-<%//=request.getUserPrincipal().getName()%>
+<%if(session.getAttribute("userId")==null && request.getRemoteUser()!=null){
+    (new UserFacadeREST()).getMe(request);
+}%>

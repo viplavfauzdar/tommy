@@ -13,6 +13,7 @@ import java.io.InputStream;
 import java.io.OutputStream;
 import java.util.Iterator;
 import java.util.List;
+import java.util.logging.Level;
 
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
@@ -38,8 +39,8 @@ public class Uploader extends HttpServlet {
     private static final Logger logger = Logger.getLogger(Uploader.class);
 
     private static final String userhomedir = Path.getUserHomeDir();//System.getProperty("user.home");
-    private static final String filesep = Path.fileSep;// System.getProperty("file.separator");
-    private String action = null, path = null, folder = null, filename = null;
+    private static final String filesep = Path.fileSep, fgDataDir = Path.fgDataDir;// System.getProperty("file.separator");
+    private String action = null, path = null, filename = null; //folder = null,
 
     /**
      * @see HttpServlet#HttpServlet()
@@ -63,24 +64,26 @@ public class Uploader extends HttpServlet {
         // TODO Auto-generated method stub
 
         //folder is the uid
-        folder = request.getParameter("folder");
+        String folder = request.getParameter("folder");
         //filename needs to come from client as its fixed
-        filename = request.getParameter("filename");
+        String filename = request.getParameter("filename");
 
         if (folder == null || folder.equals("")) {
             folder = request.getSession().getAttribute("userId").toString();
         }
-        File dir = new File(userhomedir + filesep + Path.fgDataDir + filesep + folder);
+        File dir = new File(userhomedir + filesep + fgDataDir + filesep + folder);
         dir.mkdirs();
-        path = dir.getPath();
+        String path = dir.getPath();
         logger.info("File Path in Uploader: " + path);
+        this.path = path;
+        this.filename = filename;
 
         action = request.getParameter("action");
 
         if (action.equals("upload")) {
             upload(request, response);
         } else if (action.equals("stream")) {
-            stream(request, response);
+            stream(response);
         } else if (action.equals("delete")) {
             delete(response);
         }
@@ -173,20 +176,28 @@ public class Uploader extends HttpServlet {
         }//end of if multipart
     }
 
-    private void stream(HttpServletRequest request, HttpServletResponse response) {
+    private void stream(HttpServletResponse response) {
         FileInputStream fin = null;
         OutputStream out = null;
         File file = new File(path + filesep + filename);
-        if (file.exists()) {
+        if (!file.exists()) {
+            logger.info("Sending placeholder image");
+            try {
+                //file = new File("/img/placeholder.png");
+                response.sendRedirect("/img/placeholder.png");
+            } catch (IOException ex) {
+                throw new FGException(ex);
+            }
+        } else {
             try {
                 fin = new FileInputStream(file);
                 out = response.getOutputStream();
                 int read = 0;
-                final byte[] bytes = new byte[1024];
+                byte[] bytes = new byte[1024];
                 while ((read = fin.read(bytes)) != -1) {
                     out.write(bytes, 0, read);
                 }
-            } catch (Exception ex) {
+            } catch (IOException ex) {
                 throw new FGException(ex);
             } finally {
                 try {
@@ -196,12 +207,10 @@ public class Uploader extends HttpServlet {
                     if (out != null) {
                         out.close();
                     }
-                } catch (Exception ex) {
+                } catch (IOException ex) {
                     throw new FGException(ex);
                 }
             }
-        } else {
-            //do nothing
         }
     }
 

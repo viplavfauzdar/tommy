@@ -147,8 +147,8 @@
         <!-- Bootstrap JS -->
         <script src="javascripts/bootstrap.min.js" type="text/javascript"></script>
         <!--         Waypoints -->
-        <!-- <script src="javascripts/waypoints.min.js" type="text/javascript"></script>
-                 Contactform 
+        <script src="javascripts/waypoints.min.js" type="text/javascript"></script>
+        <!--         Contactform 
                 <script src="javascripts/validation.js" type="text/javascript"></script>        -->
         <!-- Functions -->
         <script src="javascripts/functions.js" type="text/javascript"></script>
@@ -164,8 +164,8 @@
                 $(this).unbind("error").attr("src", "img/placeholder.jpg");
             });
 
-            $("href").error(function () {
-                $(this).unbind("error").attr("src", "img/placeholder.jpg");
+            $("a").error(function () {
+                $(this).unbind("error").attr("href", "img/placeholder.jpg");
             });
 
             var hash = window.location.hash;
