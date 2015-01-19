@@ -62,7 +62,7 @@ public class CreateNewWidgetWithCounerSigners {
   
   private static String widgetJS = null;
   private static String widgetURL = null;
-  private static String userId = null, docName = null;
+  private static String userId = null, docName = null, callbackURL = null;
   
   public void setfileToBeUploaded(String fileToBeUploaded){
       this.fileToBeUploaded = fileToBeUploaded;
@@ -74,6 +74,10 @@ public class CreateNewWidgetWithCounerSigners {
   
   public void setDocName(String docName){
       this.docName = docName;
+  }
+  
+  public void setCallbackURL(String callbackURL){
+      this.callbackURL = callbackURL;
   }
 
   /**
@@ -114,7 +118,7 @@ public class CreateNewWidgetWithCounerSigners {
     DocumentIdentifierName formFieldIdName = DocumentIdentifierName.TRANSIENT_DOCUMENT_ID;    
     
     // Make API call to create new widget
-    JSONObject widget = RestApiWidgets.createWidget(accessToken, createWidgetJSONFileName, transientDocumentId, idName, null, null, userId, docName);//formFieldDocumentId, formFieldIdName);
+    JSONObject widget = RestApiWidgets.createWidget(accessToken, createWidgetJSONFileName, transientDocumentId, idName, null, null, userId, docName, callbackURL);//formFieldDocumentId, formFieldIdName);
 
     System.out.println(widget);
     // Display widget ID and corresponding code of newly created widget.

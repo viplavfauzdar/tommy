@@ -1,0 +1,23 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<persistence version="2.1" xmlns="http://xmlns.jcp.org/xml/ns/persistence" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://xmlns.jcp.org/xml/ns/persistence http://xmlns.jcp.org/xml/ns/persistence/persistence_2_1.xsd">
+  <persistence-unit name="tommy_tommy_war_1.0PU" transaction-type="RESOURCE_LOCAL">
+    <non-jta-data-source>java:comp/env/jdbc/MySQLDS</non-jta-data-source>
+    <provider>org.eclipse.persistence.jpa.PersistenceProvider</provider>
+    <class>com.financegeorgia.entities.User</class>
+    <class>com.financegeorgia.entities.Audit</class>
+    <class>com.financegeorgia.entities.Role</class>
+    <class>test_NO_BUENO.TestUsers</class>
+    <class>test_NO_BUENO.TestRoles</class>
+    <class>com.financegeorgia.entities.Location</class>
+    <class>com.financegeorgia.entities.Business</class>
+    <class>com.financegeorgia.entities.Investment</class>
+    <exclude-unlisted-classes>false</exclude-unlisted-classes>
+    <properties>
+      <!--<property name="javax.persistence.jdbc.url" value="jdbc:mysql://localhost:3306/finga1?zeroDateTimeBehavior=convertToNull"/>
+      <property name="javax.persistence.jdbc.password" value="f1fa2014"/>
+      <property name="javax.persistence.jdbc.driver" value="com.mysql.jdbc.Driver"/>
+      <property name="javax.persistence.jdbc.user" value="root"/>-->
+      <property name="eclipselink.logging.level" value="ALL"/>
+    </properties>
+  </persistence-unit>
+</persistence>

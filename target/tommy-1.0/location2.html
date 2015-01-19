@@ -31,7 +31,7 @@
 
             <div class='input-group'>
                 <h4>Zip Code</h4>
-                <input class='form-control' placeholder='Zipcode' type='number' id="zip" name="zip">
+                <input class='form-control' placeholder='Zipcode' type='text' id="zip" name="zip">
                 <span class='glyphicon glyphicon-remove form-control-feedback'></span>
             </div>
 
@@ -40,19 +40,19 @@
             <h3>Business Contact Information</h3>
             <div class='input-group'>
                 <h4>Your Phone Number</h4>
-                <input class='form-control' placeholder='Phone Number' type='number' id="phone1" name="phone1">
+                <input class='form-control' placeholder='Phone Number' type='text' id="phone1" name="phone1">
                 <span class='glyphicon glyphicon-remove form-control-feedback'></span>
             </div>
 
             <div class='input-group'>
                 <h4>Your Mobile Number</h4>
-                <input class='form-control' placeholder='Mobile Number' type='number' id="mobile" name="mobile">
+                <input class='form-control' placeholder='Mobile Number' type='text' id="mobile" name="mobile">
                 <span class='glyphicon glyphicon-remove form-control-feedback'></span>
             </div>
 
             <div class='input-group'>
                 <h4>Your Fax Numbers</h4>
-                <input class='form-control' placeholder='Fax Number' type='number' id="phone2" name='phone2'>
+                <input class='form-control' placeholder='Fax Number' type='text' id="phone2" name='phone2'>
                 <span class='glyphicon glyphicon-remove form-control-feedback'></span>
             </div>
 
@@ -94,6 +94,12 @@
 </div>
 
 <script>    
+    $("#zip").mask("99999");
+    $("#phone1").mask("(999) 999-9999");
+    $("#phone2").mask("(999) 999-9999");
+    $("#mobile").mask("(999) 999-9999");
+    //$("#linkedin").mask("http://***********************.***"); doesn't quite work. use jquery.validation URL type instead
+    
     $(".savebtn").hide();
     $("input").attr("readonly", "readonly");
     $("select").attr("readonly", "readonly");

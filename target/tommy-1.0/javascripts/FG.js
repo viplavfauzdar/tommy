@@ -1,18 +1,18 @@
 //$(function () { //do not use as it forces document to be ready and causes the ajax loaded forms to lose reference
 
 //** incase of missing pics or pics that didn't load
-$("img").error(function() {
+$("img").error(function () {
     $(this).unbind("error").attr("src", "img/placeholder.jpg");
 });
 
-$("a").error(function() {
+$("a").error(function () {
     $(this).unbind("error").attr("href", "img/placeholder.jpg");
 });
 
 /**
  * global error handler for ajax errors
  * */
-$(document).ajaxError(function(event, jqxhr, settings, exception) {
+$(document).ajaxError(function (event, jqxhr, settings, exception) {
     if (jqxhr.responseText != "")
         fgAlert("Ajax Error: " + jqxhr.responseText);//,"error");
     loaderOff();
@@ -22,22 +22,22 @@ $(document).ajaxError(function(event, jqxhr, settings, exception) {
 /**
  * Form validation. Should call explicitly 
  * */
-var formValidation = function(formName) {
-    $('form').validate({
-        errorPlacement: function(error, element) {
+var formValidation = function (formName) {
+    $(formName).validate({
+        errorPlacement: function (error, element) {
             $(element).attr('data-toggle', "popover");
             $(element).attr('data-content', error.text());
             $(element).attr('data-placement', "right");
             $(element).popover({trigger: 'manual'});
             $(element).popover('show');
-        }, highlight: function(element, errClass) {
+        }, highlight: function (element, errClass) {
             $(element).parent().removeClass('has-success has-feedback');
             $(element).parent().addClass('has-error has-feedback');
             $(element).next('span').removeClass('glyphicon-ok');
             $(element).next('span').addClass('glyphicon-remove');
-        }, unhighlight: function(element, errClass) {
+        }, unhighlight: function (element, errClass) {
             $(element).popover('hide');
-            $(element).next('span').html('');
+            //$(element).next('span').html('');
             $(element).parent().removeClass('has-error has-feedback');
             $(element).parent().addClass('has-success has-feedback');
             $(element).next('span').removeClass('glyphicon-remove');
@@ -64,7 +64,7 @@ var formValidation = function(formName) {
 //}, "Your password must be at least 8 characters long and contain at least one number and one character.");
 
 //** functions to show/hide loaders
-var loaderOn = function() {
+var loaderOn = function () {
     if ($("#div_loader").length === 0) {
         $("body").append('<div id="div_loader" style="z-index:100000;position:fixed;top:0px;left:0px;height:100%;width:100%;' +
                 'background-color: #000000;opacity: 0.7;filter: alpha(opacity=70);">' +
@@ -72,23 +72,23 @@ var loaderOn = function() {
     }
     $('#div_loader').fadeIn();
 };
-var loaderOff = function() {
+var loaderOff = function () {
     $('#div_loader').fadeOut();
     $("body").remove("#div_loader");
 };
 
-var fgAlert = function(msg) {
+var fgAlert = function (msg) {
     $("html, body").animate({scrollTop: 0}, "slow");
     if ($("#fgalert").length === 0) {
-        $("body").append('<div id="fgalert" class="alert alert-warning" style="position:absolute;top:10px;right:10px;z-index:100;min-width:300px;">' +
-                '<button type="button" class="close" data-dismiss="alert">&nbsp;&nbsp;×</button><h5>' + msg + '</h5></div>');
+        $("body").append('<div id="fgalert" class="alert alert-warning" style="position:absolute;top:10px;right:10px;z-index:100;min-width:200px;max-width:500px;max-height:500px">' +
+                '<button type="button" class="close" data-dismiss="alert">&nbsp;&nbsp;×</button><div style="max-height:480px;overflow:auto"><h5>' + msg + '</h5></div></div>');
     }
     $('#fgalert').show();
     //diabled for QA since testers can't grab screen shots
-    //$('#fgalert').fadeOut(10000);//.effect('shake', 500);//.hide(5000);
+    //$('#fgalert').addClass("in").fadeOut(10000);//.effect('shake', 500);//.hide(5000);
 };
 
-fgModal = function(size, header, content, url, footer) {
+fgModal = function (size, header, content, url, footer) {
     //$("html, body").animate({scrollTop: 0}, "slow"); //cause modal to flicker
     if ($("#fgModal").length === 0) {
         var markup = '<div id="fgModal" class="modal fade" tabindex="-1" role="dialog">' +
@@ -122,10 +122,10 @@ fgModal = function(size, header, content, url, footer) {
     });
 };
 
-$.fn.serializeObject = function() {
+$.fn.serializeObject = function () {
     var o = {};
     var a = this.serializeArray();
-    $.each(a, function() {
+    $.each(a, function () {
         if (o[this.name] !== undefined) {
             if (!o[this.name].push) {
                 o[this.name] = [o[this.name]];
@@ -138,15 +138,17 @@ $.fn.serializeObject = function() {
     return o;
 };
 
-$("#btnUser").click(function(e) {
+//obsolete
+$("#btnUser").click(function (e) {
 //$('form').submit(function (e) {      
     e.preventDefault();
     register("/rs/user/create", "location.html", null);
     $("#userId").val(userId);
 });
 
+//not using below
 var userId = null;
-var register = function(url, nextpage, uid) {
+var register = function (url, nextpage, uid) {
     loaderOn();
     var formData = $("form").serializeObject();
     if (uid !== null) {
@@ -161,7 +163,7 @@ var register = function(url, nextpage, uid) {
         async: false, //to get user id
         //encode: true,
         dataType: 'html',
-        success: function(result) {
+        success: function (result) {
             loaderOff();
             $("html, body").animate({scrollTop: 0}, "slow");
             if (uid === null)
@@ -169,11 +171,11 @@ var register = function(url, nextpage, uid) {
             console.log(result);
             if (nextpage !== null)
                 $("#register").load(nextpage);
-        }, error: function(err) {
+        }, error: function (err) {
             loaderOff();
             fgAlert(err.toString());
             console.log(err);
-        }, complete: function() {
+        }, complete: function () {
             loaderOff();
         }
     });
@@ -195,10 +197,11 @@ var register = function(url, nextpage, uid) {
 formValidation('#frmSignup');
 
 //$("#btnCreateAcc").click(function (e) {
-$("#frmSignup").submit(function(e) {
+$("#frmSignup").submit(function (e) { 
     //$("html, body").animate({scrollTop: 0}, "slow");
     e.preventDefault();
     if ($("#frmSignup").valid()) {
+        loaderOn();
 //    if($('#email').val()==''){    
 //        $('#email').parent().addClass('has-error has-feedback');
 //        $('#email').attr('data-toggle', "popover");    
@@ -206,31 +209,50 @@ $("#frmSignup").submit(function(e) {
 //        $('#email').popover({trigger: 'manual', html: 'true'});
 //        $('#email').popover('show');
 //    }
-
+        console.log(JSON.stringify($("form").serializeObject()));
         //verify recaptcha
-        $.get("/ReCaptchaVerify?recaptchaResponse=" + grecaptcha.getResponse(), function(res) {
+        $.get("/ReCaptchaVerify?recaptchaResponse=" + grecaptcha.getResponse(), function (res) {
             console.log(res);
             if (res.match('true')) {
-                register("/rs/user/create", null, null);
+                //register("/rs/user/create", null, null);
+//                $.post('/rs/user/create', JSON.stringify($("form").serializeObject()), function (data) {
+//                    console.log(data);
+//                    if (data.userId != null)
+//                        window.location = "welcome.html";
+//                    else
+//                        fgAlert(JSON.stringfy(data));
+//                });
+                $.ajax({
+                    url: '/rs/user/create',
+                    type: "POST",
+                    data: JSON.stringify($("form").serializeObject()),
+                    contentType: "application/json",
+                    dataType: "html",
+                    success: function() {   
+                        loaderOff();
+                        window.location = "welcome.html";
+                    }
+                });
             } else {
                 fgAlert("Please verify reCAPTCHA!");
-                //$('#divReCaptcha').effect('shake', 500);            
+                //$('#divReCaptcha').effect('shake', 500);    
+                loaderOff();
             }
             //log user in now
-            if (userId !== null) {
-                window.location = "welcome.html";
-            }
-            $("#userId").val(userId);
+//            if (userId !== null) {
+//                window.location = "welcome.html";
+//            }
+//            $("#userId").val(userId);
         });
     }
 });
 
-var loadData = function(url) {
+var loadData = function (url) {
     loaderOn();
-    $.getJSON(url, function(res) {
+    $.getJSON(url, function (res) {
         loaderOff();
         console.log(JSON.stringify(res));
-        $.each(res, function(key, value) {
+        $.each(res, function (key, value) {
             $('#' + key).val(value);
         });
         console.log('User Type: ' + $('#userType').val());
@@ -241,15 +263,22 @@ var loadData = function(url) {
     });
 };
 
-$('#tabLegal').click(function(e) {
+$('#tabLegal').click(function (e) {
     loaderOn();
     e.preventDefault();
-    $('#ifrmLegal').attr('src',"/EchoSign?action=widget&fileToBeUploaded=listingagreement.pdf&jsorurl=js");
+    var docType;
+    if($('#userType').val()=='B')
+        docType="listingagreement.pdf"
+    if($('#userType').val()=='U')
+        docType="checklist_unaccinvestor.pdf"
+    if($('#userType').val()=='A')
+        docType="checklist_accinvestor.pdf"
+    $('#ifrmLegal').attr('src', "/EchoSign?action=widget&fileToBeUploaded=" + docType + "&jsorurl=js");
     $('#tabLegal').tab('show');
     loaderOff();
 });
 
-$('#tabFile').click(function(e) {
+$('#tabFile').click(function (e) {
     loaderOn();
     e.preventDefault();
     $("#tabContFile").load("uploadfiles.html?t=" + Math.random());
@@ -257,14 +286,14 @@ $('#tabFile').click(function(e) {
     loaderOff();
 });
 
-$('#tabBus').click(function(e) {
+$('#tabBus').click(function (e) {
     e.preventDefault();
     $("#tabContBus").load("business2.html?t=" + Math.random());
     loadData("/rs/business/getme");
     $('#tabBus').tab('show');
 });
 
-$('#tabInvst').click(function(e) {
+$('#tabInvst').click(function (e) {
     e.preventDefault();
     loaderOn();
     $("#tabContInvst").load("investment.html?t=" + Math.random());
@@ -272,7 +301,7 @@ $('#tabInvst').click(function(e) {
     loaderOff();
 });
 
-$('#tabLoc').click(function(e) {
+$('#tabLoc').click(function (e) {
     e.preventDefault();
     console.log('loading location');
     $("#tabContLoc").load("location2.html?t=" + Math.random());
@@ -287,14 +316,14 @@ function loadUser() {
     loadData("/rs/user/getme");
 }
 
-$('#tabUser').click(function(e) {
+$('#tabUser').click(function (e) {
     e.preventDefault();
     $("#tabContUser").load("user2.html?t=" + Math.random());
     loadData("/rs/user/getme");
     $('#tabUser').tab('show');
 });
 
-var saveData = function(url, formId, method) {
+var saveData = function (url, formId, method) {
     loaderOn();
     var formData = JSON.stringify($(formId).serializeObject());
     console.log(formData);
@@ -305,28 +334,28 @@ var saveData = function(url, formId, method) {
         data: formData,
         async: true,
         encode: true,
-        success: function(result) {
+        success: function (result) {
             loaderOff();
             $("html, body").animate({scrollTop: 0}, "slow");
             fgAlert("Saved!");
             console.log(result);
-        }, error: function(err) {
+        }, error: function (err) {
             loaderOff();
             fgAlert(JSON.stringify(err));
             console.log(JSON.stringify(err));
-        }, complete: function() {
+        }, complete: function () {
             loaderOff();
         }
     });
 };
 
-$('#lnk_pp').click(function() {
+$('#lnk_pp').click(function () {
     fgModal('modal-lg', '', '', "/doc/privacypolicy.html");
     $('#fgModal').hide();
     $('body').remove('#fgModal');
 });
 
-$('#lnk_tos').click(function() {
+$('#lnk_tos').click(function () {
     fgModal('modal-lg', '', '', "/doc/termsofservice.html");
     $('#fgModal').hide();
     $('body').remove('#fgModal');
@@ -338,7 +367,7 @@ $('#footer').load('footer.html');
 $('#copyright').load('copyright.html');
 $('#contactpart').load('contactpart.html');
 
-$.get("/jsp/getloggedinuser.jsp", function(data) {
+$.get("/jsp/getloggedinuser.jsp", function (data) {
     console.log(data);
     if (!data.match('null')) {
         $('#signin').html('Sign Out');
@@ -348,7 +377,7 @@ $.get("/jsp/getloggedinuser.jsp", function(data) {
     }
 });
 
-var portfolioWidget = function(element, item, businessId) {
+var portfolioWidget = function (element, item, businessId) {
     markup = "<div class='col-md-4 col-xs-6'>" +
             "<div class='member'>" +
             "<div class='img'>" +
@@ -375,9 +404,9 @@ var portfolioWidget = function(element, item, businessId) {
     $(element).append(markup);
 };
 
-var loadPortfolio = function(element, toLoad) {
+var loadPortfolio = function (element, toLoad) {
     loaderOn();
-    $.getJSON("/rs/public/all", function(data) {
+    $.getJSON("/rs/public/all", function (data) {
         //                $.each(data, function (i, item) {  
         //                    console.log(item);
         //                    portfolioWidget(item,item.businessId);

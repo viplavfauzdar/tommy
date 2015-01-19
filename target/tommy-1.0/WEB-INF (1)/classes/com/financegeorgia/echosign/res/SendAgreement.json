@@ -1,0 +1,23 @@
+{
+    "documentCreationInfo": {
+        "name": "Test sent document",
+        "message": "blah blah...",
+        "recipients": [
+            {
+                "email": "viplav_fauzdar@homedepot.com",
+                "role": "SIGNER"
+            }
+        ],
+        "signatureType": "ESIGN",
+        "signatureFlow": "SENDER_SIGNATURE_NOT_REQUIRED",
+        "securityOptions": {
+            "passwordProtection": "NONE",
+            "kbaProtection": "NONE",
+            "webIdentityProtection": "NONE",
+            "protectOpen": "false",
+            "internalPassword": "",
+            "externalPassword": "",
+            "openPassword": ""
+        }
+    }
+}

@@ -62,6 +62,7 @@ public class EchoSign extends HttpServlet {
                     CreateNewWidgetWithCounerSigners cw = new CreateNewWidgetWithCounerSigners();
                     cw.setUserId(userId);
                     cw.setDocName(fileToBeUploaded);
+                    cw.setCallbackURL(request.getRequestURL().toString());
                     if (fileToBeUploaded != null) {
                         cw.setfileToBeUploaded(fileToBeUploaded);
                     }
@@ -80,19 +81,19 @@ public class EchoSign extends HttpServlet {
                 logger.debug("EchoSign redirected here!");
                 String documentKey = request.getParameter("documentKey");
                 logger.debug("Document Key: " + documentKey);
-                out.print("Document Key: " + documentKey);
+                //out.print("Document Key: " + documentKey);
                 DownloadDocumentsOfAgreement da = new DownloadDocumentsOfAgreement();
                 da.setAgreementId(documentKey);
                 da.setDocumentName(request.getParameter("docName"));
                 //user id will come from echosign call back hence can't come from session
                 da.setFileDownloadPath(Path.getUserHomeDir() + Path.fileSep + Path.fgDataDir + Path.fileSep + request.getParameter("userId") + Path.fileSep);
                 da.run();
-                out.print("<h2>A copy of the document has been downloaded successfully!!</h2>");
+                out.print("<h3>Thank you! We have received a copy of the document.</h3><h4>* A copy has also been emailed to you.</h4>");
             }
         } catch (Exception ex) {
             throw new FGException(ex);
         } finally {
-            out.close();
+            //out.close(); //cause error in error.jsp
         }
     }
 

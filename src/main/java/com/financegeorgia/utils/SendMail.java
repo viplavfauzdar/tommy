@@ -62,6 +62,7 @@ public class SendMail extends HttpServlet {
             String type = request.getParameter("type");
             Resources res = Resources.getInstance();
             res.setResourceFile("sendmail");
+            String smtpServer = res.getResource("smtpServer");
             String fromAddress = res.getResource("fromAddress");// request.getParameter("fromAddress");
             String password = res.getResource("password");//request.getParameter("password");
             String toAddress = request.getParameter("toAddress"); //can be comma separated list
@@ -79,19 +80,20 @@ public class SendMail extends HttpServlet {
             } else if (message.equals("")) {
                 out.println("No message content provided!");
             } else {
-                send(fromAddress, password, toAddress, ccAddress, subject, message);
+                send(smtpServer, fromAddress, password, toAddress, ccAddress, subject, message);
                 out.println("Message sent!");
             }
         } catch (Exception ex) {
             throw new FGException(ex);
         } finally {
-            out.close();
+            //out.close(); //don't close cause it closes the response stream and I get nothing back to client
         }
     }
 
     /**
      * Send email using GMail SMTP server.
      *
+     * @param smtpServer SMTP Server
      * @param username Mail username
      * @param password Mail password
      * @param recipientEmail TO recipient
@@ -101,15 +103,16 @@ public class SendMail extends HttpServlet {
      * @throws MessagingException if the connection is dead or not in the
      * connected state or if the message is not a MimeMessage
      */
-    public void send(String username, String password,
+    public void send(String smtpServer, String username, String password,
             String recipientEmail, String title, String message)
             throws AddressException, MessagingException {
-        send(username, password, recipientEmail, "", title, message);
+        send(smtpServer, username, password, recipientEmail, "", title, message);
     }
 
     /**
      * Send email using Mail SMTP server.
      *
+     * @param smtpServer
      * @param username Mail username
      * @param password Mail password
      * @param recipientEmail TO recipient
@@ -120,7 +123,7 @@ public class SendMail extends HttpServlet {
      * @throws MessagingException if the connection is dead or not in the
      * connected state or if the message is not a MimeMessage
      */
-    public void send(String username, String password,
+    public void send(String smtpServer, String username, String password,
             String recipientEmail, String ccEmail, String title, String message)
             throws AddressException, MessagingException {
         Security.addProvider(new com.sun.net.ssl.internal.ssl.Provider());
@@ -128,7 +131,7 @@ public class SendMail extends HttpServlet {
 
         // Get a Properties object
         Properties props = System.getProperties();
-        props.setProperty("mail.smtps.host", "smtpout.secureserver.net");//"smtp.gmail.com");
+        props.setProperty("mail.smtps.host", smtpServer);//"smtp.gmail.com");
         props.setProperty("mail.smtp.socketFactory.class", SSL_FACTORY);
         props.setProperty("mail.smtp.socketFactory.fallback", "false");
         props.setProperty("mail.smtp.port", "465");
@@ -171,7 +174,7 @@ public class SendMail extends HttpServlet {
         SMTPTransport t = (SMTPTransport) session.getTransport("smtps");
 
         //t.connect("smtp.gmail.com", username, password);
-        t.connect("smtpout.secureserver.net", username, password);
+        t.connect(smtpServer, username, password);
         t.sendMessage(msg, msg.getAllRecipients());
         t.close();
         logger.info("Success!!");

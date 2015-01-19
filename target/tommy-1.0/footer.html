@@ -45,7 +45,10 @@
         $.get('/SendMail?type=subscription&toAddress=' + $('#emailSubscription').val() + '&message=<h1>Thank you for requesting subscription to Finance Georgia!</h1>', function (res) {
             console.log(res);
             //if(res.match('Message sent!'))
-            fgAlert(res);
+            if (res.match('Message sent'))
+                fgAlert('Thank you for subscribing to Finance Georgia.');
+            else
+                fgAlert(res);
             loaderOff();
         });
     });

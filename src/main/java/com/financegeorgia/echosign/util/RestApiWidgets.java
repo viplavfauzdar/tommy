@@ -51,7 +51,7 @@ public class RestApiWidgets {
    * @see DocumentIdentifierName
    */
   @SuppressWarnings("unchecked")
-  public static JSONObject createWidget(String accessToken, String requestJsonFile, String documentId, RestApiAgreements.DocumentIdentifierName idName, String formFieldDocumentId, RestApiAgreements.DocumentIdentifierName formFieldIdName, String userId, String docName) throws Exception {
+  public static JSONObject createWidget(String accessToken, String requestJsonFile, String documentId, RestApiAgreements.DocumentIdentifierName idName, String formFieldDocumentId, RestApiAgreements.DocumentIdentifierName formFieldIdName, String userId, String docName, String callbackURL) throws Exception {
     // URL to invoke the widgets end point.
     String url = RestApiUtils.SERVICES_BASE_URL + WIDGETS_ENDPOINT;
 
@@ -67,7 +67,7 @@ public class RestApiWidgets {
       JSONObject widgetCreationInfo = (JSONObject) requestJson.get("widgetCreationInfo");
       JSONObject widgetCompletionInfo = new JSONObject();// requestJson.get("widgetCompletionInfo");
       widgetCompletionInfo.put("deframe", "true");
-      widgetCompletionInfo.put("url","http://24.126.148.51:8080/EchoSign?action=redirect&userId=" + userId + "&docName=" + docName);
+      widgetCompletionInfo.put("url", callbackURL + "?action=redirect&userId=" + userId + "&docName=" + docName);
 //      String widgetCompletionInfo = "\"widgetCompletionInfo\": {" +
 //            "\"deframe\": \"true\"," +
 //            "\"url\": \"http://24.126.148.51:8080/EchoSign?action=redirect&userId=6\"" +
