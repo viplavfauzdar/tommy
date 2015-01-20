@@ -33,6 +33,7 @@ public class ApplicationConfig extends javax.ws.rs.core.Application {
         resources.add(com.financegeorgia.service.BusinessFacadeREST.class);
         resources.add(com.financegeorgia.service.InvestmentFacadeREST.class);
         resources.add(com.financegeorgia.service.LocationFacadeREST.class);
+        resources.add(com.financegeorgia.service.PassResetREST.class);
         resources.add(com.financegeorgia.service.PublicAccessREST.class);
         resources.add(com.financegeorgia.service.RoleFacadeREST.class);
         resources.add(com.financegeorgia.service.UserFacadeREST.class);

@@ -32,8 +32,10 @@ import org.apache.log4j.Logger;
 //@javax.ejb.Stateless
 @Path("user")
 public class UserFacadeREST extends AbstractFacade<User> {
+
     //@PersistenceContext(unitName = "tommy_tommy_war_1.0PU") //this doesn't work. below needed.
     //private final EntityManager em = Persistence.createEntityManagerFactory("tommy_tommy_war_1.0PU").createEntityManager();
+
     private static Logger logger = Logger.getLogger(UserFacadeREST.class);
     //private final static Genson genson = new Genson();
     private static final SaltedHash sh = SaltedHash.getInstance();
@@ -44,7 +46,7 @@ public class UserFacadeREST extends AbstractFacade<User> {
     public UserFacadeREST() {
         super(User.class);
     }
-   
+
     @POST
     @Path("create")
     @Consumes({"application/json"}) //"application/xml", 
@@ -54,7 +56,9 @@ public class UserFacadeREST extends AbstractFacade<User> {
             String email = entity.getEmail();
             String pass = entity.getPassword1();
             //check recaptcha verification
-            if(!(Boolean)request.getSession().getAttribute("ReCaptchaVerifed")) throw new FGException("Recaptcha not verified!");
+            if (!(Boolean) request.getSession().getAttribute("ReCaptchaVerifed")) {
+                throw new FGException("Recaptcha not verified!");
+            }
             entity.setPassword1(sh.get_SHA_512_SecurePassword(entity.getPassword1()));
             logger.info("Creating.." + entity.toString());
             User user = super.create(entity);
@@ -78,25 +82,37 @@ public class UserFacadeREST extends AbstractFacade<User> {
         }
     }
 
-    @PUT
-    @Path("updatepassword/{id}")
-    @Consumes({"application/json"}) //"application/xml", 
-    public void updatepassword(@PathParam("id") Integer id, User entity, @Context HttpServletRequest request) throws Exception {
-        if (entity.getEmail().equalsIgnoreCase(request.getRemoteUser())) {
-            entity.setId(id); //for an update and not an insert
-            entity.setPassword1(sh.get_SHA_512_SecurePassword(entity.getPassword1()));
-            super.edit(entity);
-            //find audit record based on table and key and then update it
-            Audit audit = af.find("user", id).get(0);
-            af.edit(audit.getId(), audit, request);
-        } else {
-            Audit audit = new Audit();
-            audit.setTableName("user");
-            audit.setTableKey(id); 
-            audit.setComments("Illegal password change attempt by " + request.getRemoteUser() + " This will be reported! ");
-            af.create1(audit, request);
-            throw new Exception("Illegal password change attempt by " + request.getRemoteUser() + " This will be reported! ");
+    //@PUT
+    @GET
+    @Path("updatemypassword/{oldpass}/{newpass}")
+    //@Consumes({"application/json"}) 
+    public String updateMyPassword(@PathParam("oldpass") String oldpass, @PathParam("newpass") String newpass, @Context HttpServletRequest request) throws Exception {
+        User user = findByEmail(request.getRemoteUser());
+        String retmsg = null;
+        if (user == null) {
+            retmsg = "No user found by the email id of " + request.getRemoteUser();
+        } else if (!user.getPassword1().equals(sh.get_SHA_512_SecurePassword(oldpass))) {
+            retmsg = "The old password is incorrect!";
+        } else if(user.getPassword1().equals(sh.get_SHA_512_SecurePassword(newpass))){
+            retmsg = "Cannot use the same password!";
         }
+        if (retmsg == null) {
+            user.setPassword1(sh.get_SHA_512_SecurePassword(newpass));
+            super.edit(user);
+            //find audit record based on table and key and then update it
+            Audit audit = af.find("user", user.getId()).get(0);
+            audit.setComments("Password successfully changed!");
+            af.edit(audit.getId(), audit, request);
+            retmsg = "Password successfully changed!";
+        } //else {
+//            Audit audit = new Audit();
+//            audit.setTableName("user");
+//            audit.setTableKey(user.getId()); 
+//            audit.setComments("Illegal password change attempt by " + request.getRemoteUser() + " This will be reported! ");
+//            af.create1(audit, request);
+//            retmsg = "Illegal password change attempt by " + request.getRemoteUser() + " This will be reported! ";
+//        }
+        return retmsg;
     }
 
     @PUT
@@ -107,8 +123,11 @@ public class UserFacadeREST extends AbstractFacade<User> {
         //entity.setUpdateIp(request.getRemoteAddr());
         super.edit(entity);
         //find audit record based on table and key and then update it
-        Audit audit = af.find("user", id).get(0);
-        af.edit(audit.getId(), audit, request);
+        List<Audit> al = af.find("user", id);
+        if (al.size() > 0) {
+            Audit audit = al.get(0);
+            af.edit(audit.getId(), audit, request);
+        }
     }
 
     //does an update to audit instead - deleted_ind=1
@@ -120,7 +139,7 @@ public class UserFacadeREST extends AbstractFacade<User> {
         af.edit(audit.getId(), audit, request);
         //super.remove(super.find(id));
     }
-    
+
     //not gonna work cause I have /rs/* blocked in web.xml
 //    @GET
 //    @Path("getloggedinuser")
@@ -128,7 +147,6 @@ public class UserFacadeREST extends AbstractFacade<User> {
 //    public String getLoggedInUser(@Context HttpServletRequest request) {
 //        return request.getRemoteUser();
 //    }
-
     @GET
     @Path("getme")
     @Produces({"application/json"})
@@ -139,15 +157,15 @@ public class UserFacadeREST extends AbstractFacade<User> {
             user = users.get(0);
             request.getSession().setAttribute("userId", user.getId());
             //user.setPassword1("HIDDEN"); //don't want even encrypted password returned! - doesn't work. cause password to become HIDDEN
-        }              
+        }
         return user;
     }
-        
+
     @PUT
     @Path("updateme")
     @Consumes({"application/json"})
     //@Produces({"application/json"})
-    public void upateLoggedInUser(User entity, @Context HttpServletRequest request) {              
+    public void upateLoggedInUser(User entity, @Context HttpServletRequest request) {
         User user = getMe(request);
         logger.debug("LOGGED IN USER: " + user);
 //        if(user==null) 
@@ -156,7 +174,7 @@ public class UserFacadeREST extends AbstractFacade<User> {
         entity.setEmail(user.getEmail()); //don't want email/pass updated. That will be separate.
         entity.setPassword1(user.getPassword1());//also need these as they would otherwise be set to null
         entity.setUserType(user.getUserType());//don't want user to change type after registering
-        edit(user.getId(), entity, request);  
+        edit(user.getId(), entity, request);
     }
 
     @GET
@@ -205,10 +223,11 @@ public class UserFacadeREST extends AbstractFacade<User> {
     public User find(@PathParam("id") Integer id) {
         User user = super.find(id);
         //Just for TEST - may remove
-        if(user==null) 
+        if (user == null) {
             throw new FGException("User not found!!");
-        else
+        } else {
             return user;//super.find(id);
+        }
     }
 
     @GET

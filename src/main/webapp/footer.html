@@ -16,9 +16,9 @@
             <p>
                 Get notified when we have a new company to finance. Sign up for our Monthly newsletter below.
             </p>
-            <form>
+            <form id="frmSubEmail" name="frmSubEmail">
                 <div class='input-group'>
-                    <input class='form-control' placeholder='Your E-mail address' type='text' id="emailSubscription">
+                    <input class='form-control' placeholder='Your E-mail address' type='email' id="emailSubscription" name="emailSubscription" required>
                     <span class='input-group-btn'>
                         <a class='btn btn-default fa fa-envelope-o' id="btnSubscribe"></a>
                     </span>
@@ -40,16 +40,23 @@
     /**
      * subscription emal from footer
      * */
+    formValidation('#frmSubEmail');
     $('#btnSubscribe').click(function () {
-        loaderOn();
-        $.get('/SendMail?type=subscription&toAddress=' + $('#emailSubscription').val() + '&message=<h1>Thank you for requesting subscription to Finance Georgia!</h1>', function (res) {
-            console.log(res);
-            //if(res.match('Message sent!'))
-            if (res.match('Message sent'))
-                fgAlert('Thank you for subscribing to Finance Georgia.');
-            else
-                fgAlert(res);
-            loaderOff();
-        });
+        //$('#frmSubEmail').submit(function (e) {
+            //e.preventDefault();
+            console.log($('#emailSubscription').val());
+            loaderOn();
+            $.get('/SendMail?type=subscription&toAddress=' + $('#emailSubscription').val() + '&t=' + Math.random() + '&message=<h1>Thank you for requesting subscription to Finance Georgia!</h1>', function (res) {
+                loaderOff();
+                console.log(res);
+                //if(res.match('Message sent!'))
+                if (res.match('Message sent!')) {
+                    fgModal('modal-sm', '', '<b>Thank you for subscribing to Finance Georgia</b>', null, '', false);//fgAlert('Thank you for subscribing to Finance Georgia.');
+                } else {
+                    fgModal('modal-sm', '', res, null, '', false);
+                    //fgAlert(res);  
+                }
+            });
+        //});
     });
 </script>

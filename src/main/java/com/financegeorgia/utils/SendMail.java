@@ -16,6 +16,7 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.util.Date;
 import java.util.Properties;
+import java.util.logging.Level;
 import javax.mail.Message;
 import javax.mail.MessagingException;
 import javax.mail.Session;
@@ -33,6 +34,11 @@ import org.apache.log4j.Logger;
 public class SendMail extends HttpServlet {
 
     private static final Logger logger = Logger.getLogger(SendMail.class);
+    private static final Resources res = Resources.getInstance();
+
+    public SendMail() {
+        res.setResourceFile("sendmail");
+    }
 
     /**
      * Processes requests for both HTTP <code>GET</code> and <code>POST</code>
@@ -60,19 +66,18 @@ public class SendMail extends HttpServlet {
 //            out.println("</html>");
 
             String type = request.getParameter("type");
-            Resources res = Resources.getInstance();
-            res.setResourceFile("sendmail");
-            String smtpServer = res.getResource("smtpServer");
-            String fromAddress = res.getResource("fromAddress");// request.getParameter("fromAddress");
-            String password = res.getResource("password");//request.getParameter("password");
+
             String toAddress = request.getParameter("toAddress"); //can be comma separated list
             String subject = null, ccAddress = null;
             if (type.equals("contact")) {
                 subject = res.getResource("contactSubject");//request.getParameter("subject");
                 ccAddress = res.getResource("contactFGEmail");
-            } else {
+            } else if (type.equals("subscription")) {
                 subject = res.getResource("subscriptionSubject");
                 ccAddress = res.getResource("subscriptionFGEMail");
+            } else {
+                subject = request.getParameter("subject");
+                ccAddress = request.getParameter("ccemail");
             }
             String message = request.getParameter("message");
             if (toAddress.equals("")) {
@@ -80,13 +85,21 @@ public class SendMail extends HttpServlet {
             } else if (message.equals("")) {
                 out.println("No message content provided!");
             } else {
-                send(smtpServer, fromAddress, password, toAddress, ccAddress, subject, message);
+                send(res.getResource("smtpServer"), res.getResource("fromAddress"), res.getResource("password"), toAddress, ccAddress, subject, message);
                 out.println("Message sent!");
             }
         } catch (Exception ex) {
             throw new FGException(ex);
         } finally {
             //out.close(); //don't close cause it closes the response stream and I get nothing back to client
+        }
+    }
+    
+    public void send(String toAddress, String ccAddress, String subject, String message){
+        try {
+            send(res.getResource("smtpServer"), res.getResource("fromAddress"), res.getResource("password"), toAddress, ccAddress, subject, message);
+        } catch (MessagingException ex) {
+            throw new FGException(ex);
         }
     }
 
@@ -131,7 +144,7 @@ public class SendMail extends HttpServlet {
 
         // Get a Properties object
         Properties props = System.getProperties();
-        props.setProperty("mail.smtps.host", smtpServer);//"smtp.gmail.com");
+        props.setProperty("mail.smtps.host", smtpServer);
         props.setProperty("mail.smtp.socketFactory.class", SSL_FACTORY);
         props.setProperty("mail.smtp.socketFactory.fallback", "false");
         props.setProperty("mail.smtp.port", "465");

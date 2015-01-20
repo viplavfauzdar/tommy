@@ -88,6 +88,7 @@
             <url-pattern>/rs/investment/getbyme</url-pattern>            
             <url-pattern>/userprofile.html</url-pattern>
             <url-pattern>/account.html</url-pattern>
+            <url-pattern>/rs/user/updatemypassword/*</url-pattern>
             <!-- If you list http methods, only those methods are protected -->
             <http-method>DELETE</http-method>
             <http-method>GET</http-method>
@@ -107,6 +108,7 @@
             <web-resource-name>Protected Area</web-resource-name>
             <!-- Define the context-relative URL(s) to be protected -->
             <url-pattern>/rs/public/*</url-pattern>
+            <url-pattern>/rs/resetpass/*</url-pattern>
             <!-- If you list http methods, only those methods are protected -->
             <http-method>DELETE</http-method>
             <!--            <http-method>GET</http-method>-->
@@ -142,12 +144,7 @@
     <error-page>
         <exception-type>java.lang.Exception</exception-type>
         <location>/error.jsp</location>
-    </error-page>
-    
-    <error-page>
-        <error-code>500</error-code>
-        <location>/jsp/error.jsp</location>
-    </error-page>
+    </error-page>       
 
 </web-app>
 

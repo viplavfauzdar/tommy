@@ -5,6 +5,7 @@
         <p>Please use the edit button below to add or update your information.</p>
         <button class="btn btn-default editbtn">Edit</button>
         <button class='btn btn-default orange savebtn' id="btnSaveUser" name="btnSaveUser">Save</button>
+        <button class="btn btn-default" disabled id="btnChgPass">Change Password</button>
     </div>
     <div class='col-md-6 text-left'>
         <!-- FIRST ROW -->
@@ -116,6 +117,7 @@
         $("textarea").removeAttr("disabled");
         $('.editbtn').hide();
         $(".savebtn").show();
+        $("#btnChgPass").removeAttr("disabled");
     });
     $("#btnSaveUser").click(function (e) {
         e.preventDefault();
@@ -129,6 +131,10 @@
         $("select").attr("disabled", "disabled");
         $("textarea").attr("disabled", "disabled");
         $('.editbtn').show();
+    });
+    $('#btnChgPass').click(function(){
+       // fgAlert('blah blah blah blah blah blah!!!');
+        fgModal("modal-sm", "", "", "changepassword.html", null, false);
     });
 </script>
 

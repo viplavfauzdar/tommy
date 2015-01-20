@@ -13,8 +13,13 @@ $("a").error(function () {
  * global error handler for ajax errors
  * */
 $(document).ajaxError(function (event, jqxhr, settings, exception) {
-    if (jqxhr.responseText != "")
+    //console.log(JSON.stringify(event));
+    console.log(JSON.stringify(settings));
+    console.log(JSON.stringify(exception));
+    if (jqxhr.responseText != ""){
         fgAlert("Ajax Error: " + jqxhr.responseText);//,"error");
+        //fgDialog("Ajax Error",jqxhr.responseText);    
+    }
     loaderOff();
 });
 
@@ -49,26 +54,26 @@ var formValidation = function (formName) {
 /**
  * password validation - temporarily disabled
  * */
-//jQuery.validator.addMethod("password", function( value, element ) {
-//	var result = this.optional(element) || value.length >= 8 && /\d/.test(value) && /[a-z]/i.test(value);
-//	if (!result) {
-//		//element.value = "";
-//		var validator = this;
-//		setTimeout(function() {
-//			validator.blockFocusCleanup = true;
-//			element.focus();
-//			validator.blockFocusCleanup = false;
-//		}, 1);
-//	}
-//	return result;
-//}, "Your password must be at least 8 characters long and contain at least one number and one character.");
+jQuery.validator.addMethod("password", function (value, element) {
+    var result = this.optional(element) || value.length >= 8 && /\d/.test(value) && /[a-z]/i.test(value);
+    if (!result) {
+        //element.value = "";
+        var validator = this;
+        setTimeout(function () {
+            validator.blockFocusCleanup = true;
+            element.focus();
+            validator.blockFocusCleanup = false;
+        }, 1);
+    }
+    return result;
+}, "Your password must be at least 8 characters long and contain at least one number and one character.");
 
 //** functions to show/hide loaders
 var loaderOn = function () {
     if ($("#div_loader").length === 0) {
         $("body").append('<div id="div_loader" style="z-index:100000;position:fixed;top:0px;left:0px;height:100%;width:100%;' +
                 'background-color: #000000;opacity: 0.7;filter: alpha(opacity=70);">' +
-                '<img src="../fg/img/loading.gif" style="position:fixed;height:50px;width:50px;top:43%;left:47%;"></div>');
+                '<img src="img/loading.gif" style="position:fixed;height:50px;width:50px;top:43%;left:47%;"></div>');
     }
     $('#div_loader').fadeIn();
 };
@@ -77,19 +82,39 @@ var loaderOff = function () {
     $("body").remove("#div_loader");
 };
 
+var fgDialog = function (title, msg) {
+    $('#fgDialog').remove();
+    $('body').append('<div id="fgDialog"></div>');
+    $("#fgDialog").attr('title', title);
+    $("#fgDialog").html(msg);
+    $("#fgDialog").dialog({
+        modal: true
+    });
+};
+
 var fgAlert = function (msg) {
+    $("#fgalert").remove();
     $("html, body").animate({scrollTop: 0}, "slow");
+    //position:absolute;top:10px;right:10px;min-width:200px;
+    //top:50%;left:50%;transform(-50%,-50%);
     if ($("#fgalert").length === 0) {
-        $("body").append('<div id="fgalert" class="alert alert-warning" style="position:absolute;top:10px;right:10px;z-index:100;min-width:200px;max-width:500px;max-height:500px">' +
-                '<button type="button" class="close" data-dismiss="alert">&nbsp;&nbsp;×</button><div style="max-height:480px;overflow:auto"><h5>' + msg + '</h5></div></div>');
+        $("body").append('<div id="fgalert" class="alert alert-info" style="position:absolute;top:10px;right:10px;z-index:100000;max-width:500px;max-height:500px">' +
+                '<button type="button" class="close" data-dismiss="alert">&nbsp;&nbsp;×</button><div style="max-height:480px;overflow:auto"><h5><b>' + msg + '</b></h5></div></div>');
     }
+//    $('#fgalert').position({
+//        my: 'center',
+//        at: 'center',
+//        of: $(screen),
+//        collision: "none"
+//    });
     $('#fgalert').show();
     //diabled for QA since testers can't grab screen shots
     //$('#fgalert').addClass("in").fadeOut(10000);//.effect('shake', 500);//.hide(5000);
 };
 
-fgModal = function (size, header, content, url, footer) {
+fgModal = function (size, header, content, url, footer, isdoc) {
     //$("html, body").animate({scrollTop: 0}, "slow"); //cause modal to flicker
+    $("#fgModal").remove();
     if ($("#fgModal").length === 0) {
         var markup = '<div id="fgModal" class="modal fade" tabindex="-1" role="dialog">' +
                 '<div class="modal-dialog ' + size + '">' +
@@ -100,9 +125,15 @@ fgModal = function (size, header, content, url, footer) {
                     '<h3>' + header + '</h3>' +
                     '</div>';
         }
-        markup = markup + '<div class="modal-body" style="height:' + (window.innerHeight - 100) + 'px;overflow:auto">' +
-                '<div id="mdlCont" >' + content + '</div>' +
-                '</div>';
+        if (isdoc) { //for displaying documents
+            markup = markup + '<div class="modal-body" style="height:' + (window.innerHeight - 100) + 'px;overflow:auto">' +
+                    '<div id="mdlCont" >' + content + '</div>' +
+                    '</div>';
+        } else {
+            markup = markup + '<div class="modal-body">' +
+                    '<div id="mdlCont" >' + content + '</div>' +
+                    '</div>';
+        }
         if (footer != null) {
             markup = markup + '<div class="modal-footer">' +
                     '<button class="btn" data-dismiss="modal">Close</button>' +
@@ -197,7 +228,7 @@ var register = function (url, nextpage, uid) {
 formValidation('#frmSignup');
 
 //$("#btnCreateAcc").click(function (e) {
-$("#frmSignup").submit(function (e) { 
+$("#frmSignup").submit(function (e) {
     //$("html, body").animate({scrollTop: 0}, "slow");
     e.preventDefault();
     if ($("#frmSignup").valid()) {
@@ -228,7 +259,7 @@ $("#frmSignup").submit(function (e) {
                     data: JSON.stringify($("form").serializeObject()),
                     contentType: "application/json",
                     dataType: "html",
-                    success: function() {   
+                    success: function () {
                         loaderOff();
                         window.location = "welcome.html";
                     }
@@ -267,12 +298,12 @@ $('#tabLegal').click(function (e) {
     loaderOn();
     e.preventDefault();
     var docType;
-    if($('#userType').val()=='B')
-        docType="listingagreement.pdf"
-    if($('#userType').val()=='U')
-        docType="checklist_unaccinvestor.pdf"
-    if($('#userType').val()=='A')
-        docType="checklist_accinvestor.pdf"
+    if ($('#userType').val() == 'B')
+        docType = "listingagreement.pdf"
+    if ($('#userType').val() == 'U')
+        docType = "checklist_unaccinvestor.pdf"
+    if ($('#userType').val() == 'A')
+        docType = "checklist_accinvestor.pdf"
     $('#ifrmLegal').attr('src', "/EchoSign?action=widget&fileToBeUploaded=" + docType + "&jsorurl=js");
     $('#tabLegal').tab('show');
     loaderOff();
@@ -337,15 +368,15 @@ var saveData = function (url, formId, method) {
         success: function (result) {
             loaderOff();
             $("html, body").animate({scrollTop: 0}, "slow");
-            fgAlert("Saved!");
+            //fgAlert("Saved!");
             console.log(result);
-        }, error: function (err) {
-            loaderOff();
-            fgAlert(JSON.stringify(err));
-            console.log(JSON.stringify(err));
-        }, complete: function () {
-            loaderOff();
-        }
+        }, //error: function (err) { not needed since I have the ajaxError handler
+//            loaderOff();
+//            fgAlert(JSON.stringify(err));
+//            console.log(JSON.stringify(err));
+//        }, complete: function () {
+//            loaderOff();
+//        }
     });
 };
 
@@ -433,5 +464,27 @@ loadPortfolio('#invPortfolio');
  * Load index portfolio
  * */
 loadPortfolio('#portfolioIndex', 3);
+
+/**
+ * Reset password
+ * */
+$('#lnkPassReset').click(function () {
+//   $.get('/rs/resetpass/viplav.fauzdar@gmail.com',function(data){
+//      alert(data); 
+//   });
+    fgModal("modal-sm", "", "<h4>Please provide your email</h4> <input class='form-control' type=text id=txtPassReset> <button data-dismiss='modal' class='btn btn-default orange' id=btnPassReset>Reset Password</button>\n\
+        <script>\n\
+            $('#btnPassReset').click(function(){\n\
+                if($('#txtPassReset').val()!=''){\n\
+                    loaderOn();\n\
+                    $.get('/rs/resetpass/' + $('#txtPassReset').val(),function(res){\n\
+                        loaderOff();\n\
+                        $(this).hide();\n\
+                        fgAlert(res);\n\
+                    });\n\
+                }\n\
+            });\n\
+        </script>", null, null, false);
+});
 
 
