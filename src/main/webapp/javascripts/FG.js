@@ -17,7 +17,7 @@ $(document).ajaxError(function (event, jqxhr, settings, exception) {
     console.log(JSON.stringify(settings));
     console.log(JSON.stringify(exception));
     if (jqxhr.responseText != ""){
-        fgAlert("Ajax Error: " + jqxhr.responseText);//,"error");
+        fgAlert(jqxhr.responseText);//,"error");
         //fgDialog("Ajax Error",jqxhr.responseText);    
     }
     loaderOff();
@@ -86,7 +86,7 @@ var fgDialog = function (title, msg) {
     $('#fgDialog').remove();
     $('body').append('<div id="fgDialog"></div>');
     $("#fgDialog").attr('title', title);
-    $("#fgDialog").html(msg);
+    $("#fgDialog").html('<h5>' + msg + '</h5>');
     $("#fgDialog").dialog({
         modal: true
     });
@@ -226,20 +226,11 @@ var register = function (url, nextpage, uid) {
 //};
 
 formValidation('#frmSignup');
-
 //$("#btnCreateAcc").click(function (e) {
 $("#frmSignup").submit(function (e) {
-    //$("html, body").animate({scrollTop: 0}, "slow");
     e.preventDefault();
     if ($("#frmSignup").valid()) {
         loaderOn();
-//    if($('#email').val()==''){    
-//        $('#email').parent().addClass('has-error has-feedback');
-//        $('#email').attr('data-toggle', "popover");    
-//        $('#email').attr('data-content', "error");
-//        $('#email').popover({trigger: 'manual', html: 'true'});
-//        $('#email').popover('show');
-//    }
         console.log(JSON.stringify($("form").serializeObject()));
         //verify recaptcha
         $.get("/ReCaptchaVerify?recaptchaResponse=" + grecaptcha.getResponse(), function (res) {
@@ -265,7 +256,8 @@ $("#frmSignup").submit(function (e) {
                     }
                 });
             } else {
-                fgAlert("Please verify reCAPTCHA!");
+                //fgAlert("Please verify reCAPTCHA!");
+                fgDialog("reCaptcha","Please verify reCAPTCHA!");
                 //$('#divReCaptcha').effect('shake', 500);    
                 loaderOff();
             }
@@ -379,15 +371,15 @@ var saveData = function (url, formId, method) {
 //        }
     });
 };
-
+///(size, header, content, url, footer, isdoc)
 $('#lnk_pp').click(function () {
-    fgModal('modal-lg', '', '', "/doc/privacypolicy.html");
+    fgModal('modal-lg', '', '', "/doc/privacypolicy.html",null,true);
     $('#fgModal').hide();
     $('body').remove('#fgModal');
 });
 
 $('#lnk_tos').click(function () {
-    fgModal('modal-lg', '', '', "/doc/termsofservice.html");
+    fgModal('modal-lg', '', '', "/doc/termsofservice.html",null,true);
     $('#fgModal').hide();
     $('body').remove('#fgModal');
 });
