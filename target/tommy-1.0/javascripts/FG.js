@@ -16,7 +16,7 @@ $(document).ajaxError(function (event, jqxhr, settings, exception) {
     //console.log(JSON.stringify(event));
     console.log(JSON.stringify(settings));
     console.log(JSON.stringify(exception));
-    if (jqxhr.responseText != ""){
+    if (jqxhr.responseText != "") {
         fgAlert(jqxhr.responseText);//,"error");
         //fgDialog("Ajax Error",jqxhr.responseText);    
     }
@@ -178,39 +178,39 @@ $("#btnUser").click(function (e) {
 });
 
 //not using below
-var userId = null;
-var register = function (url, nextpage, uid) {
-    loaderOn();
-    var formData = $("form").serializeObject();
-    if (uid !== null) {
-        formData.userId = uid;
-    }
-    console.log(formData);
-    $.ajax({
-        type: "POST",
-        url: url,
-        contentType: "application/json",
-        data: JSON.stringify(formData),
-        async: false, //to get user id
-        //encode: true,
-        dataType: 'html',
-        success: function (result) {
-            loaderOff();
-            $("html, body").animate({scrollTop: 0}, "slow");
-            if (uid === null)
-                userId = result.id;
-            console.log(result);
-            if (nextpage !== null)
-                $("#register").load(nextpage);
-        }, error: function (err) {
-            loaderOff();
-            fgAlert(err.toString());
-            console.log(err);
-        }, complete: function () {
-            loaderOff();
-        }
-    });
-};
+//var userId = null;
+//var register = function (url, nextpage, uid) {
+//    loaderOn();
+//    var formData = $("form").serializeObject();
+//    if (uid !== null) {
+//        formData.userId = uid;
+//    }
+//    console.log(formData);
+//    $.ajax({
+//        type: "POST",
+//        url: url,
+//        contentType: "application/json",
+//        data: JSON.stringify(formData),
+//        async: false, //to get user id
+//        //encode: true,
+//        dataType: 'html',
+//        success: function (result) {
+//            loaderOff();
+//            $("html, body").animate({scrollTop: 0}, "slow");
+//            if (uid === null)
+//                userId = result.id;
+//            console.log(result);
+//            if (nextpage !== null)
+//                $("#register").load(nextpage);
+//        }, error: function (err) {
+//            loaderOff();
+//            fgAlert(err.toString());
+//            console.log(err);
+//        }, complete: function () {
+//            loaderOff();
+//        }
+//    });
+//};
 
 //var fgPop = function (element,error) {
 //    $(element).attr('data-toggle', "popover");
@@ -257,7 +257,7 @@ $("#frmSignup").submit(function (e) {
                 });
             } else {
                 //fgAlert("Please verify reCAPTCHA!");
-                fgDialog("reCaptcha","Please verify reCAPTCHA!");
+                fgDialog("reCaptcha", "Please verify reCAPTCHA!");
                 //$('#divReCaptcha').effect('shake', 500);    
                 loaderOff();
             }
@@ -275,13 +275,15 @@ var loadData = function (url) {
     $.getJSON(url, function (res) {
         loaderOff();
         console.log(JSON.stringify(res));
-        $.each(res, function (key, value) {
-            $('#' + key).val(value);
-        });
-        console.log('User Type: ' + $('#userType').val());
-        if ($('#userType').val() !== 'B') {
-            $('#tabBus').remove();//.hide();
-            $('#tabContBus').remove();//.hide();
+        if (res != null) {
+            $.each(res, function (key, value) {
+                $('#' + key).val(value);
+            });
+            console.log('User Type: ' + $('#userType').val());
+            if ($('#userType').val() !== 'B') {
+                $('#tabBus').remove();//.hide();
+                $('#tabContBus').remove();//.hide();
+            }
         }
     });
 };
@@ -332,17 +334,30 @@ $('#tabLoc').click(function (e) {
     $('#tabLoc').tab('show');
 });
 
+$('#tabSrch').click(function (e) {
+    e.preventDefault();
+    $("#tabContSrch").load("admin.html?t=" + Math.random());
+    //loadData("/rs/user/getme");
+    $('#tabSrch').tab('show');
+});
 
+var hash = window.location.hash;
+var userId = hash.substring(hash.indexOf('/') + 1, hash.length);
 function loadUser() {
     console.log('loading user');
     $("#tabContUser").load("user2.html?t=" + Math.random());
-    loadData("/rs/user/getme");
+    if ((userId !== null && userId !== '')) {
+        loadData("/rs/user/" + userId);
+    } else {
+        loadData("/rs/user/getme");
+    }
 }
 
 $('#tabUser').click(function (e) {
     e.preventDefault();
     $("#tabContUser").load("user2.html?t=" + Math.random());
-    loadData("/rs/user/getme");
+    //loadData("/rs/user/getme");
+    loadUser();
     $('#tabUser').tab('show');
 });
 
@@ -373,13 +388,13 @@ var saveData = function (url, formId, method) {
 };
 ///(size, header, content, url, footer, isdoc)
 $('#lnk_pp').click(function () {
-    fgModal('modal-lg', '', '', "/doc/privacypolicy.html",null,true);
+    fgModal('modal-lg', '', '', "/doc/privacypolicy.html", null, true);
     $('#fgModal').hide();
     $('body').remove('#fgModal');
 });
 
 $('#lnk_tos').click(function () {
-    fgModal('modal-lg', '', '', "/doc/termsofservice.html",null,true);
+    fgModal('modal-lg', '', '', "/doc/termsofservice.html", null, true);
     $('#fgModal').hide();
     $('body').remove('#fgModal');
 });
@@ -390,13 +405,23 @@ $('#footer').load('footer.html');
 $('#copyright').load('copyright.html');
 $('#contactpart').load('contactpart.html');
 
-$.get("/jsp/getloggedinuser.jsp", function (data) {
-    console.log(data);
-    if (!data.match('null')) {
-        $('#signin').html('Sign Out');
-        $('#signin').attr('href', '/jsp/logout.jsp');
-        $('#signup').html('Account');
-        $('#signup').attr('href', 'account.html');
+//make this sync so cause i need to know if user is admin
+//async flase doesn't work since the navbar doesn't load till after
+//var isadmin;
+$.ajax({
+    url: "/jsp/getloggedinuser.jsp",
+    async: true,
+    success: function (data) {
+        console.log(data);
+//        isadmin = data.role;
+//        console.log(isadmin);
+        if (data.email !== 'null') {
+            console.log('Changing nav bar');
+            $('#signin').html('Sign Out');
+            $('#signin').attr('href', '/jsp/logout.jsp');
+            $('#signup').html('Account');
+            $('#signup').attr('href', 'account.html');
+        }
     }
 });
 

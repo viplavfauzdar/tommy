@@ -1,14 +1,60 @@
-<div id="js-view"></div>
+<link href="//cdn.datatables.net/1.10.4/css/jquery.dataTables.css" media="screen" rel="stylesheet" type="text/css" />
+<table id="example" class="display" cellspacing="0" width="100%">
+    <thead>
+        <tr>
+            <th>ID</th>
+            <th>first</th>
+            <th>Office</th>
+            <th>Extn.</th>
+            <th>Start date</th>
+            <th>Salary</th>
+            <th>ID</th>
+            <th>first</th>            
+        </tr>
+    </thead>
+
+    
+</table>
+
+<script type='text/javascript' language='JavaScript' src='//code.jquery.com/jquery-1.11.1.min.js'></script>
+<script type='text/javascript' language='JavaScript' src='//cdn.datatables.net/1.10.4/js/jquery.dataTables.min.js'></script>
+
 <script>
-//    var xmlhttp = new XMLHttpRequest();
-//    xmlhttp.onreadystatechange = function () {
-//        if (xmlhttp.readyState === 4 && xmlhttp.status === 200) {
-//            document.getElementById('js-view').innerHTML = xmlhttp.responseText;            
-//        }
-//    };
-//    xmlhttp.open("POST", "../fg/partials/faq.html" + "?t=" + Math.random(), true);
-//    xmlhttp.send();
+    $(document).ready(function () {
+//        $('#example').dataTable({
+//            "processing": true,
+//            "serverSide": true,
+//            "ajax": "/rs/user/all"
+//        });
+//    });
+//    var tab;
+//    $.getJSON('/rs/user/all',function(data){
+//       $.each(data,function(key,value){
+//           console.log(key + ':' + value);
+//           $.each(value,function(k,v){
+//              console.log(k + ':' + v);
+//              tab = tab + 
+//           });
+//       }); 
+//    });
+
+        $('#example').dataTable({
+            "ajax": {
+                "url": "/rs/public/all",
+                "dataSrc": ""
+            },
+            "columns": [
+                {"data": "summary"},
+                {"data": "zip"},
+                {"data": "businessName"},
+                {"data": "address"},
+                {"data": "city"},
+                {"data": "state"},
+                {"data": "targetAmount"},
+                {"data": "amountInvested"}//,
+                //{"data": "businessId"},
+                //{"data": "userId"}
+            ]
+        });
+    });
 </script>
-<div>
-<script type='text/javascript' language='JavaScript' src='https://secure.echosign.com/public/widget?f=BDP7LI22X45D6T'></script>
-</div>
