@@ -1,0 +1,80 @@
+<!DOCTYPE html>
+<!--
+To change this license header, choose License Headers in Project Properties.
+To change this template file, choose Tools | Templates
+and open the template in the editor.
+-->
+<html>
+    <head>
+        <title>TODO supply a title</title>
+        <meta charset="UTF-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">        
+        <script src="http://ajax.googleapis.com/ajax/libs/jquery/2.1.1/jquery.min.js"></script>
+        <script type="text/javascript" src="https://js.balancedpayments.com/1.1/balanced.js"></script>
+        <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.2/css/bootstrap.min.css">
+        <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.2/css/bootstrap-theme.min.css">
+        <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.2/js/bootstrap.min.js"></script>
+    </head>
+    <body>
+        <div class="container">
+
+            <form role="form" class="col-lg-3 row-fluid">
+                <div class="form-group">
+                    <label>Account Holder's Name</label>
+                    <input class='form-control' type="text" id="ba-name" autocomplete="off" value="John Doe" />
+                </div>
+                <div class="form-group">
+                    <label>Routing Number</label>
+                    <input class='form-control' type="text" id="ba-routing" autocomplete="off" value="322271627" />
+                </div>
+                <div class="form-group">
+                    <label>Account Number</label>
+                    <input class='form-control' type="text" id="ba-number" autocomplete="off" value="9900000000" />
+                </div>
+                <div class="form-group">
+                    <label>Account Type</label>
+                    <input class='form-control' type="text" id="ba-acctype" autocomplete="off" value="checking" />
+                </div>
+                <a id="ba-submit" class="btn btn-danger">Tokenize</a>
+            </form>
+
+        </div>
+
+        <script>
+            function handleResponse(response) {
+                console.log(JSON.stringify(response));
+                if (response.status_code === 201) {
+                    var fundingInstrument = response.cards != null ? response.cards[0] : response.bank_accounts[0];
+                    // Call your backend, described in Step 3
+                    var x = {userId: null, bankAccountUri: fundingInstrument.href, customerUri: null};
+                    $.ajax({
+                        type: "POST",
+                        url: '/rs/balanced/addacc',
+                        contentType: "application/json",
+                        data: JSON.stringify(x),
+                        success: function (data) {
+                            console.log(data);
+                            $('body').append(data);
+                        }
+                    });
+                } else {
+                    // Failed to tokenize, your error logic here
+                }
+            }
+
+            $('#ba-submit').click(function (e) {
+                e.preventDefault();
+
+                var payload = {
+                    name: $('#ba-name').val(),
+                    routing_number: $('#ba-routing').val(),
+                    account_number: $('#ba-number').val(),
+                    account_type: $('#ba-acctype').val()
+                };
+
+                // Create bank account
+                balanced.bankAccount.create(payload, handleResponse);
+            });
+        </script>    
+    </body>
+</html>

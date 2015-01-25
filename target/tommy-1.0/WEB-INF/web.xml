@@ -55,7 +55,7 @@
         <web-resource-collection>
             <web-resource-name>Protected Area</web-resource-name>
             <!-- Define the context-relative URL(s) to be protected -->
-            <url-pattern>/rs/*</url-pattern>
+<!--            <url-pattern>/rs/*</url-pattern>--> <!-- only for testing. uncomment -->
             <url-pattern>/admin.html</url-pattern>
             <!-- If you list http methods, only those methods are protected -->
             <http-method>DELETE</http-method>
@@ -109,11 +109,12 @@
             <web-resource-name>Protected Area</web-resource-name>
             <!-- Define the context-relative URL(s) to be protected -->
             <url-pattern>/rs/public/*</url-pattern>
-            <url-pattern>/rs/resetpass/*</url-pattern>            
+            <url-pattern>/rs/resetpass/*</url-pattern>
+            <url-pattern>/rs/balanced/*</url-pattern>  <!-- for balanced testing remove later -->          
             <!-- If you list http methods, only those methods are protected -->
-            <http-method>DELETE</http-method>
+<!--            <http-method>DELETE</http-method>--> <!-- for balanced testing remove later -->
             <!--            <http-method>GET</http-method>-->
-            <http-method>POST</http-method>
+<!--            <http-method>POST</http-method>--> <!-- for balanced testing remove later -->
             <http-method>PUT</http-method>
         </web-resource-collection>
         <auth-constraint>

@@ -6,11 +6,11 @@
     <class>com.financegeorgia.entities.User</class>
     <class>com.financegeorgia.entities.Audit</class>
     <class>com.financegeorgia.entities.Role</class>
-    <class>test_NO_BUENO.TestUsers</class>
-    <class>test_NO_BUENO.TestRoles</class>
     <class>com.financegeorgia.entities.Location</class>
     <class>com.financegeorgia.entities.Business</class>
     <class>com.financegeorgia.entities.Investment</class>
+    <class>com.financegeorgia.entities.Balanced</class>
+    <class>com.financegeorgia.entities.Document</class>
     <exclude-unlisted-classes>false</exclude-unlisted-classes>
     <properties>
       <!--<property name="javax.persistence.jdbc.url" value="jdbc:mysql://localhost:3306/finga1?zeroDateTimeBehavior=convertToNull"/>

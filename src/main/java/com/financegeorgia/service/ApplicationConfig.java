@@ -30,6 +30,7 @@ public class ApplicationConfig extends javax.ws.rs.core.Application {
      */
     private void addRestResourceClasses(Set<Class<?>> resources) {
         resources.add(com.financegeorgia.service.AuditFacadeREST.class);
+        resources.add(com.financegeorgia.service.BalancedFacadeREST.class);
         resources.add(com.financegeorgia.service.BusinessFacadeREST.class);
         resources.add(com.financegeorgia.service.InvestmentFacadeREST.class);
         resources.add(com.financegeorgia.service.LocationFacadeREST.class);
@@ -38,8 +39,7 @@ public class ApplicationConfig extends javax.ws.rs.core.Application {
         resources.add(com.financegeorgia.service.RoleFacadeREST.class);
         resources.add(com.financegeorgia.service.UserFacadeREST.class);
         resources.add(com.financegeorgia.service.UserPassREST.class);
-        resources.add(test.service_NO_BUENO.TestRolesFacadeREST.class);
-        resources.add(test.service_NO_BUENO.TestUsersFacadeREST.class);
+        resources.add(test.TestREST.class);
     }
     
 }

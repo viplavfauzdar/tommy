@@ -1,0 +1,142 @@
+<!-- Bank Account -->
+<div class='container-fluid'>
+    <div class='col-md-3 text-left'>
+        <h2>Bank Account</h2>
+        <p>Please use the edit button below to add or update your information.</p>
+        <button class="btn btn-default editbtn">Edit</button>
+        <button class='btn btn-default orange savebtn' id="btnSaveBank">Save</button>
+    </div>
+    <div class="col-md-4 text-left" id="addAcc">
+        <form action='#' id='frmBankAccount' name='frmBankAccount'>        
+            <h4>Routing Number</h4>
+            <div class='form-group'>                                            
+                <input class='form-control routnum' placeholder='Routing Number' type='text' id="routnum" name="routnum" minlength="9" required="true" digits="true">
+                <span class='glyphicon glyphicon-remove form-control-feedback'></span>
+            </div>                                                         
+
+            <h4>Confirm Routing Number</h4>
+            <div class='form-group'>                
+                <input class='form-control routnum' placeholder='Routing Number' type='text' equalTo="#routnum" digits="true">
+                <span class='glyphicon glyphicon-remove form-control-feedback'></span>
+            </div>
+
+            <h4>Account Number</h4>
+            <div class='form-group'>                
+                <input class='form-control' placeholder="Account Number" type='text' id="accnum" name="accnum" required="true" digits="true" minlength="9" maxlength="15">
+                <span class='glyphicon glyphicon-remove form-control-feedback'></span>
+            </div>
+
+            <h4>Confirm Account Number</h4>
+            <div class='form-group'>                
+                <input class='form-control' placeholder='Account Number' type='text' equalTo="#accnum" maxlength="15">
+                <span class='glyphicon glyphicon-remove form-control-feedback'></span>
+            </div>   
+            
+            <h4>Account Type</h4>
+            <div class='form-group'>                
+                <select class='form-control' id="acctype" name="acctype">
+                    <option value="checking">Checking</option>
+                    <option value="savings">Savings</option>                    
+                </select>                
+            </div>
+        </form>
+    </div>
+    
+    <div class="col-md-4 text-left" id="showAcc" style="display:none">
+        <h4 id="dispnameonacc">Name on the Account: </h4>
+        <h4 id="disproutnum">Routing Number: </h4>
+        <h4 id="dispacctnum">Account Number: </h4>
+        <h4 id="dispacctype">Account Type: </h4>        
+    </div>
+    
+    <div class="col-md-4 text-left" id="verifyAcc" style="display:none">
+        <h3>ACH Deposit Amounts</h3>
+        <p>Please enter the amounts below (whole numbers without the decimal)
+        <h4>Amount 1</h4><input type="text" id="amt1" name="amt1">
+        <h4>Amount 2</h4><input type="text" id="amt2" name="amt2">            
+    </div>
+</div>
+
+<script>
+    //$('#showAcc').hide();
+    $.get('/rs/balanced/getme',function(data){
+        console.log(data);
+        if(!$.isEmptyObject(data)){
+            $('#addAcc').hide();
+            $('#showAcc').show();
+            $('#dispnameonacc').append(data.nameOnAccount);
+            $('#disproutnum').append(data.routingNumber);
+            $('#dispacctnum').append(data.accountNumber);
+            $('#dispacctype').append(data.accountType);
+            if(data.verificationStatus==='pending'){
+                $('#showAcc').hide();
+                $('#verifyAcc').show();
+            }
+        }
+    });
+    
+    $(".routnum").mask("999999999");
+    //$("#accnum").mask("(999) 999-9999");    
+
+    $(".savebtn").hide();
+    $("input").attr("disabled", "disabled");
+    $("select").attr("disabled", "disabled");
+    $("textarea").attr("disabled", "disabled");
+    $('.editbtn').click(function () {
+        $("input").removeAttr("disabled");
+        $("select").removeAttr("disabled");
+        $("textarea").removeAttr("disabled");
+        $('.editbtn').hide();
+        $(".savebtn").show();
+        $("#state").attr('disabled', 'disabled');
+    });
+    formValidation('#frmBankAccount');
+    $("#btnSaveBank").click(function (e) {        
+        e.preventDefault();
+        loaderOn();
+        saveBankAcc();
+        $(".savebtn").hide();
+        $("input").attr("disabled", "disabled");
+        $("select").attr("disabled", "disabled");
+        $("textarea").attr("disabled", "disabled");
+        $('.editbtn').show();
+    });
+
+    function handleResponse(response) {        
+        console.log(JSON.stringify(response));
+        if (response.status_code === 201) {
+            var fundingInstrument = response.cards != null ? response.cards[0] : response.bank_accounts[0];
+            // Call your backend, described in Step 3
+            var x = {userId: null, bankAccountUri: fundingInstrument.href, customerUri: null};
+            $.ajax({
+                type: "POST",
+                url: '/rs/balanced/addacc',
+                contentType: "application/json",
+                data: JSON.stringify(x),
+                success: function () {
+                    loaderOff();
+                    fgDialog("Account saved","<h3>ACH Verification</h3><h4>We've deposited two small amounts into your account.</h4> <h4>Please come back to verify those deposits.</h4>")
+                }
+            });
+        } else {
+            loaderOff();
+            fgAlert(response.errors[0].description);
+        }
+    }
+
+    function saveBankAcc() {
+
+        var payload = {
+            name: $('#firstName').val() + ' ' + $('#mi').val() + ' ' + $('#lastName').val(),
+            routing_number: $('#routnum').val(),
+            account_number: $('#accnum').val(),
+            account_type: $('#acctype').val()
+        };
+
+        console.log(payload);
+
+        // Create bank account
+        balanced.bankAccount.create(payload, handleResponse);
+    }
+</script>
+

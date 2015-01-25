@@ -127,6 +127,16 @@
             <artifactId>javax.servlet.jsp-api</artifactId>
             <version>2.3.1</version>
         </dependency>
+        <dependency>
+            <groupId>com.google.code.gson</groupId>
+            <artifactId>gson</artifactId>
+            <version>2.3.1</version>
+        </dependency>
+        <dependency>
+            <groupId>com.balancedpayments</groupId>
+            <artifactId>balancedpayments</artifactId>
+            <version>1.4</version>
+        </dependency>
     </dependencies>
     <profiles>
         <profile>

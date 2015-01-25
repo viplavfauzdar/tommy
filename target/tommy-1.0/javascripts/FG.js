@@ -99,7 +99,7 @@ var fgAlert = function (msg) {
     //top:50%;left:50%;transform(-50%,-50%);
     if ($("#fgalert").length === 0) {
         $("body").append('<div id="fgalert" class="alert alert-info" style="position:absolute;top:10px;right:10px;z-index:100000;max-width:500px;max-height:500px">' +
-                '<button type="button" class="close" data-dismiss="alert">&nbsp;&nbsp;×</button><div style="max-height:480px;overflow:auto"><h5><b>' + msg + '</b></h5></div></div>');
+                '<button type="button" class="close" data-dismiss="alert">&nbsp;&nbsp;×</button><div style="max-height:460px;overflow:auto"><h5><b>' + msg + '</b></h5></div></div>');
     }
 //    $('#fgalert').position({
 //        my: 'center',
@@ -339,6 +339,12 @@ $('#tabSrch').click(function (e) {
     $("#tabContSrch").load("admin.html?t=" + Math.random());
     //loadData("/rs/user/getme");
     $('#tabSrch').tab('show');
+});
+
+$('#tabBank').click(function (e) {
+    e.preventDefault();
+    $("#tabContBank").load("bankaccount.html?t=" + Math.random());    
+    $('#tabBank').tab('show');
 });
 
 var hash = window.location.hash;
