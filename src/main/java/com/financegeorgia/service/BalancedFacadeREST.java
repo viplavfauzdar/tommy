@@ -13,11 +13,11 @@ import com.financegeorgia.entities.Balanced;
 import com.financegeorgia.entities.User;
 import com.financegeorgia.utils.FGException;
 import com.financegeorgia.utils.Resources;
+import com.owlike.genson.Genson;
 import java.util.Calendar;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
-import java.util.logging.Level;
 import javax.servlet.http.HttpServletRequest;
 import javax.ws.rs.Consumes;
 import javax.ws.rs.DELETE;
@@ -38,6 +38,7 @@ import org.apache.log4j.Logger;
 public class BalancedFacadeREST extends AbstractFacade<Balanced> {
 
     private static final Logger logger = Logger.getLogger(BalancedFacadeREST.class);
+    private static final Genson genson = new Genson();
     private static final Resources res = Resources.getInstance();
     private static final UserFacadeREST uf = new UserFacadeREST();
 
@@ -51,9 +52,16 @@ public class BalancedFacadeREST extends AbstractFacade<Balanced> {
 
         //user/getMe - to get logged in user and use in all methods below
         this.user = uf.getMe(request);
-        List<Balanced> listBal = super.findByField("Balanced.findByUserId", "userId", user.getId());
-        if (listBal.size() > 0) {
-            this.balanced = listBal.get(0);
+        List<Balanced> listBal = null;
+        if(user!=null) listBal = super.findByField("Balanced.findByUserId", "userId", user.getId());
+        for(Balanced bal: listBal){
+            if(bal.getStatus().equals("DELETED")){
+                bal.setBankAccountUri(null);
+                this.balanced = bal;                
+            }else{
+                this.balanced = bal;
+                break;
+            }
         }
     }
 
@@ -63,34 +71,39 @@ public class BalancedFacadeREST extends AbstractFacade<Balanced> {
     public void addBankAcc(Balanced entity) {
         try {
             logger.info("Bank Account: " + entity.getBankAccountUri());
+            
+            Customer customer = null;
+            //check is customer exists - in case account was deleted
+            if(balanced==null){//.getCustomerUri()==null || balanced.getCustomerUri().equals("")){
+                logger.info("adding a new customer");
+                Map<String, Object> payload_customer = new HashMap<String, Object>();
+                payload_customer.put("name", user.getFirstName() + " " + user.getMi() + " " + user.getLastName());
+                Calendar cal = Calendar.getInstance();
+                cal.setTime(user.getDob());
+                payload_customer.put("dob_month", cal.get(Calendar.MONTH) + 1);
+                payload_customer.put("dob_year", cal.get(Calendar.YEAR));
+                //payload_customer.put("ssn_last4", "5555"); //not sure if I need it
+                payload_customer.put("email", user.getEmail());
 
-            Map<String, Object> payload_customer = new HashMap<String, Object>();
-//            payload_customer.put("name", "Jane Doe");
-//            payload_customer.put("dob_month", 7);
-//            payload_customer.put("dob_year", 1978);
-//            payload_customer.put("ssn_last4", "5555");
-
-            payload_customer.put("name", user.getFirstName() + " " + user.getMi() + " " + user.getLastName());
-            Calendar cal = Calendar.getInstance();
-            cal.setTime(user.getDob());
-            payload_customer.put("dob_month", cal.get(Calendar.MONTH) + 1);
-            payload_customer.put("dob_year", cal.get(Calendar.YEAR));
-            //payload_customer.put("ssn_last4", "5555"); //not sure if I need it
-            payload_customer.put("email", user.getEmail());
-
-            //not sure if needed - I do. addr and dob for verfied status
-//            Map<String, Object> payload_customer_address = new HashMap<String, Object>();
-//            payload_customer_address.put("city", "Decatur");
-//            payload_customer_address.put("state", "GA");
-//            payload_customer_address.put("postal_code", "12345");
-//            payload_customer.put("address", payload_customer_address);
-            Customer customer = new Customer(payload_customer);
-            customer.save();
+                //not sure if needed - I do. addr and dob for verfied status
+    //            Map<String, Object> payload_customer_address = new HashMap<String, Object>();
+    //            payload_customer_address.put("city", "Decatur");
+    //            payload_customer_address.put("state", "GA");
+    //            payload_customer_address.put("postal_code", "12345");
+    //            payload_customer.put("address", payload_customer_address);
+                customer = new Customer(payload_customer);
+                customer.save();
+            }else{
+                logger.info("customer already exists. previous account was deleted. associating a new account");
+                customer = new Customer(balanced.getCustomerUri());
+            }
+                
 
             BankAccount bankAccount = new BankAccount(entity.getBankAccountUri());
 
             //associate bank account to customer
             bankAccount.associateToCustomer(customer);
+            bankAccount.save();
 
             //start ACH verification
             bankAccount.verify();
@@ -98,22 +111,30 @@ public class BalancedFacadeREST extends AbstractFacade<Balanced> {
             //save both customer & bank account uri to table
             entity.setUserId(user.getId());
             entity.setCustomerUri(customer.href);
+            entity.setStatus("NEW");
             super.create(entity);
         } catch (HTTPError ex) {
             throw new FGException(ex);
         }
     }
 
+    
     @GET
     @Path("verify/{amt1}/{amt2}")
-    public void verify(@PathParam("amt1") Integer amt1, @PathParam("amt2") Integer amt2) {
+    @Produces("application/json")
+    public Object verify(@PathParam("amt1") Integer amt1, @PathParam("amt2") Integer amt2) {
         try {
             BankAccount bankAccount = new BankAccount(balanced.getBankAccountUri());
             bankAccount.verification.confirm(amt1, amt2);
+            balanced.setStatus(bankAccount.verification.verification_status);
+            edit(balanced);
+            return null;
         } catch (HTTPError ex) {
-            throw new FGException(ex);
+            //return "Unable to verify the account. Please check the amounts entered!";                                    
+            return genson.serialize(ex);
+        } catch(Exception e){
+            throw new FGException(e);
         }
-
     }
 
     @GET
@@ -146,7 +167,9 @@ public class BalancedFacadeREST extends AbstractFacade<Balanced> {
     public void delete() {
         try {
             BankAccount bankAccount = new BankAccount(balanced.getBankAccountUri());
-            bankAccount.delete();
+            bankAccount.delete(); //or .unstore - does the same thing
+            balanced.setStatus("DELETED");
+            edit(balanced);
         } catch (HTTPError ex) {
             throw new FGException(ex);
         } catch (NotCreated ex) {
@@ -155,11 +178,11 @@ public class BalancedFacadeREST extends AbstractFacade<Balanced> {
     }
 
     @GET
-    @Path("getme")
+    @Path("getmyaccount")
     @Produces({"application/xml", "application/json"})
-    public Map getMe() {
+    public Map getMyAccount() {
         try {
-            if (balanced != null) {
+            if (balanced != null && balanced.getBankAccountUri()!=null) {
                 BankAccount bankAccount = new BankAccount(balanced.getBankAccountUri());
                 Map<String, String> map = new HashMap<String, String>();
                 map.put("nameOnAccount", bankAccount.name);

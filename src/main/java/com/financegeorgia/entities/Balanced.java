@@ -31,6 +31,9 @@ import javax.xml.bind.annotation.XmlRootElement;
     @NamedQuery(name = "Balanced.findByCustomerUri", query = "SELECT b FROM Balanced b WHERE b.customerUri = :customerUri"),
     @NamedQuery(name = "Balanced.findByBankAccountUri", query = "SELECT b FROM Balanced b WHERE b.bankAccountUri = :bankAccountUri")})
 public class Balanced implements Serializable {
+    @Basic(optional = false)
+    @Column(name = "status")
+    private String status;
     private static final long serialVersionUID = 1L;
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -116,6 +119,14 @@ public class Balanced implements Serializable {
     @Override
     public String toString() {
         return "com.financegeorgia.entities.Balanced[ id=" + id + " ]";
+    }
+
+    public String getStatus() {
+        return status;
+    }
+
+    public void setStatus(String status) {
+        this.status = status;
     }
     
 }

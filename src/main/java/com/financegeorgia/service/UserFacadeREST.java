@@ -79,7 +79,7 @@ public class UserFacadeREST extends AbstractFacade<User> {
             request.getSession().setAttribute("userId", user.getId());
             //return user; //shouldn't return anything
             SendMail sm = new SendMail();
-            sm.send(email, "", "Thank for signing up for Finance Georgia!", "Thank for signing up for Finance Georgia!");
+            sm.send(email, "", "Thank you for signing up for Finance Georgia!", "Thank you for signing up for Finance Georgia!");
         } catch (ServletException ex) {
             throw new FGException(ex);
         }

@@ -2,11 +2,12 @@
 <div class='container-fluid'>
     <div class='col-md-3 text-left'>
         <h2>Bank Account</h2>
-        <p>Please use the edit button below to add or update your information.</p>
+        <p>Please use the edit button below to add, verify or delete your account information.</p>
         <button class="btn btn-default editbtn">Edit</button>
-        <button class='btn btn-default orange savebtn' id="btnSaveBank">Save</button>
+        <button class='btn btn-default orange savebtn' id="btnSaveBank">Save</button>       
+        <button class='btn btn-default red delbtn' id="btnDelBank" style="display:none">Delete</button>
     </div>
-    <div class="col-md-4 text-left" id="addAcc">
+    <div class="col-md-4 text-left" id="addAcc" style="display:none">
         <form action='#' id='frmBankAccount' name='frmBankAccount'>        
             <h4>Routing Number</h4>
             <div class='form-group'>                                            
@@ -31,7 +32,7 @@
                 <input class='form-control' placeholder='Account Number' type='text' equalTo="#accnum" maxlength="15">
                 <span class='glyphicon glyphicon-remove form-control-feedback'></span>
             </div>   
-            
+
             <h4>Account Type</h4>
             <div class='form-group'>                
                 <select class='form-control' id="acctype" name="acctype">
@@ -41,40 +42,85 @@
             </div>
         </form>
     </div>
-    
+
     <div class="col-md-4 text-left" id="showAcc" style="display:none">
-        <h4 id="dispnameonacc">Name on the Account: </h4>
-        <h4 id="disproutnum">Routing Number: </h4>
-        <h4 id="dispacctnum">Account Number: </h4>
-        <h4 id="dispacctype">Account Type: </h4>        
+        <h3>Account Information</h3>
+        <h4>Name on the Account: <span id="dispnameonacc"></span></h4>
+        <h4>Routing Number: <span id="disproutnum"></span></h4>
+        <h4>Account Number: <span  id="dispacctnum"></span></h4>
+        <h4>Account Type: <span  id="dispacctype"></span></h4>
     </div>
-    
+
     <div class="col-md-4 text-left" id="verifyAcc" style="display:none">
         <h3>ACH Deposit Amounts</h3>
-        <p>Please enter the amounts below (whole numbers without the decimal)
-        <h4>Amount 1</h4><input type="text" id="amt1" name="amt1">
-        <h4>Amount 2</h4><input type="text" id="amt2" name="amt2">            
+        <p>Please enter the amounts below (whole numbers without the decimal. ex. 43 instead of 0.43)</p>
+            <div class="form-inline">    
+                <h4>Amount 1</h4><input type="text" id="amt1" name="amt1" size="5">
+                <h4>Amount 2</h4><input type="text" id="amt2" name="amt2" size="5">            
+            </div>
     </div>
 </div>
 
 <script>
-    //$('#showAcc').hide();
-    $.get('/rs/balanced/getme',function(data){
-        console.log(data);
-        if(!$.isEmptyObject(data)){
-            $('#addAcc').hide();
-            $('#showAcc').show();
-            $('#dispnameonacc').append(data.nameOnAccount);
-            $('#disproutnum').append(data.routingNumber);
-            $('#dispacctnum').append(data.accountNumber);
-            $('#dispacctype').append(data.accountType);
-            if(data.verificationStatus==='pending'){
-                $('#showAcc').hide();
-                $('#verifyAcc').show();
+    loaderOn();   
+    var newacc = false;
+    var verified = false;    
+    var getMyAcc = function(){        
+        $.get('/rs/balanced/getmyaccount', function (data) {
+            $('.editbtn').show();
+            loaderOff();
+            console.log(data);
+            if (!$.isEmptyObject(data)) {
+                $('#addAcc').hide();
+                $('#showAcc').show();
+                $('#dispnameonacc').html(data.nameOnAccount);
+                $('#disproutnum').html(data.routingNumber);
+                $('#dispacctnum').html(data.accountNumber);
+                $('#dispacctype').html(data.accountType);                
+                if (data.verificationStatus === 'pending') {                 
+                    $('#verifyAcc').show();
+                    verified = false;
+                }
+                if (data.verificationStatus === 'failed') {
+                    fgDialog('Verification Failed','<h4>You account verification failed because you made too many invalid attempts.</h4><h4>Please delete the account and add a new one!</h4>');
+                    $('.delbtn').show();
+                    verified = false;
+                }
+                if (data.verificationStatus === 'succeeded') {
+                    verified = true;
+                }
+                $('.savebtn').hide();
+                newacc = false;
+            } else {
+                $('#addAcc').show();
+                newacc = true;
             }
-        }
-    });
+        });
+    };
     
+    getMyAcc();
+    
+    $("#btnDelBank").click(function () {
+        loaderOn();
+        $.ajax({
+            method: 'DELETE',
+            url: '/rs/balanced',
+            success: function () {
+                fgAlert('Account deleted!');
+                $('#addAcc').show();
+                $('#showAcc').hide();                
+                $('.delbtn').hide();
+                $('#verifyAcc').hide();
+                $('.editbtn').show();
+                $("input").attr("disabled", "disabled");
+                $("select").attr("disabled", "disabled");
+                $("input").attr("value", "");
+                verified = false;
+                loaderOff();
+            }
+        });
+    });
+
     $(".routnum").mask("999999999");
     //$("#accnum").mask("(999) 999-9999");    
 
@@ -89,12 +135,21 @@
         $('.editbtn').hide();
         $(".savebtn").show();
         $("#state").attr('disabled', 'disabled');
+        if(verified){
+            $('.delbtn').show();
+            $(".savebtn").hide();
+        }
+        //$('.delbtn').removeAttr('disabled');
     });
+
     formValidation('#frmBankAccount');
-    $("#btnSaveBank").click(function (e) {        
+    $("#btnSaveBank").click(function (e) {
         e.preventDefault();
         loaderOn();
-        saveBankAcc();
+        if (newacc)
+            saveBankAcc();
+        else
+            saveACH();
         $(".savebtn").hide();
         $("input").attr("disabled", "disabled");
         $("select").attr("disabled", "disabled");
@@ -102,7 +157,7 @@
         $('.editbtn').show();
     });
 
-    function handleResponse(response) {        
+    function handleResponse(response) {
         console.log(JSON.stringify(response));
         if (response.status_code === 201) {
             var fundingInstrument = response.cards != null ? response.cards[0] : response.bank_accounts[0];
@@ -115,7 +170,8 @@
                 data: JSON.stringify(x),
                 success: function () {
                     loaderOff();
-                    fgDialog("Account saved","<h3>ACH Verification</h3><h4>We've deposited two small amounts into your account.</h4> <h4>Please come back to verify those deposits.</h4>")
+                    fgDialog("Account saved", "<h3>ACH Verification</h3><h4>We've deposited two small amounts into your account.</h4> <h4>Please come back to verify those deposits.</h4>")
+                    getMyAcc();
                 }
             });
         } else {
@@ -137,6 +193,22 @@
 
         // Create bank account
         balanced.bankAccount.create(payload, handleResponse);
+    }
+
+    function saveACH() {
+        $.get('/rs/balanced/verify/' + $('#amt1').val() + '/' + $('#amt2').val(), function (resp) {
+            loaderOff();
+            console.log(resp);
+            if (resp !== undefined){
+                fgAlert(resp.description);
+                verified = false;
+            }else{
+                fgAlert('Your account has been verified!');
+                $('#verifyAcc').hide();
+                $('.delbtn').hide();
+                verified = true;
+            }
+        });
     }
 </script>
 

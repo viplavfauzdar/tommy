@@ -16,13 +16,25 @@ $(document).ajaxError(function (event, jqxhr, settings, exception) {
     //console.log(JSON.stringify(event));
     console.log(JSON.stringify(settings));
     console.log(JSON.stringify(exception));
-    if (jqxhr.responseText != "") {
+    if (jqxhr.responseText !== "") {
         fgAlert(jqxhr.responseText);//,"error");
         //fgDialog("Ajax Error",jqxhr.responseText);    
     }
     loaderOff();
 });
 
+/**
+ * Redirect to login page if session is expired
+ * */
+$(document).ajaxComplete(function (event, xhr, settings) {
+    if (xhr.responseText.match('<title>Finance Georgia | Sign In</title>')) {
+        fgAlert('Session expired! Redirecting to login page. <br>Please login to continue!');
+        setTimeout(function () {
+            window.location = 'account.html';
+        }, 2000);
+
+    }
+});
 
 /**
  * Form validation. Should call explicitly 
@@ -73,7 +85,7 @@ var loaderOn = function () {
     if ($("#div_loader").length === 0) {
         $("body").append('<div id="div_loader" style="z-index:100000;position:fixed;top:0px;left:0px;height:100%;width:100%;' +
                 'background-color: #000000;opacity: 0.7;filter: alpha(opacity=70);">' +
-                '<img src="img/loading.gif" style="position:fixed;height:50px;width:50px;top:43%;left:47%;"></div>');
+                '<img src="img/loading.gif" style="position:fixed;height:50px;width:50px;top:43%;left:47.5%;"></div>');
     }
     $('#div_loader').fadeIn();
 };
@@ -343,7 +355,7 @@ $('#tabSrch').click(function (e) {
 
 $('#tabBank').click(function (e) {
     e.preventDefault();
-    $("#tabContBank").load("bankaccount.html?t=" + Math.random());    
+    $("#tabContBank").load("bankaccount.html?t=" + Math.random());
     $('#tabBank').tab('show');
 });
 
@@ -383,7 +395,9 @@ var saveData = function (url, formId, method) {
             $("html, body").animate({scrollTop: 0}, "slow");
             //fgAlert("Saved!");
             console.log(result);
-        }, //error: function (err) { not needed since I have the ajaxError handler
+            //console.log(status);
+            //console.log(xhr.getAllResponseHeaders());//.getResponseHeader('Set-Cookie'));            
+        } //error: function (err) { not needed since I have the ajaxError handler
 //            loaderOff();
 //            fgAlert(JSON.stringify(err));
 //            console.log(JSON.stringify(err));
@@ -412,7 +426,7 @@ $('#copyright').load('copyright.html');
 $('#contactpart').load('contactpart.html');
 
 //make this sync so cause i need to know if user is admin
-//async flase doesn't work since the navbar doesn't load till after
+//async false doesn't work since the navbar doesn't load till after
 //var isadmin;
 $.ajax({
     url: "/jsp/getloggedinuser.jsp",
@@ -422,11 +436,16 @@ $.ajax({
 //        isadmin = data.role;
 //        console.log(isadmin);
         if (data.email !== 'null') {
-            console.log('Changing nav bar');
+            //user if logged in
+            console.log('User logged in - Changing nav bar');
             $('#signin').html('Sign Out');
             $('#signin').attr('href', '/jsp/logout.jsp');
             $('#signup').html('Account');
             $('#signup').attr('href', 'account.html');
+            $("a[href='register.html']").hide(); //hide all links to register
+        }else{
+            console.log('User NOT logged in'); 
+            $("a[href='register.html']").show(); //show all links to register
         }
     }
 });

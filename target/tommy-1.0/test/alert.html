@@ -29,6 +29,11 @@ and open the template in the editor.
 
 
         <script>
+            var myloc = window.location.toString();            
+            var cgurl = 'QA';
+            if(myloc.indexOf('webbatch.home')>0) cgurl='PR';
+            if(myloc.indexOf('webbatch-qa.home')>0) cgurl='QA';
+            alert(cgurl);
             $(".alert").addClass("in");//.fadeOut(3500);
 
             var fgDialog = function (title, msg) {
