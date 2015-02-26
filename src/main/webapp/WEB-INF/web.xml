@@ -5,7 +5,35 @@
          xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
          xsi:schemaLocation="http://java.sun.com/xml/ns/javaee http://java.sun.com/xml/ns/javaee/web-app_3_0.xsd"
          metadata-complete="false">  
+    <!-- CORS filter - this will allows everything. Should replace with Jersey CORS filter instead -->
+    <filter>
+        <filter-name>CORSFilter</filter-name>
+        <filter-class>
+            com.financegeorgia.utils.CORSFilter
+        </filter-class>        
+    </filter>
+
+    <filter-mapping>
+        <filter-name>CORSFilter</filter-name>
+        <url-pattern>/*</url-pattern>
+    </filter-mapping>
     
+    <!-- Jersey Servlet Registration. Alternative to application config. -->
+<!--    <servlet>
+        <servlet-name>FinanceGeorgia</servlet-name>
+        <servlet-class>org.glassfish.jersey.servlet.ServletContainer</servlet-class>
+        <init-param>
+            <param-name>com.sun.jersey.spi.container.ContainerResponseFilters</param-name>
+            <param-value>com.financegeorgia.utils.CORSResponseFilter</param-value>
+        </init-param>
+    </servlet>
+    
+    <servlet-mapping>
+        <servlet-name>FinanceGeorgia</servlet-name>
+        <url-pattern>/rs/*</url-pattern>
+    </servlet-mapping>-->
+    
+    <!-- Uploader servlet -->
     <servlet>
         <description></description>
         <display-name>Uploader</display-name>
@@ -55,7 +83,7 @@
         <web-resource-collection>
             <web-resource-name>Protected Area</web-resource-name>
             <!-- Define the context-relative URL(s) to be protected -->
-<!--            <url-pattern>/rs/*</url-pattern>--> <!-- only for testing. uncomment -->
+            <!--            <url-pattern>/rs/*</url-pattern>--> <!-- only for testing. uncomment -->
             <url-pattern>/admin.html</url-pattern>
             <!-- If you list http methods, only those methods are protected -->
             <http-method>DELETE</http-method>
@@ -112,9 +140,9 @@
             <url-pattern>/rs/resetpass/*</url-pattern>
             <url-pattern>/rs/balanced/*</url-pattern>  <!-- for balanced testing remove later -->          
             <!-- If you list http methods, only those methods are protected -->
-<!--            <http-method>DELETE</http-method>--> <!-- for balanced testing remove later -->
+            <!--            <http-method>DELETE</http-method>--> <!-- for balanced testing remove later -->
             <!--            <http-method>GET</http-method>-->
-<!--            <http-method>POST</http-method>--> <!-- for balanced testing remove later -->
+            <!--            <http-method>POST</http-method>--> <!-- for balanced testing remove later -->
             <http-method>PUT</http-method>
         </web-resource-collection>
         <auth-constraint>
@@ -144,6 +172,10 @@
     
     
     <error-page>
+<!--        <error-code>500</error-code> DOESN'T DO ANYTHING. ERROR 500 still going to Tomcat error 500 page.
+        <location>/error.jsp</location>
+        <exception-type>java.lang.Throwable</exception-type> 
+        <location>/error.jsp</location>-->
         <exception-type>java.lang.Exception</exception-type>
         <location>/error.jsp</location>
     </error-page>       

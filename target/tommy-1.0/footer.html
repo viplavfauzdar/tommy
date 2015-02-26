@@ -41,10 +41,8 @@
      * subscription emal from footer
      * */
     formValidation('#frmSubEmail');
-    $('#btnSubscribe').click(function () {
-        //$('#frmSubEmail').submit(function (e) {
-            //e.preventDefault();
-            console.log($('#emailSubscription').val());
+    function sendEmail(){
+        console.log($('#emailSubscription').val());
             loaderOn();
             $.get('/SendMail?type=subscription&toAddress=' + $('#emailSubscription').val() + '&t=' + Math.random() + '&message=<h1>Thank you for requesting subscription to Finance Georgia!</h1>', function (res) {
                 loaderOff();
@@ -57,6 +55,17 @@
                     //fgAlert(res);  
                 }
             });
+    }
+    $('#btnSubscribe').click(function () {
+        //$('#frmSubEmail').submit(function (e) {
+            //e.preventDefault();
+            sendEmail();
         //});
     });
+    $('#emailSubscription').on("keypress", function(e) {
+        if (e.keyCode === 13) {
+            sendEmail();
+            return false; // prevent the button click from happening
+        }
+});
 </script>

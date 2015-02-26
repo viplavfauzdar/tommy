@@ -451,6 +451,8 @@ $.ajax({
 });
 
 var portfolioWidget = function (element, item, businessId) {
+    var trgAmt = $.number(item.targetAmount);
+    var amtInvstd = $.number(item.amountInvested);
     markup = "<div class='col-md-4 col-xs-6'>" +
             "<div class='member'>" +
             "<div class='img'>" +
@@ -464,13 +466,13 @@ var portfolioWidget = function (element, item, businessId) {
             "<div class='info' style='height:270px'>" +
             "<h4>" + item.businessName + "</h4>" +
             "<h5>" + item.address + " " + item.city + " " + item.state + //" " + item.zip + "</h5>" +
-            "<h6><span class='target'>TARGET: <b>" + item.targetAmount + "</b></span><span class='pledged'> PLEDGED: <b>" + item.amountInvested + "</b></span></h6>" +
+            "<h6><span class='target'>TARGET: <b>$" + trgAmt + "</b></span><span class='pledged'> PLEDGED: <b>$" + amtInvstd + "</b></span></h6>" +
             "<div class='progress'>" +
             "<div aria-valuemax='100' aria-valuemin='0' aria-valuenow='50' class='progress-bar progress-bar-success' role='progressbar' style='width:" + (100 * item.amountInvested / item.targetAmount) + "%'>" +
             "</div>" +
             "</div>" +
             "<p style='width:260px;height:50px'>" + item.summary.substring(0, 100) + "</p>" +
-            "<a class='btn btn-default' href='businessprofile.html#/" + businessId + "'>View Details</a>" +
+            "<a class='btn btn-default' href='businessprofile.html#/" + businessId + "#" + item.userId + "'>View Details</a>" +
             "</div>" +
             "</div>" +
             "</div>";

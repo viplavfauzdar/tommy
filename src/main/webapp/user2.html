@@ -12,23 +12,23 @@
         <form action="#" id='frmUser' name='frmUser'>
             <div class="row">
                 <div class="col-md-4">
-                    <div class='input-group'>
-                        <h4>Your First Name</h4>
-                        <input class='form-control' disabled placeholder='Your First Name' id="firstName" name="firstName" type='text' style="text-transform: capitalize">
+                    <h4>Your First Name</h4>
+                    <div class='input-group'>                        
+                        <input class='form-control' disabled placeholder='Your First Name' id="firstName" name="firstName" type='text' style="text-transform: capitalize" required minlength="2" lettersOnly="true">
                         <span class='glyphicon glyphicon-remove form-control-feedback'></span>
                     </div>
                 </div>
                 <div class="col-md-3">
-                    <div class='input-group'>
-                        <h4>Middle </h4>
+                    <h4>Middle </h4>
+                    <div class='input-group'>                        
                         <input class='form-control' placeholder='Middle' type='text' id="mi" name="mi" maxlength="1" style="text-transform: capitalize">
-                        <span class='glyphicon glyphicon-remove form-control-feedback'></span>
+<!--                        <span class='glyphicon glyphicon-remove form-control-feedback'></span>-->
                     </div>
                 </div>
                 <div class="col-md-5">
-                    <div class='input-group'>
-                        <h4>Your Last Name</h4>
-                        <input class='form-control' placeholder='Your Last Name' id="lastName" name="lastName" type='text' style="text-transform: capitalize">
+                    <h4>Your Last Name</h4>
+                    <div class='input-group'>                        
+                        <input class='form-control' placeholder='Your Last Name' id="lastName" name="lastName" type='text' style="text-transform: capitalize" required minlength="2" lettersOnly="true">
                         <span class='glyphicon glyphicon-remove form-control-feedback'></span>
                     </div>
                 </div>
@@ -54,8 +54,8 @@
             <!-- END ROW -->
             <div class="row">
                 <div class="col-md-12">
-                    <div class='input-group'>
-                        <h4>Registration Type</h4>
+                    <h4>Registration Type</h4>
+                    <div class='input-group'>                        
                         <select id="userType" name="userType" disabled>
                             <option value="B">Business</option>
                             <option value="A">Investor - Accredited</option>
@@ -69,12 +69,14 @@
                 <div class="col-md-12">
                     <div class='input-group'>
                         <h4>Your Birthday</h4>                                                
-                        <input type="text" data-role="date" name="dob"  id="dob" placeholder="mm/dd/yyyy">
+                        <input type="text" data-role="date" name="dob" readonly id="dob" placeholder="mm/dd/yyyy" required date="true" style="text-transform: uppercase">
                         <script>
                             $("#dob").datepicker({
                                 changeYear: true,
                                 changeMonth: true,
-                                yearRange: '1950:2013'
+                                minDate: "-100Y",
+                                maxDate: "-21Y",
+                                yearRange: '1940:2013'
                             });//.datepicker("setDate", "01/01/1980");
                         </script>
                     </div>
@@ -119,21 +121,24 @@
         $(".savebtn").show();
         $("#btnChgPass").removeAttr("disabled");
     });
+    formValidation('#frmUser');
     $("#btnSaveUser").click(function (e) {
         e.preventDefault();
-        if($('#userType').val()!=='B'){
-            $('#tabBus').remove();//.hide();
-            $('#tabContBus').remove();//.hide();
+        if ($("#frmUser").valid()) {
+            if ($('#userType').val() !== 'B') {
+                $('#tabBus').remove();//.hide();
+                $('#tabContBus').remove();//.hide();
+            }
+            saveData("/rs/user/updateme", "#frmUser", "PUT");
+            $(".savebtn").hide();
+            $("input").attr("disabled", "disabled");
+            $("select").attr("disabled", "disabled");
+            $("textarea").attr("disabled", "disabled");
+            $('.editbtn').show();
         }
-        saveData("/rs/user/updateme", "#frmUser", "PUT");
-        $(".savebtn").hide();
-        $("input").attr("disabled", "disabled");
-        $("select").attr("disabled", "disabled");
-        $("textarea").attr("disabled", "disabled");
-        $('.editbtn').show();
     });
-    $('#btnChgPass').click(function(){
-       // fgAlert('blah blah blah blah blah blah!!!');
+    $('#btnChgPass').click(function () {
+        // fgAlert('blah blah blah blah blah blah!!!');
         fgModal("modal-sm", "", "", "changepassword.html", null, false);
     });
 </script>

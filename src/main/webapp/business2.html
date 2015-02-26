@@ -9,28 +9,28 @@
     <div class='col-md-6'>    
         <form action='#' class='row' id='frmBusiness' name='frmBusiness'>
             <div class="">
-                <div class='input-group'>
-                    <h4>Your Business Name</h4>
-                    <input class='form-control' placeholder='Your Business Name' id="businessName" name="businessName" type='text' size="50" style="text-transform: capitalize">
+                <h4>Your Business Name</h4>
+                <div class='col-md-12 input-group'>                    
+                    <input class='form-control' placeholder='Your Business Name' id="businessName" name="businessName" type='text' style="text-transform: capitalize" minlength="10" maxlength="100" required>
                     <span class='glyphicon glyphicon-remove form-control-feedback'></span>
                 </div>
-                <div class='input-group'>
-                    <h4>Your Service or Product</h4>
-                    <textarea class="form-control" placeholder='Your Service or Product' id="summary" name="summary" rows="4" cols="100" maxlength="500"></textarea>
+                <h4>Your Service or Product</h4>
+                <div class='col-md-12 input-group'>                    
+                    <textarea class="form-control" placeholder='Your Service or Product' id="summary" name="summary" rows="4" cols="100" minlength="10" maxlength="500" required></textarea>
                     <span class='glyphicon glyphicon-remove form-control-feedback'></span>
                 </div>
-                <div class='input-group'>
-                    <h4>About Your Company</h4>
-                    <textarea class="form-control" placeholder='About Your Company' id="description" name="description" rows="15" cols="100" maxlength="4000"></textarea>
+                <h4>About Your Company</h4>
+                <div class='col-md-12 input-group'>                    
+                    <textarea class="form-control" placeholder='About Your Company' id="description" name="description" rows="15" cols="100" minlength="10" maxlength="4000" required></textarea>
                     <span class='glyphicon glyphicon-remove form-control-feedback'></span>
                 </div>
-                <div class='input-group'>
-                    <h4>Amount You Want to Raise</h4>
+                <h4>Amount You Want to Raise</h4>
+                <div class='col-md-6 input-group'>                    
                     <input class='form-control' placeholder='Target Amount' id="targetAmount" name="targetAmount" type='text'>
                     <span class='glyphicon glyphicon-remove form-control-feedback'></span>
                 </div>
-                <div class='input-group'>
-                    <h4>Equity You Are Offering</h4>
+                <h4>Equity You Are Offering</h4>
+                <div class='col-md-6 input-group'>                    
                     <input class='form-control' placeholder='Equity Offered' id="equityOffered" name="equityOffered" type='text'>
                     <span class='glyphicon glyphicon-remove form-control-feedback'></span>
                 </div>                
@@ -39,8 +39,10 @@
     </div>
 </div>
 
-
+ 
 <script>
+    $('#targetAmount').number(true,2);// .autoNumeric('init', {aSign: '$', aPad: 'false'});
+    $('#equityOffered').number(true,0);// .autoNumeric('init', {aSign: '', aPad: 'false'});
     $(".savebtn").hide();
     $("input").attr("disabled", "disabled");
     $("select").attr("disabled", "disabled");
@@ -52,14 +54,17 @@
         $('.editbtn').hide();
         $(".savebtn").show();
     });
+    formValidation('#frmBusiness');
     $("#btnSaveBusiness").click(function (e) {
         //$('form').submit(function (e) {
         e.preventDefault();
-        saveData("/rs/business/updateme", "#frmBusiness", "PUT");
-        $(".savebtn").hide();
-        $("input").attr("disabled", "disabled");
-        $("select").attr("disabled", "disabled");
-        $("textarea").attr("disabled", "disabled");
-        $('.editbtn').show();
+        if ($("#frmBusiness").valid()) {
+            saveData("/rs/business/updateme", "#frmBusiness", "PUT");
+            $(".savebtn").hide();
+            $("input").attr("disabled", "disabled");
+            $("select").attr("disabled", "disabled");
+            $("textarea").attr("disabled", "disabled");
+            $('.editbtn').show();
+        }
     });
 </script>
