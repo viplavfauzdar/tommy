@@ -52,6 +52,7 @@ var formValidation = function (formName) {
             $(element).parent().addClass('has-error has-feedback');
             $(element).next('span').removeClass('glyphicon-ok');
             $(element).next('span').addClass('glyphicon-remove');
+            element.focus();
         }, unhighlight: function (element, errClass) {
             $(element).popover('hide');
             //$(element).next('span').html('');
@@ -238,6 +239,16 @@ $("#btnUser").click(function (e) {
 //};
 
 formValidation('#frmSignup');
+// below doesnt do shit. inline works.
+//$("#frmSignup").validate({
+//    rules: {
+//        email: {
+//            required: true,
+//            email: true,           
+//            remote: "jsp/verifyemail.jsp"
+//        }
+//    }
+//});
 //$("#btnCreateAcc").click(function (e) {
 $("#frmSignup").submit(function (e) {
     e.preventDefault();
@@ -428,6 +439,7 @@ $('#contactpart').load('contactpart.html');
 //make this sync so cause i need to know if user is admin
 //async false doesn't work since the navbar doesn't load till after
 //var isadmin;
+var isUsrLoggedIn = false;
 $.ajax({
     url: "/jsp/getloggedinuser.jsp",
     async: true,
@@ -443,6 +455,7 @@ $.ajax({
             $('#signup').html('Account');
             $('#signup').attr('href', 'account.html');
             $("a[href='register.html']").hide(); //hide all links to register
+            isUsrLoggedIn = true; //for business profile button blocking
         }else{
             console.log('User NOT logged in'); 
             $("a[href='register.html']").show(); //show all links to register

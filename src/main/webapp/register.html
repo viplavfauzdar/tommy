@@ -58,7 +58,7 @@
 
                                     <h4>Your Email</h4>
                                     <div class='form-group'>                                                    
-                                        <input class='form-control' placeholder='Your E-mail address' type='email' id="email" name="email" required>
+                                        <input class='form-control' placeholder='Your E-mail address' type='text' email="true" id="email" name="email" required remote="jsp/verifyemail.jsp">
                                         <span class='glyphicon glyphicon-remove glyphicon-ok form-control-feedback'></span>
                                     </div>
                                     <h4>Confirm Email</h4>
@@ -92,12 +92,14 @@
                                                           See FAQ for details.</div>"></i>
                                     </div>                                            
 
+                                    <br><div class="g-recaptcha" data-sitekey="6Lf-Yf8SAAAAANSFoarf_Dx_t4mC4ZRB1hVxvlye"></div>                                     
+                                    
                                     <br><input type="checkbox" id="pptosnda" name="pptosnda" value="1" required>
                                     I agree to the <a href="#X" id="lnk_pp">privacy policy</a> and <a href="#Y" id="lnk_tos">terms of service</a>
                                     <!--href jquery error from funcion.js line 39: Uncaught Error: Syntax error, unrecognized expression: [name=] * this error caused by # in href -->
-                                    <p><div class="g-recaptcha" data-sitekey="6Lf-Yf8SAAAAANSFoarf_Dx_t4mC4ZRB1hVxvlye"></div> 
-                                    <input type='submit' class='btn btn-default orange' id="btnCreateAcc" value='SIGN UP'>
-
+                                    
+                                    <br><input type='submit' class='btn btn-default orange' id="btnCreateAcc" value='SIGN UP'>
+                                    
                                 </form>                                                                                                                                
                             </div>
                         </div>

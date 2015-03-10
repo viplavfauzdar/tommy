@@ -191,6 +191,18 @@ public class UserFacadeREST extends AbstractFacade<User> {
             return null;
         }
     }
+    
+    @GET
+    @Path("verifyemail/{email}")
+    @Produces({"application/json"})//"application/xml", 
+    public boolean findByEmail1(@PathParam("email") String email) {
+        List<User> users = super.findByField("User.findByEmail", "email", email);
+        if (users.size() > 0) {
+            return true;
+        } else {
+            return false;
+        }
+    }
 
     @GET
     @Path("firstname/{firstname}")

@@ -15,43 +15,43 @@
         <h3>Only images and pdf files less than 5 MB are allowed</h3>
     </div>                            
     <div class='col-md-6 text-left'>                         
-        <div class='input-group'>
+        <div class='input-group' id="divPP">
             <h4>Profile Picture</h4>
             <h5>Please upload a profile picture</h5>  
             <div id="profilePic"></div>
         </div>                                
 
-        <div class='input-group'>
+        <div class='input-group' id="divBL">
             <h4>Business Logo</h4>
             <h5>Please upload a logo picture</h5>
             <div id="businessLogo"></div>
         </div>
 
-        <div class='input-group'>
+        <div class='input-group' id="divBP1">
             <h4>Business Picture 1</h4>
             <h5>Please upload a business picture</h5>
             <div id="businessPic1"></div>
         </div>
 
-        <div class='input-group'>
+        <div class='input-group' id="divBP2">
             <h4>Business Picture 2</h4>
             <h5>Please upload a business picture</h5>
             <div id="businessPic2"></div>
         </div>
 
-        <div class='input-group'>
+        <div class='input-group' id="divES">
             <h4>Executive Summary</h4>
             <h5>Please upload Executive Summary PDF</h5>
             <div id="execSumm"></div>
         </div>
 
-        <div class='input-group'>
+        <div class='input-group' id="divBPL">
             <h4>Business Plan</h4>
             <h5>Please upload Business Plan PDF</h5>
             <div id="businessPlan"></div>
         </div>
 
-        <div class='input-group'>
+        <div class='input-group' id="divFN">
             <h4>Financials</h4>
             <h5>Please upload Financials PDF</h5>
             <div id="financials"></div>
@@ -64,6 +64,17 @@
 <script src="javascripts/bootstrap.min.js" type="text/javascript"></script>
 
 <script>
+    
+    //hide everything except profile pic for investor
+    if($('#userType').val() === 'A' || $('#userType').val() === 'U'){
+        $('#divBL').hide();
+        $('#divBP1').hide();
+        $('#divBP2').hide();
+        $('#divES').hide();
+        $('#divBPL').hide();
+        $('#divFN').hide();
+    }
+    
     //** incase of missing pics or pics that didn't load
     $("img").error(function () {
         $(this).unbind("error").attr("src", "img/placeholder.jpg");

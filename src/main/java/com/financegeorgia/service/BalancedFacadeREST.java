@@ -7,9 +7,12 @@ package com.financegeorgia.service;
 
 import com.balancedpayments.BankAccount;
 import com.balancedpayments.Customer;
+import com.balancedpayments.Debit;
 import com.balancedpayments.errors.HTTPError;
 import com.balancedpayments.errors.NotCreated;
 import com.financegeorgia.entities.Balanced;
+import com.financegeorgia.entities.Business;
+import com.financegeorgia.entities.Investment;
 import com.financegeorgia.entities.User;
 import com.financegeorgia.utils.FGException;
 import com.financegeorgia.utils.Resources;
@@ -41,6 +44,8 @@ public class BalancedFacadeREST extends AbstractFacade<Balanced> {
     private static final Genson genson = new Genson();
     private static final Resources res = Resources.getInstance();
     private static final UserFacadeREST uf = new UserFacadeREST();
+    private static final BusinessFacadeREST bf = new BusinessFacadeREST();
+    private static final InvestmentFacadeREST ivf = new InvestmentFacadeREST();
 
     private User user = null;
     private Balanced balanced = null;
@@ -138,13 +143,33 @@ public class BalancedFacadeREST extends AbstractFacade<Balanced> {
     }
 
     @GET
-    @Path("debit/{amt}")
-    public void debit(@PathParam("amt") Integer amt) {
+    @Path("debit/{amt}/{busid}")
+    public void debit(@PathParam("amt") Integer amt, @PathParam("busid") Integer busid) {
         try {
             BankAccount bankAccount = new BankAccount(balanced.getBankAccountUri());
             Map debit = new HashMap();
-            debit.put("amount", amt);
-            bankAccount.debit(debit);
+            debit.put("amount", amt*100);
+            Debit debit1 = bankAccount.debit(debit);
+            debit1.appears_on_statement_as = "FG Investment";
+            debit1.description = "User " + balanced.getUserId() + " invested " + amt + " in business " + busid;
+            debit1.save();
+            
+            //additionally track the investment
+            Investment ivst = new Investment();
+            ivst.setUserId(balanced.getUserId());
+            ivst.setBusinessId(busid);
+            ivst.setAmountInvested(amt); //amount in cents for balanced
+            Business bus = bf.find(busid);            
+            if(bus.getCashCommPercent()!=null){
+                double comm = bus.getCashCommPercent();                
+                ivst.setCommissionTaken(new Double(comm*amt/100).intValue());
+            }
+            if(bus.getEquityOffered()!=null && bus.getTargetAmount()!=null){
+                double eo = bus.getEquityOffered();
+                double ta = bus.getTargetAmount();            
+                ivst.setEquityObtained(new Double(amt*eo/ta).intValue());
+            }
+            ivf.create1(ivst);
         } catch (HTTPError ex) {
             throw new FGException(ex);
         }

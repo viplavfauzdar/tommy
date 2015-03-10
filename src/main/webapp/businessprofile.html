@@ -71,10 +71,13 @@
                             </div>
 
                             <script>
-                                //This seems to work
+                                //This seems to work  - NOT SURE IF THIS IS NEEDDED.
+                                // this was prolly because of extra li the flex slider inserts if the jq at the bottom is used
+                                //potential sol to move getJSON to the top
                                 var hash = window.location.hash;
                                 var busId = hash.substring(hash.indexOf('/') + 1, hash.length);
-                                console.log("Bus ID: " + busId);
+                                var busIdd = busId.substring(0,busId.indexOf('#'));
+                                console.log("Bus ID: " + busIdd);
                                 var uid = busId.substring(busId.indexOf('#') + 1, busId.length);
                                 console.log("User ID: " + uid);
                                 document.getElementById("businessPic1").src = "/Uploader?action=stream&folder=" + uid + "&filename=businessPic1.jpg&t=" + Math.random();
@@ -116,7 +119,7 @@
                                     </div>
                                 </div>
                                 <p id='summary1'></p>
-                                <a class='btn btn-default invest' href='#about' style="width: 250px">Invest in this company</a>
+                                <a class='btn btn-default invest' id="ivstComp" href='#about' style="width: 250px">Invest in this company</a>
                                 <a class='btn btn-default' href='#' id="execSumm" target="_blank" style="width: 250px">Executive Summary</a>
                                 <a class='btn btn-default' href='#' id="businessPlan" target="_blank" style="width: 250px">Business Plan</a>
                                 <a class='btn btn-default' href='#' id="financials" target="_blank" style="width: 250px">Financials</a>
@@ -184,7 +187,8 @@
             loaderOn();
             $.getJSON("/rs/public/business/" + busId, function (item) {
                 loaderOff();
-                console.log(item.businessName);
+                console.log(item.userId);
+                //console.log(JSON.stringify(item));
                 $('#address').html(item.address + ', ' + item.city + ', ' + item.state + ', ' + item.zip);
                 $('#address1').html(item.address + ', ' + item.city + ', ' + item.state + ', ' + item.zip);
                 $('#businessName').html(item.businessName);
@@ -198,13 +202,14 @@
                 $('#amountInvested').autoNumeric('set', item.amountInvested);
                 $('.progress-bar').css('width', (100 * item.amountInvested / item.targetAmount) + '%');
 
-                //uid = item.userId;
+                //if(uid === null || uid === '') 
+                uid = item.userId;
 
                 //set all images & documents
-                $('#businessLogo').attr("src", "/Uploader?action=stream&folder=" + uid + "&filename=businessLogo.jpg&t=" + Math.random());
+                //$('#businessLogo').attr("src", "/Uploader?action=stream&folder=" + uid + "&filename=businessLogo.jpg&t=" + Math.random());
                 $('#businessLogo1').attr("src", "/Uploader?action=stream&folder=" + uid + "&filename=businessLogo.jpg&t=" + Math.random());
-                //$('#businessPic1').attr("src", "/Uploader?action=stream&folder=" + uid + "&filename=businessPic1.jpg&t=" + Math.random());
-                //$('#businessPic2').attr("src", "/Uploader?action=stream&folder=" + uid + "&filename=businessPic2.jpg&t=" + Math.random());
+                $('#businessPic1').attr("src", "/Uploader?action=stream&folder=" + uid + "&filename=businessPic1.jpg&t=" + Math.random());
+                $('#businessPic2').attr("src", "/Uploader?action=stream&folder=" + uid + "&filename=businessPic2.jpg&t=" + Math.random());
                 $('#execSumm').attr("href", "/Uploader?action=stream&folder=" + uid + "&filename=execSumm.pdf&t=" + Math.random());
                 $('#businessPlan').attr("href", "/Uploader?action=stream&folder=" + uid + "&filename=businessPlan.pdf&t=" + Math.random());
                 $('#financials').attr("href", "/Uploader?action=stream&folder=" + uid + "&filename=financials.pdf&t=" + Math.random());
@@ -223,23 +228,43 @@
                 //$('#busSlides').append(slider);
 
                 //web & social
-                console.log(item.ws);
-                if (item.ws != null)
+                console.log(item.fb);
+                if (item.ws !== null && item.ws !== '')
                     $('#lnkWs').attr('href', item.ws);
-                if (item.fb != null)
+                else
+                    $('#lnkWs').hide();
+                if (item.fb !== null && item.fb !== '')
                     $('#lnkFb').attr('href', item.fb);
-                if (item.tw != null)
+                else
+                    $('#lnkFb').hide();
+                if (item.tw !== null && item.tw !== '')
                     $('#lnkTw').attr('href', item.tw);
-                if (item.gp != null)
+                else
+                    $('#lnkTw').hide();
+                if (item.gp !== null && item.gp !== '')
                     $('#lnkGp').attr('href', item.gp);
-                if (item.lk != null)
+                else
+                    $('#lnkGp').hide();
+                if (item.lk !== null && item.lk !== '')
                     $('#lnkLk').attr('href', item.lk);
+                else
+                    $('#lnkLk').hide();
 
                 //causing errors in chrome something cast_sender.js
                 $('#businessVideo').attr("src", "//www.youtube.com/embed/zpOULjyy-n8?rel=0");// "/Uploader?action=stream&folder=" + uid + "&filename=financials.pdf");
 
                 //console.log($('#businessLogo').css('height'));
             });
+            
+            //Invest button functionality
+            $('#ivstComp').click(function(){
+               if(!isUsrLoggedIn){
+                   fgAlert('You need to be logged in to perform this action!');
+               }else{
+                   window.location='invest.html' + '#' + busIdd;
+               }                   
+            });
+            
 
 //            uid = 143;
 //            lid = 39;

@@ -42,7 +42,7 @@
         $.getJSON("/rs/investment/getbyme", function (data) {
             var invst = '<thead><tr><th>#<th>Business<th>Amount<th>Equity</thead>';
             var totalInvst = 0, totalEqty = 0;
-            $.each(data, function (key, value) {
+            $.each(data, function (key, value) {                
                 var businessName = '';
                 $.ajax({
                     dataType: "json",
