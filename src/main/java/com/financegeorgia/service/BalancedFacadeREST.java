@@ -13,6 +13,7 @@ import com.balancedpayments.errors.NotCreated;
 import com.financegeorgia.entities.Balanced;
 import com.financegeorgia.entities.Business;
 import com.financegeorgia.entities.Investment;
+import com.financegeorgia.entities.Location;
 import com.financegeorgia.entities.User;
 import com.financegeorgia.utils.FGException;
 import com.financegeorgia.utils.Resources;
@@ -45,10 +46,12 @@ public class BalancedFacadeREST extends AbstractFacade<Balanced> {
     private static final Resources res = Resources.getInstance();
     private static final UserFacadeREST uf = new UserFacadeREST();
     private static final BusinessFacadeREST bf = new BusinessFacadeREST();
+    private static final LocationFacadeREST lf = new LocationFacadeREST();
     private static final InvestmentFacadeREST ivf = new InvestmentFacadeREST();
 
     private User user = null;
     private Balanced balanced = null;
+    private Location loc = null;
 
     public BalancedFacadeREST(@Context HttpServletRequest request) {
         super(Balanced.class);
@@ -57,6 +60,7 @@ public class BalancedFacadeREST extends AbstractFacade<Balanced> {
 
         //user/getMe - to get logged in user and use in all methods below
         this.user = uf.getMe(request);
+        this.loc = lf.getMe(request);
         List<Balanced> listBal = null;
         if(user!=null) listBal = super.findByField("Balanced.findByUserId", "userId", user.getId());
         for(Balanced bal: listBal){
@@ -90,12 +94,13 @@ public class BalancedFacadeREST extends AbstractFacade<Balanced> {
                 //payload_customer.put("ssn_last4", "5555"); //not sure if I need it
                 payload_customer.put("email", user.getEmail());
 
-                //not sure if needed - I do. addr and dob for verfied status
-    //            Map<String, Object> payload_customer_address = new HashMap<String, Object>();
-    //            payload_customer_address.put("city", "Decatur");
-    //            payload_customer_address.put("state", "GA");
-    //            payload_customer_address.put("postal_code", "12345");
-    //            payload_customer.put("address", payload_customer_address);
+                //not sure if needed - I do. addr and dob for verfied status                
+                Map<String, Object> payload_customer_address = new HashMap<String, Object>();
+                payload_customer_address.put("line1", loc.getAddress());
+                payload_customer_address.put("city", loc.getCity());
+                payload_customer_address.put("state", loc.getState());
+                payload_customer_address.put("postal_code", loc.getZip());
+                payload_customer.put("address", payload_customer_address);
                 customer = new Customer(payload_customer);
                 customer.save();
             }else{

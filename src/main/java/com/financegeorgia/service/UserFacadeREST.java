@@ -78,8 +78,15 @@ public class UserFacadeREST extends AbstractFacade<User> {
             request.login(email, pass);
             request.getSession().setAttribute("userId", user.getId());
             //return user; //shouldn't return anything
-            SendMail sm = new SendMail();
-            sm.send(email, "", "Thank you for signing up for Finance Georgia!", "Thank you for signing up for Finance Georgia!");
+            
+            // send email but trap exception as we don't want to stop signup process if 
+            // something went wrong with smtp server
+            try{
+                SendMail sm = new SendMail();
+                sm.send(email, "", "Thank you for signing up for Finance Georgia!", "Thank you for signing up for Finance Georgia!");
+            }catch(Exception ee){
+                logger.error(ee);
+            }
         } catch (ServletException ex) {
             throw new FGException(ex);
         }

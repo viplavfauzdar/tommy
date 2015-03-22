@@ -1,0 +1,38 @@
+<!DOCTYPE html>
+<!--
+To change this license header, choose License Headers in Project Properties.
+To change this template file, choose Tools | Templates
+and open the template in the editor.
+-->
+<html>
+    <head>
+        <title>TODO supply a title</title>
+        <meta charset="UTF-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+        <script src="//ajax.googleapis.com/ajax/libs/jquery/2.1.1/jquery.min.js"></script>  
+        <script src='https://cdnjs.cloudflare.com/ajax/libs/jquery-validate/1.13.1/jquery.validate.min.js'></script>
+        <script src='https://cdnjs.cloudflare.com/ajax/libs/jquery-validate/1.13.1/additional-methods.min.js'></script>
+    </head>
+    <body>
+        <form name="f1" id="f1">
+            <input type="text" id="email" name="email" remote="../jsp/verifyemail.jsp">
+        </form>
+        
+        <script>
+            $("#f1").validate({
+                rules: {
+                    email: {
+                        required: true,
+                        email: true,
+                        //remote: "../jsp/verifyemail.jsp"
+                    }
+                },
+                messages: {
+                    email: {
+                        remote: jQuery.validator.format('{0} is already in use, please choose a different name')
+                    }
+                }
+            });
+        </script>
+    </body>
+</html>

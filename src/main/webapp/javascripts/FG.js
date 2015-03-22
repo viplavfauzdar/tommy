@@ -240,15 +240,7 @@ $("#btnUser").click(function (e) {
 
 formValidation('#frmSignup');
 // below doesnt do shit. inline works.
-//$("#frmSignup").validate({
-//    rules: {
-//        email: {
-//            required: true,
-//            email: true,           
-//            remote: "jsp/verifyemail.jsp"
-//        }
-//    }
-//});
+
 //$("#btnCreateAcc").click(function (e) {
 $("#frmSignup").submit(function (e) {
     e.preventDefault();
@@ -280,7 +272,7 @@ $("#frmSignup").submit(function (e) {
                 });
             } else {
                 //fgAlert("Please verify reCAPTCHA!");
-                fgDialog("reCaptcha", "Please verify reCAPTCHA!");
+                fgDialog("reCaptcha", "Please check reCAPTCHA!");
                 //$('#divReCaptcha').effect('shake', 500);    
                 loaderOff();
             }
