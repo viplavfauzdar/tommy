@@ -63,7 +63,7 @@
                                     </div>
                                     <h4>Confirm Email</h4>
                                     <div class='form-group'>                                                    
-                                        <input class='form-control' placeholder='Your E-mail address' type='email' equalTo='#email'>
+                                        <input class='form-control' placeholder='Your E-mail address' type='email' equalTo='#email' required>
                                         <span class='glyphicon glyphicon-remove form-control-feedback'></span>
                                     </div>
 
@@ -75,7 +75,7 @@
 
                                     <h4>Confirm Password</h4>
                                     <div class='form-group'>                                        
-                                        <input class='form-control' placeholder='Your Password' type='password' equalTo='#password1'>   
+                                        <input class='form-control' placeholder='Your Password' type='password' equalTo='#password1' required>   
                                         <span class='glyphicon glyphicon-remove form-control-feedback'></span>
                                     </div>
 
@@ -94,9 +94,10 @@
 
                                     <br><div class="g-recaptcha" data-sitekey="6Lf-Yf8SAAAAANSFoarf_Dx_t4mC4ZRB1hVxvlye"></div>                                     
 
-                                    <br><input type="checkbox" id="pptosnda" name="pptosnda" value="1" required>
+                                    <div><input type="checkbox" id="pptosnda" name="pptosnda" value="1" required>
                                     I agree to the <a href="#X" id="lnk_pp">privacy policy</a> and <a href="#Y" id="lnk_tos">terms of service</a>                                    
-
+                                    <span class='glyphicon glyphicon-remove form-control-feedback'></span></div>
+                                    
                                     <br><input type='submit' class='btn btn-default orange' id="btnCreateAcc" value='SIGN UP'>
 
                                 </form>                                                                                                                                

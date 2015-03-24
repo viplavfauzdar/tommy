@@ -1,10 +1,15 @@
 <!-- User -->
+<style>
+    th, td{
+        text-align:right
+    }    
+</style>
 <div class='container-fluid'>
-    <div class='col-md-3 text-left'>
+    <div class='col-md-4 text-left'>
         <h2>Investment Info</h2>
         <p id='invstDesc'></p>        
     </div>
-    <div class='col-md-6 text-left'>
+    <div class='col-md-8 text-left'>
         <div class='row-fluid'>
             <table class="table table-condensed  table-striped" id='divInvst'>
 
@@ -16,7 +21,7 @@
     if ($('#userType').val() === 'B') {
         $('#invstDesc').html('Here is a look at Investments made in your business');
         $.getJSON("/rs/investment/getinme", function (data) {
-            var invst = '<thead><tr><th>#<th>Investor<th>Amount<th>Equity</thead>';
+            var invst = '<thead><tr><th>#<th>Date<th>Investor<th>Amount ($)<th>Equity</thead>';
             var totalInvst = 0, totalEqty = 0;
             $.each(data, function (key, value) {
                 var firstName = '', lastName = '';
@@ -29,37 +34,40 @@
                         lastName = res.lastName;
                     }
                 });
-                invst = invst + '<tr><td>' + (key + 1) + '<td>' + lastName + ', ' + firstName + '<td>' + value.amountInvested + '<td>' + value.equityObtained;
+                invst = invst + '<tr><td>' + (key + 1) + '<td>' + value.investmentDate + '<td>' + lastName + ', ' + firstName + '<td>' + $.number(value.amountInvested) + '<td>' + $.number(value.equityObtained);
                 totalInvst = totalInvst + value.amountInvested;
                 totalEqty = totalEqty + value.equityObtained;
             });
-            invst = invst + '<tfooter><tr><td>' + '<td><td><b>' + totalInvst + '<td><b>' + totalEqty;
+            invst = invst + '<tfooter><tr><td><td><td><td><b>' + $.number(totalInvst) + '<td><b>' + $.number(totalEqty);
             $('#divInvst').html(invst);
             console.log(JSON.stringify(data));
         });
     } else {
         $('#invstDesc').html('Here is a look at investments made by you');
         $.getJSON("/rs/investment/getbyme", function (data) {
-            var invst = '<thead><tr><th>#<th>Business<th>Amount<th>Equity</thead>';
+            var invst = '<thead><tr><th>#<th>Date<th>Business<th>Amount ($)<th>Equity</thead>';
             var totalInvst = 0, totalEqty = 0;
             $.each(data, function (key, value) {                
                 var businessName = '';
+                var userid = ''; //need to construct the correct url
                 $.ajax({
                     dataType: "json",
                     url: '/rs/public/business/' + value.businessId,
                     async: false,
                     success: function(res){
                         businessName = res.businessName;
+                        userid = res.userId;
                     }
                 });
-                invst = invst + '<tr><td>' + (key + 1) + '<td style="text-transform: capitalize"><a href="businessprofile.html#/' + value.businessId + '" target="_blank" >' + businessName + '</a><td>' + value.amountInvested + '<td>' + value.equityObtained;
+                invst = invst + '<tr><td>' + (key + 1) + '<td>' + value.investmentDate + '<td style="text-transform: capitalize"><a href="businessprofile.html#/' + value.businessId + '#' + userid + '" target="_blank" >' + businessName + '</a><td>' + $.number(value.amountInvested) + '<td>' + $.number(value.equityObtained);
                 totalInvst = totalInvst + value.amountInvested;
                 totalEqty = totalEqty + value.equityObtained;
             });
-            invst = invst + '<tfooter><tr><td>' + '<td><td><b>' + totalInvst + '<td><b>' + totalEqty;
+            invst = invst + '<tfooter><tr><td><td><td><td><b>' + $.number(totalInvst) + '<td><b>' + $.number(totalEqty);
             $('#divInvst').html(invst);
             console.log(JSON.stringify(data));
         });
     }
+        
 </script>
 

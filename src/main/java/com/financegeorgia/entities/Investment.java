@@ -5,7 +5,9 @@
  */
 package com.financegeorgia.entities;
 
+import com.owlike.genson.annotation.JsonDateFormat;
 import java.io.Serializable;
+import java.util.Date;
 import javax.persistence.Basic;
 import javax.persistence.Column;
 import javax.persistence.Entity;
@@ -15,6 +17,8 @@ import javax.persistence.Id;
 import javax.persistence.NamedQueries;
 import javax.persistence.NamedQuery;
 import javax.persistence.Table;
+import javax.persistence.Temporal;
+import javax.persistence.TemporalType;
 import javax.xml.bind.annotation.XmlRootElement;
 
 /**
@@ -54,6 +58,9 @@ public class Investment implements Serializable {
     private Integer equityObtained;
     @Column(name = "commission_taken")
     private Integer commissionTaken;
+    @Column(name = "investment_date")
+    @Temporal(TemporalType.TIMESTAMP)
+    private Date investmentDate;
 
     public Investment() {
     }
@@ -109,6 +116,16 @@ public class Investment implements Serializable {
     public void setCommissionTaken(Integer commissionTaken) {
         this.commissionTaken = commissionTaken;
     }
+    
+    //@JsonDateFormat("MM/dd/yyyy hh:mm:ss a")
+    @JsonDateFormat("MMM dd, yyyy hh:mm a")
+    public Date getInvestmentDate() {
+        return investmentDate;
+    }
+
+    public void setInvestmentDate(Date investmentDate) {
+        this.investmentDate = investmentDate;
+    }
 
     @Override
     public int hashCode() {
@@ -132,7 +149,11 @@ public class Investment implements Serializable {
 
     @Override
     public String toString() {
-        return "com.financegeorgia.entities.Investment[ id=" + id + " ]";
+        return "Investment{" + "id=" + id + ", userId=" + userId + ", businessId=" + businessId + ", amountInvested=" + amountInvested + ", equityObtained=" + equityObtained + ", commissionTaken=" + commissionTaken + ", investmentDate=" + investmentDate + '}';
     }
+
+    
+    
+    
     
 }

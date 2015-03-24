@@ -101,7 +101,7 @@ public class BusinessFacadeREST extends AbstractFacade<Business> {
 
     @GET
     @Path("{id}")
-    @Produces({"application/xml", "application/json"})
+    @Produces({"application/json"})
     public Business find(@PathParam("id") Integer id) {
         return super.find(id);
     }

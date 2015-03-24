@@ -52,7 +52,7 @@ var formValidation = function (formName) {
             $(element).parent().addClass('has-error has-feedback');
             $(element).next('span').removeClass('glyphicon-ok');
             $(element).next('span').addClass('glyphicon-remove');
-            element.focus();
+            //element.focus();
         }, unhighlight: function (element, errClass) {
             $(element).popover('hide');
             //$(element).next('span').html('');
@@ -99,10 +99,58 @@ var fgDialog = function (title, msg) {
     $('#fgDialog').remove();
     $('body').append('<div id="fgDialog"></div>');
     $("#fgDialog").attr('title', title);
-    $("#fgDialog").html('<h5>' + msg + '</h5>');
+    $("#fgDialog").html(msg);
     $("#fgDialog").dialog({
         modal: true
     });
+};
+
+var fgConfirm = function (title, msg, okfunc) {
+    $('#fgConfirm').remove();
+    $('body').append('<div id="fgConfirm"></div>');
+    $("#fgConfirm").attr('title', title);
+    $("#fgConfirm").html('<h5>' + msg + '</h5>');
+    $("#fgConfirm").dialog({
+        modal: true,
+        buttons: {
+        Ok: function() {
+          $( this ).dialog( "close" );
+          okfunc();
+        },
+        Cancel: function() {
+          $( this ).dialog( "close" );
+        }
+      }
+    });
+};
+
+var fgConfirmBS = function(header, content, confFunc){
+    $("#fgConfirmBS").remove();
+    if ($("#fgConfirmBS").length === 0) {
+        var markup = '<div id="fgConfirmBS" class="modal fade" tabindex="-1" role="dialog">' +
+                '<div class="modal-dialog">' +
+                '<div class="modal-content">' +
+                '<div class="modal-header">';
+         markup = markup + '<button type="button" class="close" data-dismiss="modal">×</button>' +
+                    '<h3>' + header + '</h3>' +
+                    '</div>';
+        markup = markup + '<div class="modal-body">' +
+                    '<div id="mdlCont" >' + content + '</div>' +
+                    '</div>';
+        markup = markup + '<div class="modal-footer">' +
+//                '<button class="btn btn-default" data-dismiss="modal">Close</button>' +
+                '<button class="btn btn-default orange" data-dismiss="modal" id="btnConfCont">Continue</button>' +
+                '</div>';
+        markup = markup +
+                '</div>' +
+                '</div>' +
+                '</div>';
+        $('body').append(markup);        
+        $('#fgConfirmBS').modal({show:true});
+        $('#btnConfCont').click(function(){
+           confFunc(); 
+        });
+    }
 };
 
 var fgAlert = function (msg) {
