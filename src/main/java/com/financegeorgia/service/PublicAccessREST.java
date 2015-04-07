@@ -95,6 +95,8 @@ public class PublicAccessREST {
 
     /**
      * Get user info
+     * @param id
+     * @return 
      */
     @GET
     @Path("user/{id}")

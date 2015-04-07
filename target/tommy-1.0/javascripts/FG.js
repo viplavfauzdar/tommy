@@ -341,6 +341,9 @@ var loadData = function (url) {
         if (res != null) {
             $.each(res, function (key, value) {
                 $('#' + key).val(value);
+                if(key==='userType') localStorage.setItem("userType",value);
+                if(url.match('/rs/user/') && key === 'id') localStorage.setItem("userId",value);
+                if(url.match('/rs/business/') && key === 'id') localStorage.setItem("busId",value);
             });
             console.log('User Type: ' + $('#userType').val());
             if ($('#userType').val() !== 'B') {
@@ -410,7 +413,7 @@ $('#tabBank').click(function (e) {
     $('#tabBank').tab('show');
 });
 
-var hash = window.location.hash;
+var hash = window.location.hash; //for admin crap. not sure i need it
 var userId = hash.substring(hash.indexOf('/') + 1, hash.length);
 function loadUser() {
     console.log('loading user');
@@ -583,5 +586,13 @@ $('#lnkPassReset').click(function () {
             });\n\
         </script>", null, null, false);
 });
+
+$('[data-toggle="tooltip"]').tooltip();
+
+$('.savebtn').tooltip({
+    title: 'tool tip via js',
+    placement: 'right'
+});
+
 
 

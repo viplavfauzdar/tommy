@@ -130,7 +130,7 @@
             }            
 
         </style>
-
+        
     </head>
     <body>
 
@@ -159,8 +159,11 @@
                     <div class='col-md-12 text-left padding-20 row'>
                         <h2>My Account</h2>
                         <h4>Please use the tabs below to add or update your account information</h4>
+                        <h4>You can use these links to view your profile - 
+                        <span id='userprof'></span>   
+                            <span id='busprof'></span></h4> 
                     </div> 
-                    <div style="margin: 100px"></div> <!-- for adding space -->
+                    <div style="margin: 150px"></div> <!-- for adding space -->
 <!--                </div>
                 <div class='row-fluid'>-->
                     <div class="tabbable tabs-left">
@@ -195,8 +198,9 @@
             <div id='copyright'></div>
             
         </div>
-         <script src="//ajax.googleapis.com/ajax/libs/jquery/2.1.1/jquery.min.js"></script>
-          <!-- Bootstrap JS -->
+        <!-- JQuery -->
+        <script src="//ajax.googleapis.com/ajax/libs/jquery/2.1.1/jquery.min.js"></script>
+        <!-- Bootstrap JS -->
         <script src="javascripts/bootstrap.min.js" type="text/javascript"></script>
         <!-- JQ UI -->
         <script src="//ajax.googleapis.com/ajax/libs/jqueryui/1.11.2/jquery-ui.min.js"></script>
@@ -223,7 +227,14 @@
         <script src="javascripts/jquery.number.min.js" type="text/javascript"></script>
         <script>
             //load user form & data
-            loadUser();            
+            loadUser();   
+            
+            //create profile linkes
+            $('#userprof').html('<a href="userprofile.html#/' + localStorage.getItem("userId") + ' ">user profile</a>');
+            if(localStorage.getItem("userType") === 'B')
+                $('#busprof').html('<a href="businessprofile.html#/' + localStorage.getItem("busId") + '#' + localStorage.getItem("userId") + ' ">Business profile</a>');
+            else
+                $('#busprof').hide();
         </script>  
 
     </body>

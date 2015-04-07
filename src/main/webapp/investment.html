@@ -34,7 +34,7 @@
                         lastName = res.lastName;
                     }
                 });
-                invst = invst + '<tr><td>' + (key + 1) + '<td>' + value.investmentDate + '<td>' + lastName + ', ' + firstName + '<td>' + $.number(value.amountInvested) + '<td>' + $.number(value.equityObtained);
+                invst = invst + '<tr><td>' + (key + 1) + '<td>' + value.investmentDate + '<td><a href="userprofile.html#/' + value.userId + '" target="_blank">' + lastName + ', ' + firstName + '</a><td>' + $.number(value.amountInvested) + '<td>' + $.number(value.equityObtained);
                 totalInvst = totalInvst + value.amountInvested;
                 totalEqty = totalEqty + value.equityObtained;
             });

@@ -3,7 +3,7 @@
     <div class='col-md-3 text-left'>
         <h2>Personal Info</h2>
         <p>Please use the edit button below to add or update your information.</p>
-        <button class="btn btn-default editbtn">Edit</button>
+        <button class="btn btn-default editbtn" data-toggle="tooltip" data-placement="right" title="Click to Edit !">Edit</button>
         <button class='btn btn-default orange savebtn' id="btnSaveUser" name="btnSaveUser">Save</button>
         <button class="btn btn-default" disabled id="btnChgPass">Change Password</button>
     </div>
@@ -76,7 +76,7 @@
                                 changeMonth: true,
                                 minDate: "-100Y",
                                 maxDate: "-21Y",
-                                yearRange: '1940:2013'
+                                yearRange: '1900:2013'
                             });//.datepicker("setDate", "01/01/1980");
                         </script>
                     </div>
@@ -102,13 +102,21 @@
 
             <div class='input-group'>
                 <h4>Tell us about yourself</h4>
-                <textarea class="form-control" name="aboutMe" id="aboutMe" cols="40" rows="5"></textarea>
+                <textarea class="form-control" name="aboutMe" id="aboutMe" cols="40" rows="5" maxlength="200"></textarea>
                 <span class='glyphicon glyphicon-remove form-control-feedback'></span>
             </div>            
         </form>                                
     </div>
 </div>
-<script>
+<!-- Bootstrap JS. NEED HERE FOR THE DARN TOOLTIP TO WORK. THERE HAS TO BE A BETTER WAY -->
+<script src="javascripts/bootstrap.min.js" type="text/javascript"></script>
+<script>         
+    $('.savebtn').tooltip({
+        title: 'Click to Save!',
+        placement: 'right'
+    });
+
+    $('[data-toggle="tooltip"]').tooltip();
     $(".savebtn").hide();
     $("input").attr("disabled", "disabled");
     $("select").attr("disabled", "disabled");
@@ -126,8 +134,8 @@
         e.preventDefault();
         if ($("#frmUser").valid()) {
             if ($('#userType').val() !== 'B') {
-                $('#tabBus').remove();//.hide();
-                $('#tabContBus').remove();//.hide();
+                $('#tabBus').hide();//.remove();//.hide(); //removing cause it to not appear on pressing back button
+                $('#tabContBus').hide();//.remove();//.hide(); //since during testing I am logging in as both investor and business
             }
             saveData("/rs/user/updateme", "#frmUser", "PUT");
             $(".savebtn").hide();
@@ -141,5 +149,14 @@
         // fgAlert('blah blah blah blah blah blah!!!');
         fgModal("modal-sm", "", "", "changepassword.html", null, false);
     });
+    
+    //seeing some gotchas to adding this
+    if(localStorage.getItem("userType")!=='B'){
+        $('#tabBus').remove();
+        $('#tabContBus').remove();
+    }
+    //hitting back form another page was making the user type default to business
+    //below prevents that
+    $('#userType').val(localStorage.getItem("userType"));
 </script>
 

@@ -1,7 +1,7 @@
 <!DOCTYPE html>
 <html>
     <head>
-        <title>Finance Georgia | Business Profile</title>
+        <title>Finance Georgia | User Profile</title>
         <meta charset='utf-8'>
         <meta content='Description' name='description'>
         <meta content='1 day' name='revisit-after'>
@@ -42,7 +42,7 @@
             <section class='grey' id='team'>
                 <div class='row-fluid'>
                     <div class='col-md-12 text-left padding-20'>
-                        <h2 id='businessName'></h2>
+                        <h2 id='userName'></h2>
                         <!--                        <h4>Slogan or quick overview of company</h4>-->
                         <!--                        <p id='summary1'></p>-->
                         <h4 id='address'></h4>
@@ -60,43 +60,60 @@
                                     <div class='flexslider' id='flexslider2'>
                                         <ul class='slides'>
                                             <li class='slide dark'>
-                                                <img style='width:663px;height:400px' id='businessPic1'>
+                                                <img style='width:663px;height:400px' id='profilePic'>
                                             </li>
-                                            <li class='slide dark'>
+<!--                                            <li class='slide dark'>
                                                 <img style='width:663px;height:400px' id='businessPic2'>
-                                            </li>
+                                            </li>-->
                                         </ul>
                                     </div>
                                 </section>
                             </div>
+                            
+<!--      Need to look at this                      <div class='img'>
+                                <div class='social'>
+                                    <div class='icons'>
+                                        <img src="Assets/Finance-Georgia-Logo.png" alt=""/>
+                                    </div>
+
+                                </div>
+                                <img style='width:320px;height:250px' id="profilePic">
+                            </div>-->
 
                             <script>
                                 //This seems to work  - NOT SURE IF THIS IS NEEDDED.
                                 // this was prolly because of extra li the flex slider inserts if the jq at the bottom is used
                                 //potential sol to move getJSON to the top
                                 var hash = window.location.hash;
-                                var busId = hash.substring(hash.indexOf('/') + 1, hash.length);
-                                var busIdd = busId.substring(0,busId.indexOf('#'));
-                                console.log("Bus ID: " + busIdd);
-                                var uid = busId.substring(busId.indexOf('#') + 1, busId.length);
-                                console.log("User ID: " + uid);
-                                document.getElementById("businessPic1").src = "/Uploader?action=stream&folder=" + uid + "&filename=businessPic1.jpg&t=" + Math.random();
-                                document.getElementById("businessPic2").src = "/Uploader?action=stream&folder=" + uid + "&filename=businessPic2.jpg&t=" + Math.random();
+                                var uid = hash.substring(hash.indexOf('/') + 1, hash.length);
+//                                var busIdd = busId.substring(0,busId.indexOf('#'));
+//                                console.log("Bus ID: " + busIdd);
+//                                var uid = busId.substring(busId.indexOf('#') + 1, busId.length);
+//                                console.log("User ID: " + uid);
+                                document.getElementById("profilePic").src = "/Uploader?action=stream&folder=" + uid + "&filename=profilePic.jpg&t=" + Math.random();
+//                                document.getElementById("businessPic2").src = "/Uploader?action=stream&folder=" + uid + "&filename=businessPic2.jpg&t=" + Math.random();
                             </script>
 
                         </div>
-                        <h2>Company Details</h2>
-                        <h4>Company Summary</h4>
-                        <p id='summary'></p>
-                        <h4>Description</h4>
-                        <p id='description'></p>
+                        <h2>About Me</h2>
+<!--                        <h4>User Summary</h4>-->
+                        <p id='aboutMe'></p>
+<!--                        <h4>Description</h4>
+                        <p id='description'></p>-->
 
                         <!-- 16:9 aspect ratio -->
-                        <div class="embed-responsive embed-responsive-16by9">
+<!--                        <div class="embed-responsive embed-responsive-16by9">
                             <iframe class="embed-responsive-item" src="" id="businessVideo"></iframe>
-                        </div>
+                        </div>-->
+
+                        <!-- social -->
+                        <a class='icon fa fa-globe' id='lnkWs' target='_blank' href='#'></a>
+                        <a class='icon fa fa-facebook-square' id='lnkFb' target='_blank' href='#'></a>
+                        <a class='icon fa fa-twitter-square' id='lnkTw' target='_blank' href='#'></a>
+                        <a class='icon fa fa-google-plus-square' id='lnkGp' target='_blank' href='#'></a>
+                        <a class='icon fa fa-linkedin-square' id='lnkLk' target='_blank' href='#'></a>
                     </div>
-                    <div class='col-md-4 col-xs-6'>
+<!--                    <div class='col-md-4 col-xs-6'>
                         <div class='member'>
                             <div class='img'>
                                 <div class='social'>
@@ -112,7 +129,7 @@
                                 <h5 id='address1'></h5>
                                 <h6><span class="target">TARGET: <b id='targetAmount'></b></span><span class="pledged"> PLEDGED: <b id='amountInvested'></b></span></h6>
                                 <div class='progress'>
-                                    <div aria-valuemax='100' aria-valuemin='0'  class='progress-bar progress-bar-success' role='progressbar'> <!-- aria-valuenow='50' cause to default to 50%-->
+                                    <div aria-valuemax='100' aria-valuemin='0'  class='progress-bar progress-bar-success' role='progressbar'>  aria-valuenow='50' cause to default to 50%
                                         <span class='sr-only'>
                                             40% Funded
                                         </span>
@@ -130,7 +147,7 @@
                                 <a class='icon fa fa-linkedin-square' id='lnkLk' target='_blank' href='#'></a>
                             </div>
                         </div>
-                    </div>
+                    </div>-->
 
 
                 </div>
@@ -182,37 +199,39 @@
                 $(this).unbind("error").attr("href", "img/placeholder.jpg");
             });
 
-
+//            var hash = window.location.hash;
+//            console.log(hash);
+//            var usrId = hash.substring(hash.indexOf('/') + 1, hash.length);
 
             loaderOn();
-            $.getJSON("/rs/public/business/" + busId, function (item) {
+            $.getJSON("/rs/public/user/" + uid, function (item) {
                 loaderOff();
                 console.log(item.userId);
                 //console.log(JSON.stringify(item));
                 $('#address').html(item.address + ', ' + item.city + ', ' + item.state + ', ' + item.zip);
-                $('#address1').html(item.address + ', ' + item.city + ', ' + item.state + ', ' + item.zip);
-                $('#businessName').html(item.businessName);
-                $('#businessName1').html(item.businessName);
-                $('#summary').html(item.summary.replace(/(?:\r\n|\r|\n)/g, '<br />'));
-                $('#summary1').html(item.summary.replace(/(?:\r\n|\r|\n)/g, '<br />'));
-                $('#description').html(item.description.replace(/(?:\r\n|\r|\n)/g, '<br />'));
-                $('#targetAmount').autoNumeric('init', {aSign: '$', mDec: 0});
-                $('#targetAmount').autoNumeric('set', item.targetAmount);
-                $('#amountInvested').autoNumeric('init', {aSign: '$', mDec: 0});
-                $('#amountInvested').autoNumeric('set', item.amountInvested);
-                $('.progress-bar').css('width', (100 * item.amountInvested / item.targetAmount) + '%');
+                //$('#address1').html(item.address + ', ' + item.city + ', ' + item.state + ', ' + item.zip);
+                $('#userName').html(item.firstName + ' ' + item.mi + ' ' + item.lastName);
+                //$('#businessName1').html(item.businessName);
+                $('#aboutMe').html(item.aboutMe);
+//                $('#summary1').html(item.summary.replace(/(?:\r\n|\r|\n)/g, '<br />'));
+//                $('#description').html(item.description.replace(/(?:\r\n|\r|\n)/g, '<br />'));
+//                $('#targetAmount').autoNumeric('init', {aSign: '$', mDec: 0});
+//                $('#targetAmount').autoNumeric('set', item.targetAmount);
+//                $('#amountInvested').autoNumeric('init', {aSign: '$', mDec: 0});
+//                $('#amountInvested').autoNumeric('set', item.amountInvested);
+//                $('.progress-bar').css('width', (100 * item.amountInvested / item.targetAmount) + '%');
 
                 //if(uid === null || uid === '') 
-                uid = item.userId;
+                //uid = item.userId;
 
                 //set all images & documents
                 //$('#businessLogo').attr("src", "/Uploader?action=stream&folder=" + uid + "&filename=businessLogo.jpg&t=" + Math.random());
-                $('#businessLogo1').attr("src", "/Uploader?action=stream&folder=" + uid + "&filename=businessLogo.jpg&t=" + Math.random());
-                $('#businessPic1').attr("src", "/Uploader?action=stream&folder=" + uid + "&filename=businessPic1.jpg&t=" + Math.random());
-                $('#businessPic2').attr("src", "/Uploader?action=stream&folder=" + uid + "&filename=businessPic2.jpg&t=" + Math.random());
-                $('#execSumm').attr("href", "/Uploader?action=stream&folder=" + uid + "&filename=execSumm.pdf&t=" + Math.random());
-                $('#businessPlan').attr("href", "/Uploader?action=stream&folder=" + uid + "&filename=businessPlan.pdf&t=" + Math.random());
-                $('#financials').attr("href", "/Uploader?action=stream&folder=" + uid + "&filename=financials.pdf&t=" + Math.random());
+                $('#profilePic').attr("src", "/Uploader?action=stream&folder=" + uid + "&filename=profilePic.jpg&t=" + Math.random());
+//                $('#businessPic1').attr("src", "/Uploader?action=stream&folder=" + uid + "&filename=businessPic1.jpg&t=" + Math.random());
+//                $('#businessPic2').attr("src", "/Uploader?action=stream&folder=" + uid + "&filename=businessPic2.jpg&t=" + Math.random());
+//                $('#execSumm').attr("href", "/Uploader?action=stream&folder=" + uid + "&filename=execSumm.pdf&t=" + Math.random());
+//                $('#businessPlan').attr("href", "/Uploader?action=stream&folder=" + uid + "&filename=businessPlan.pdf&t=" + Math.random());
+//                $('#financials').attr("href", "/Uploader?action=stream&folder=" + uid + "&filename=financials.pdf&t=" + Math.random());
 
                 //below doesn't work either - doesn't even load images
 //                slider = "<div class='flexslider' id='flexslider2'>" + 

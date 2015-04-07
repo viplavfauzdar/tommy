@@ -35,12 +35,13 @@ and open the template in the editor.
                     <label>Account Type</label>
                     <input class='form-control' type="text" id="ba-acctype" autocomplete="off" value="checking" />
                 </div>
-                <a id="ba-submit" class="btn btn-danger">Tokenize</a>
+                <a id="ba-submit" class="btn btn-danger" data-toggle="tooltip" data-placement="right" title="Tooltip on right">Tokenize</a>
             </form>
 
         </div>
 
         <script>
+            $("[data-toggle=tooltip]").tooltip();
             function handleResponse(response) {
                 console.log(JSON.stringify(response));
                 if (response.status_code === 201) {

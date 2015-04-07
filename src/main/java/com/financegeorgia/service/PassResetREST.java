@@ -8,9 +8,11 @@ package com.financegeorgia.service;
 import com.financegeorgia.entities.User;
 import com.financegeorgia.utils.SaltedHash;
 import com.financegeorgia.utils.SendMail;
+import java.io.IOException;
 import java.math.BigInteger;
 import java.security.SecureRandom;
 import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
 import javax.ws.rs.core.Context;
 import javax.ws.rs.core.UriInfo;
 import javax.ws.rs.PathParam;
@@ -70,7 +72,7 @@ public class PassResetREST {
     @GET
     @Path("{email}/{sesskey}")
     @Produces({"text/html"})
-    public String verify(@PathParam("email") String email, @PathParam("sesskey") String sesskey) {
+    public String verify(@PathParam("email") String email, @PathParam("sesskey") String sesskey, @Context HttpServletResponse response) throws IOException {
         if(logger.isDebugEnabled()) logger.debug("Verifying password reset request!");
         UserFacadeREST uf = new UserFacadeREST();
         User user = uf.findByEmail(email);
@@ -79,14 +81,18 @@ public class PassResetREST {
             return "Invalid email provided!";
         } else {
             if(sesskey.equals(user.getPassresetKey())){
-                String newpass = new BigInteger(130, new SecureRandom()).toString(32);
+                String newpass = new BigInteger(50, new SecureRandom()).toString(32);
                 user.setPassword1(sh.get_SHA_512_SecurePassword(newpass));
                 uf.edit(user);
                 SendMail sm = new SendMail();
                 sm.send(email, "", "Password reset!", "Here is your new password - " + newpass +"<p>It is advisable to change your password once you log in!");
                 if(logger.isDebugEnabled()) logger.debug("Password reset and email sent to " + email);
-                //should doa response send redirect below to send a formatter HTML
-                return "<h3>An email with a new password has been sent!</h3> <h4>It is advisable to reset your password once you log in.</h4>";
+                //important - remove the pass reset key from table so the same email link can't be used again
+                user.setPassresetKey(null);
+                uf.edit(user);
+                //should do a response send redirect below to send a formatted HTML
+                response.sendRedirect("/presetres.html");
+                return "<h3>An email with a new password has been sent!</h3> <h4>It is advisable to reset your password once you log in.</h4><h4><a href='/account.html'>Click here</a> to login if you have your new password!";
             }else{
                 if(logger.isDebugEnabled()) logger.debug("invalid session key!");
                 return "invalid session key!";
