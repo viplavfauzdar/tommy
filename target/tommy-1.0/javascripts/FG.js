@@ -170,7 +170,8 @@ var fgAlert = function (msg) {
 //    });
     $('#fgalert').show();
     //diabled for QA since testers can't grab screen shots
-    //$('#fgalert').addClass("in").fadeOut(10000);//.effect('shake', 500);//.hide(5000);
+    $('#fgalert').addClass("in").fadeOut(20000);//.effect('shake', 500);//
+    //$('#fgalert').hide(5000);
 };
 
 fgModal = function (size, header, content, url, footer, isdoc) {
@@ -333,16 +334,19 @@ $("#frmSignup").submit(function (e) {
     }
 });
 
+var usrObj, locObj; //for bank tab prevention
 var loadData = function (url) {
     loaderOn();
     $.getJSON(url, function (res) {
         loaderOff();
         console.log(JSON.stringify(res));
+        if(url.match('/rs/user/')) usrObj = res; // localStorage.setItem("usrObj",res);
+        if(url.match('/rs/location/')) locObj = res; //localStorage.setItem("locObj",res);
         if (res != null) {
             $.each(res, function (key, value) {
                 $('#' + key).val(value);
                 if(key==='userType') localStorage.setItem("userType",value);
-                if(url.match('/rs/user/') && key === 'id') localStorage.setItem("userId",value);
+                if(url.match('/rs/user/') && key === 'id') localStorage.setItem("userId",value); 
                 if(url.match('/rs/business/') && key === 'id') localStorage.setItem("busId",value);
             });
             console.log('User Type: ' + $('#userType').val());
@@ -378,7 +382,7 @@ $('#tabFile').click(function (e) {
 });
 
 $('#tabBus').click(function (e) {
-    e.preventDefault();
+    e.preventDefault();    
     $("#tabContBus").load("business2.html?t=" + Math.random());
     loadData("/rs/business/getme");
     $('#tabBus').tab('show');
@@ -409,6 +413,17 @@ $('#tabSrch').click(function (e) {
 
 $('#tabBank').click(function (e) {
     e.preventDefault();
+    //usrObj = localStorage.getItem("usrObj");
+    //locObj = localStorage.getItem("locObj");
+    if(usrObj.firstName==null || usrObj.firstName==''){
+        fgAlert('Please fill out user and location information before setting up bank account!');
+        return;
+    }
+    //below disabled cause it forces loc tab click even when loc info is there
+//    if(locObj==null || locObj.address==null || locObj.address==''){
+//        fgAlert('Please fill out user and location information before setting up bank account!');
+//        return;
+//    } 
     $("#tabContBank").load("bankaccount.html?t=" + Math.random());
     $('#tabBank').tab('show');
 });

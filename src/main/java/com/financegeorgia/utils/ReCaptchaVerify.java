@@ -66,7 +66,7 @@ public class ReCaptchaVerify extends HttpServlet {
         } catch (Exception e) {
             throw new FGException(e);
         } finally {
-            buf.close();
+            if(buf!=null) buf.close();
             //out.close();            
         }
     }
