@@ -215,7 +215,14 @@ public class UserFacadeREST extends AbstractFacade<User> {
     @Path("firstname/{firstname}")
     @Produces({"application/json"})//"application/xml", 
     public List<User> findAllByFirstname(@PathParam("firstname") String firstname) {
-        return super.findByField("User.findAllByFirstname", "firstname", firstname);
+        return super.findByAllByField("User.findAllByFirstName", "firstName", firstname);
+    }
+    
+    @GET
+    @Path("search/{keyword}")
+    @Produces({"application/json"})//"application/xml", 
+    public List<User> search(@PathParam("keyword") String keyword) {
+        return super.findByAllByField("User.search", "keyword", keyword);
     }
 
 //    @GET

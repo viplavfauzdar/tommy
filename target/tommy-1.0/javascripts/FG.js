@@ -52,7 +52,7 @@ var formValidation = function (formName) {
             $(element).parent().addClass('has-error has-feedback');
             $(element).next('span').removeClass('glyphicon-ok');
             $(element).next('span').addClass('glyphicon-remove');
-            //element.focus();
+            //$(element).focus();
         }, unhighlight: function (element, errClass) {
             $(element).popover('hide');
             //$(element).next('span').html('');
@@ -60,6 +60,7 @@ var formValidation = function (formName) {
             $(element).parent().addClass('has-success has-feedback');
             $(element).next('span').removeClass('glyphicon-remove');
             $(element).next('span').addClass('glyphicon-ok');
+            //element.blur();
         }
     });
 };
@@ -113,30 +114,30 @@ var fgConfirm = function (title, msg, okfunc) {
     $("#fgConfirm").dialog({
         modal: true,
         buttons: {
-        Ok: function() {
-          $( this ).dialog( "close" );
-          okfunc();
-        },
-        Cancel: function() {
-          $( this ).dialog( "close" );
+            Ok: function () {
+                $(this).dialog("close");
+                okfunc();
+            },
+            Cancel: function () {
+                $(this).dialog("close");
+            }
         }
-      }
     });
 };
 
-var fgConfirmBS = function(header, content, confFunc){
+var fgConfirmBS = function (header, content, confFunc) {
     $("#fgConfirmBS").remove();
     if ($("#fgConfirmBS").length === 0) {
         var markup = '<div id="fgConfirmBS" class="modal fade" tabindex="-1" role="dialog">' +
                 '<div class="modal-dialog">' +
                 '<div class="modal-content">' +
                 '<div class="modal-header">';
-         markup = markup + '<button type="button" class="close" data-dismiss="modal">×</button>' +
-                    '<h3>' + header + '</h3>' +
-                    '</div>';
+        markup = markup + '<button type="button" class="close" data-dismiss="modal">×</button>' +
+                '<h3>' + header + '</h3>' +
+                '</div>';
         markup = markup + '<div class="modal-body">' +
-                    '<div id="mdlCont" >' + content + '</div>' +
-                    '</div>';
+                '<div id="mdlCont" >' + content + '</div>' +
+                '</div>';
         markup = markup + '<div class="modal-footer">' +
 //                '<button class="btn btn-default" data-dismiss="modal">Close</button>' +
                 '<button class="btn btn-default orange" data-dismiss="modal" id="btnConfCont">Continue</button>' +
@@ -145,10 +146,10 @@ var fgConfirmBS = function(header, content, confFunc){
                 '</div>' +
                 '</div>' +
                 '</div>';
-        $('body').append(markup);        
-        $('#fgConfirmBS').modal({show:true});
-        $('#btnConfCont').click(function(){
-           confFunc(); 
+        $('body').append(markup);
+        $('#fgConfirmBS').modal({show: true});
+        $('#btnConfCont').click(function () {
+            confFunc();
         });
     }
 };
@@ -198,7 +199,7 @@ fgModal = function (size, header, content, url, footer, isdoc) {
         }
         if (footer != null) {
             markup = markup + '<div class="modal-footer">' +
-                    '<button class="btn" data-dismiss="modal">Close</button>' +
+                    '<button class="btn btn-default" data-dismiss="modal">Close</button>' +
                     '</div>';
         }
         markup = markup +
@@ -213,6 +214,10 @@ fgModal = function (size, header, content, url, footer, isdoc) {
         backdrop: 'static',
         keyboard: false
     });
+};
+
+fgDialogBS = function (msg) {
+    fgModal("modal-md", "", msg, null, true, false);
 };
 
 $.fn.serializeObject = function () {
@@ -335,28 +340,50 @@ $("#frmSignup").submit(function (e) {
 });
 
 var usrObj, locObj; //for bank tab prevention
+userType = sessionStorage.getItem('userType');
 var loadData = function (url) {
     loaderOn();
     $.getJSON(url, function (res) {
         loaderOff();
-        console.log(JSON.stringify(res));
-        if(url.match('/rs/user/')) usrObj = res; // localStorage.setItem("usrObj",res);
-        if(url.match('/rs/location/')) locObj = res; //localStorage.setItem("locObj",res);
-        if (res != null) {
+        //console.log(JSON.stringify(res));
+        if (url.match('/rs/user/'))
+            usrObj = res; // sessionStorage.setItem("usrObj",res);
+        if (url.match('/rs/location/'))
+            locObj = res; //sessionStorage.setItem("locObj",res);
+        if (res !== null) {
             $.each(res, function (key, value) {
                 $('#' + key).val(value);
-                if(key==='userType') localStorage.setItem("userType",value);
-                if(url.match('/rs/user/') && key === 'id') localStorage.setItem("userId",value); 
-                if(url.match('/rs/business/') && key === 'id') localStorage.setItem("busId",value);
+                if (key === 'userType') {
+                    sessionStorage.setItem("userType", value);
+                    userType = value;
+                }
+                if (url.match('/rs/user/') && key === 'id')
+                    sessionStorage.setItem("userId", value);
+                if (url.match('/rs/business/') && key === 'id')
+                    sessionStorage.setItem("busId", value);
             });
             console.log('User Type: ' + $('#userType').val());
-            if ($('#userType').val() !== 'B') {
+            if ($('#userType').val() !== "B") {
+                //if( userType !== 'B') {
                 $('#tabBus').remove();//.hide();
                 $('#tabContBus').remove();//.hide();
-            }
+            }//else{
+            //    $('#tabBus').show();
+            //    $('#tabContBus').show();                
+            //}
         }
+        createProfileLinks();
     });
 };
+
+function createProfileLinks() {
+    //create profile linkes
+    $('#userprof').html('<a href="userprofile.html#/' + sessionStorage.getItem("userId") + ' ">user profile</a>');
+    if (sessionStorage.getItem("userType") === 'B' && sessionStorage.getItem("busId")!==null)
+        $('#busprof').html(' | <a href="businessprofile.html#/' + sessionStorage.getItem("busId") + '#' + sessionStorage.getItem("userId") + ' ">Business profile</a>');
+    else
+        $('#busprof').hide();
+}
 
 $('#tabLegal').click(function (e) {
     loaderOn();
@@ -382,7 +409,7 @@ $('#tabFile').click(function (e) {
 });
 
 $('#tabBus').click(function (e) {
-    e.preventDefault();    
+    e.preventDefault();
     $("#tabContBus").load("business2.html?t=" + Math.random());
     loadData("/rs/business/getme");
     $('#tabBus').tab('show');
@@ -413,10 +440,10 @@ $('#tabSrch').click(function (e) {
 
 $('#tabBank').click(function (e) {
     e.preventDefault();
-    //usrObj = localStorage.getItem("usrObj");
-    //locObj = localStorage.getItem("locObj");
-    if(usrObj.firstName==null || usrObj.firstName==''){
-        fgAlert('Please fill out user and location information before setting up bank account!');
+    //usrObj = sessionStorage.getItem("usrObj");
+    //locObj = sessionStorage.getItem("locObj");
+    if (usrObj.firstName == null || usrObj.firstName == '') {
+        fgDialogBS('<h3>Please fill out user and location information before setting up bank account!</h3>');
         return;
     }
     //below disabled cause it forces loc tab click even when loc info is there
@@ -509,17 +536,19 @@ $.ajax({
             //user if logged in
             console.log('User logged in - Changing nav bar');
             $('#signin').html('Sign Out');
-            $('#signin').attr('href', '/jsp/logout.jsp');
+            $('#signin').attr('href', 'logout.html');
             $('#signup').html('Account');
             $('#signup').attr('href', 'account.html');
             $("a[href='register.html']").hide(); //hide all links to register
             isUsrLoggedIn = true; //for business profile button blocking
-        }else{
-            console.log('User NOT logged in'); 
+        } else {
+            console.log('User NOT logged in');
             $("a[href='register.html']").show(); //show all links to register
         }
     }
 });
+
+
 
 var portfolioWidget = function (element, item, businessId) {
     var trgAmt = $.number(item.targetAmount);

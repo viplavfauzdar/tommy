@@ -1,0 +1,89 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <title>Finance Georgia | Sign Out</title>
+        <meta charset='utf-8'>
+        <meta content='Description' name='description'>
+        <meta content='1 day' name='revisit-after'>
+        <meta content='width=device-width, initial-scale=1' name='viewport'>
+        <link href="stylesheets/font-awesome.min.css" media="screen" rel="stylesheet" type="text/css" />
+        <link href="stylesheets/bootstrap.min.css" media="screen" rel="stylesheet" type="text/css" />
+        <link href='//fonts.googleapis.com/css?family=Lato:100,300,400,300italic,400italic,700,700italic,900' rel='stylesheet'>
+        <link href='//fonts.googleapis.com/css?family=Raleway:400,600,700' rel='stylesheet'>
+        <link href="stylesheets/style.css" media="screen" rel="stylesheet" type="text/css" />
+
+    </head>
+    <body>
+
+
+        <div class='wrapper'>
+            <!-- Topbar -->
+<!--            <div class='top' data-spy='affix' id='navbar'></div>-->
+            
+            <section class='jumbotronsmall' id='home'>
+                <div class='flexslider' id='flexslider'>
+                    <ul class='slides'>
+
+                        <li class='slide light'>
+                            <img alt='' class='fs fo' src='Assets/Slider/slider-09.jpg'>
+
+                        </li>
+                    </ul>
+                </div>
+            </section>            
+
+            <!-- Registration -->
+            <section id='about'>
+                <div class='row-fluid'>
+                    <div class='col-md-12 text-center'>
+                        <div class='row'>
+                            <div class='col-md-3 text-left'>
+                                <h2>Thank You</h2>
+                            </div>
+                            <div class='col-md-9 text-left'>
+                                <h4>Thanks you for using Finance Georgia. Please <a href='account.html'>click here</a> to log back in.</h4>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </section>
+
+            <!-- Footer -->
+            <div id='footer'></div>
+
+            <!-- Copyright -->
+            <div id='copyright'></div>
+
+        </div>
+        <!-- jQuery -->    
+        <script src="//ajax.googleapis.com/ajax/libs/jquery/2.1.1/jquery.min.js"></script>
+        <!-- JQuery validation -->
+        <script src='https://cdnjs.cloudflare.com/ajax/libs/jquery-validate/1.13.1/jquery.validate.min.js'></script>
+        <script src='https://cdnjs.cloudflare.com/ajax/libs/jquery-validate/1.13.1/additional-methods.min.js'></script>
+        <!-- Easing -->
+        <script src="javascripts/jquery.easing.1.3.js" type="text/javascript"></script>
+        <!-- Flexslider -->
+        <script src="javascripts/jquery.flexslider.js" type="text/javascript"></script>
+        <!-- Bootstrap JS -->
+        <script src="javascripts/bootstrap.min.js" type="text/javascript"></script>
+        <!-- Waypoints  -->
+        <script src="javascripts/waypoints.min.js" type="text/javascript"></script>        
+        <!-- Functions -->
+        <script src="javascripts/functions.js" type="text/javascript"></script>
+        <!-- JQuery.Number -->
+        <script src="javascripts/jquery.number.min.js" type="text/javascript"></script>
+        <!-- FG --> 
+        <script src="javascripts/FG.js" type="text/javascript"></script>  
+
+        <script>
+            $('#signin').html('Sign In'); //doesn't work, so I took the nav bar out
+            //clear session or local storage when logging out
+            sessionStorage.clear();
+            localStorage.clear();
+            //kill server session
+            $.get('/jsp/logout.jsp');            
+        </script>
+
+    </body>
+</html>
+
