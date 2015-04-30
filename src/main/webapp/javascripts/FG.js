@@ -218,6 +218,7 @@ fgModal = function (size, header, content, url, footer, isdoc) {
 
 fgDialogBS = function (msg) {
     fgModal("modal-md", "", msg, null, true, false);
+    //fgDialog('Error',msg);
 };
 
 $.fn.serializeObject = function () {
@@ -326,8 +327,8 @@ $("#frmSignup").submit(function (e) {
                 });
             } else {
                 //fgAlert("Please verify reCAPTCHA!");
-                fgDialog("reCaptcha", "Please check reCAPTCHA!");
-                //$('#divReCaptcha').effect('shake', 500);    
+                $('#divReCaptcha').effect('shake', 500);    
+                fgDialogBS("<h3>Please check reCAPTCHA!</h3>");                                
                 loaderOff();
             }
             //log user in now
@@ -365,12 +366,12 @@ var loadData = function (url) {
             console.log('User Type: ' + $('#userType').val());
             if ($('#userType').val() !== "B") {
                 //if( userType !== 'B') {
-                $('#tabBus').remove();//.hide();
-                $('#tabContBus').remove();//.hide();
-            }//else{
-            //    $('#tabBus').show();
-            //    $('#tabContBus').show();                
-            //}
+                $('#tabBus').hide();//remove();//.hide();
+                $('#tabContBus').hide();//.remove();//.hide();
+            }else{
+                $('#tabBus').show();
+                //$('#tabContBus').show();//don't need it - displays loading...                
+            }
         }
         createProfileLinks();
     });
@@ -378,9 +379,10 @@ var loadData = function (url) {
 
 function createProfileLinks() {
     //create profile linkes
-    $('#userprof').html('<a href="userprofile.html#/' + sessionStorage.getItem("userId") + ' ">user profile</a>');
+    if($('#firstName').val()!=='' && $('#address').val()!=='')
+        $('#userprof').html('<a class="btn btn-default" target="_blank" href="userprofile.html#/' + sessionStorage.getItem("userId") + ' ">user profile</a>');
     if (sessionStorage.getItem("userType") === 'B' && sessionStorage.getItem("busId")!==null)
-        $('#busprof').html(' | <a href="businessprofile.html#/' + sessionStorage.getItem("busId") + '#' + sessionStorage.getItem("userId") + ' ">Business profile</a>');
+        $('#busprof').html('<a class="btn btn-default" target="_blank" href="businessprofile.html#/' + sessionStorage.getItem("busId") + '#' + sessionStorage.getItem("userId") + ' ">Business profile</a>');
     else
         $('#busprof').hide();
 }
@@ -628,7 +630,7 @@ $('#lnkPassReset').click(function () {
                     });\n\
                 }\n\
             });\n\
-        </script>", null, null, false);
+        </script>", null, false, false);
 });
 
 $('[data-toggle="tooltip"]').tooltip();

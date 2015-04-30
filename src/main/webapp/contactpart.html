@@ -169,7 +169,7 @@
                 console.log(data);
                 //if(res.match('Message sent!'))
                 if(data.match('Message sent'))
-                    fgAlert('Thank you for contacting Finance Georgia.<br>Someone will get in touch with you soon.');
+                    fgDialogBS('<h4>Thank you for contacting Finance Georgia. Someone will get in touch with you soon</h4>');
                 else    
                     fgAlert(data);
                 loaderOff();

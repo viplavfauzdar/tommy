@@ -1,11 +1,17 @@
 <!-- User -->
+<style>
+    a:link  {
+        text-decoration: none;
+    }
+</style>
 <div class='container-fluid'>
     <div class='col-md-3 text-left'>
         <h2>Personal Info</h2>
         <p>Please use the edit button below to add or update your information.</p>
         <button class="btn btn-default editbtn" data-toggle="tooltip" data-placement="right" title="Click to Edit !">Edit</button>
         <button class='btn btn-default orange savebtn' id="btnSaveUser" name="btnSaveUser">Save</button>
-        <button class="btn btn-default" disabled id="btnChgPass">Change Password</button>        
+        <button class="btn btn-default" disabled id="btnChgPass">Change Password</button>   
+        <span id="userprof"></span>
     </div>
     <div class='col-md-6 text-left'>
         <!-- FIRST ROW -->
@@ -33,24 +39,7 @@
                     </div>
                 </div>
             </div>
-            <!-- END FIRST ROW -->
-            <!-- second ROW -->
-            <!--        <div class="row">
-                        <div class="col-md-3">
-                            <div class='input-group'>
-                                <h4>Your Email</h4>
-                                <input class='form-control' placeholder='E-mail Address' id="email" name="email" type='text'><br>
-                                <span class='glyphicon glyphicon-remove form-control-feedback'></span>
-                            </div>
-                        </div>
-                        <div class="col-md-3">
-                            <div class='input-group'>
-                                <h4>Confirm Email</h4>
-                                <input class='form-control' placeholder='Confirm E-mail' type='text'><br>
-                                <span class='glyphicon glyphicon-remove form-control-feedback'></span>
-                            </div>
-                        </div>
-                    </div>-->
+            <!-- END FIRST ROW -->           
             <!-- END ROW -->
             <div class="row">
                 <div class="col-md-12">
@@ -82,23 +71,7 @@
                     </div>
                 </div>
             </div>
-            <!-- END ROW -->
-            <!--        <div class="row">
-                        <div class="col-md-3">
-                            <div class='input-group'>
-                                <h4>Your Password</h4>
-                                <input class='form-control' placeholder='Your Password' id="password1" name="password1" type='password'><br>
-                                <span class='glyphicon glyphicon-remove form-control-feedback'></span>
-                            </div>
-                        </div>
-                        <div class="col-md-3">
-                            <div class='input-group'>
-                                <h4>Confirm Password</h4>
-                                <input class='form-control' placeholder='Your Password' type='password'><br>
-                                <span class='glyphicon glyphicon-remove form-control-feedback'></span>
-                            </div>
-                        </div>
-                    </div>-->
+            <!-- END ROW -->           
             <div class="row">
                 <div class="col-md-12">
                     <h4>Tell us about yourself</h4>
@@ -163,5 +136,6 @@
     //hitting back form another page was making the user type default to business
     //below prevents that
     $('#userType').val(sessionStorage.getItem("userType"));
+    
 </script>
 

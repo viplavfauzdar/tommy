@@ -5,6 +5,7 @@
         <p>Please use the edit button below to add or update your information.</p>
         <button class="btn btn-default editbtn">Edit</button>
         <button class='btn btn-default orange savebtn' id="btnSaveBusiness" name="btnSaveBusiness" >Save</button>
+        <span id="busprof"></span>
     </div>
     <div class='col-md-6'>    
         <form action='#' class='row' id='frmBusiness' name='frmBusiness'>
@@ -24,12 +25,12 @@
                     <textarea class="form-control" placeholder='About Your Company' id="description" name="description" rows="15" cols="100" minlength="10" maxlength="4000" required></textarea>
                     <span class='glyphicon glyphicon-remove form-control-feedback'></span>
                 </div>
-                <h4>Amount You Want to Raise</h4>
+                <h4>Amount You Want to Raise (USD)</h4>
                 <div class='col-md-6 input-group'>                    
                     <input class='form-control' placeholder='Target Amount' id="targetAmount" name="targetAmount" type='text'>
                     <span class='glyphicon glyphicon-remove form-control-feedback'></span>
                 </div>
-                <h4>Equity You Are Offering</h4>
+                <h4>Equity You Are Offering (Shares)</h4>
                 <div class='col-md-6 input-group'>                    
                     <input class='form-control' placeholder='Equity Offered' id="equityOffered" name="equityOffered" type='text'>
                     <span class='glyphicon glyphicon-remove form-control-feedback'></span>

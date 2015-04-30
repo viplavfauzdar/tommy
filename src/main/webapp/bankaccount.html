@@ -176,7 +176,7 @@
             });
         } else {
             loaderOff();
-            fgAlert(response.errors[0].description);
+            fgDialogBS('<h3>' + response.errors[0].description + '</h3>');
         }
     }
 

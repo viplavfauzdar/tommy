@@ -258,8 +258,8 @@
             
             //Invest button functionality
             $('#ivstComp').click(function(){
-               if(!isUsrLoggedIn){
-                   fgAlert('You need to be logged in to perform this action!');
+               if(!isUsrLoggedIn || sessionStorage.getItem('userType')=='B'){
+                   fgDialogBS('<h4>You need to be logged in as an investor to perform this action!</h4>');
                }else{
                    window.location='invest.html' + '#' + busIdd;
                }                   
