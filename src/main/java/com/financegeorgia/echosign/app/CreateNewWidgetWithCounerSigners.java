@@ -53,7 +53,7 @@ public class CreateNewWidgetWithCounerSigners {
   // Name to be given to the file after uploading it.
   // TODO: Specify a file name of choice, ensuring that its name consists only of characters in the ASCII character set (given this basic
   // sample implementation).
-  private static final String uploadedFileName = "UploadedSample.pdf";
+  private static String uploadedFileName = "UploadedSample.pdf";
   
   // Name to be given to the file containing form fields.
   // TODO: Specify a file name of choice, ensuring that its name consists only of characters in the ASCII character set (given this basic
@@ -74,6 +74,7 @@ public class CreateNewWidgetWithCounerSigners {
   
   public void setDocName(String docName){
       this.docName = docName;
+      this.uploadedFileName = docName;
   }
   
   public void setCallbackURL(String callbackURL){
