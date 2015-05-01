@@ -79,7 +79,7 @@
         <script>
             $('#signin').html('Sign In'); //doesn't work, so I took the nav bar out
             //clear session or local storage when logging out
-            sessionStorage.clear();
+            localStorage.clear();
             localStorage.clear();
             //kill server session
             $.get('/jsp/logout.jsp');            

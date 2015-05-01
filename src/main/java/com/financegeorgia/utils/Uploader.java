@@ -176,7 +176,7 @@ public class Uploader extends HttpServlet {
     }
 
     private void stream(HttpServletResponse response) {
-        response.setContentType("application/pdf");
+        if(filename.toLowerCase().contains("pdf")) response.setContentType("application/pdf");
         FileInputStream fin = null;
         OutputStream out = null;
         File file = new File(path + filesep + filename);

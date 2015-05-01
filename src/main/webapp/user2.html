@@ -129,13 +129,13 @@
     //seeing some gotchas to adding this - 
     //this is causing the business tab to be always hidden unless page refreshed.
     //prolly because the session data is not yet set till after the page loads.
-//    if(sessionStorage.getItem("userType")!=='B'){
+//    if(localStorage.getItem("userType")!=='B'){
 //        $('#tabBus').remove();
 //        $('#tabContBus').remove();
 //    }
     //hitting back form another page was making the user type default to business
     //below prevents that
-    $('#userType').val(sessionStorage.getItem("userType"));
+    $('#userType').val(localStorage.getItem("userType"));
     
 </script>
 

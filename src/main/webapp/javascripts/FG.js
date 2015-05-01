@@ -18,7 +18,7 @@ $(document).ajaxError(function (event, jqxhr, settings, exception) {
     console.log(JSON.stringify(exception));
     if (jqxhr.responseText !== "") {
         fgAlert(jqxhr.responseText);//,"error");
-        //fgDialog("Ajax Error",jqxhr.responseText);    
+        //fgDialog("Ajax Error",jqxhr.responseText);
     }
     loaderOff();
 });
@@ -37,7 +37,7 @@ $(document).ajaxComplete(function (event, xhr, settings) {
 });
 
 /**
- * Form validation. Should call explicitly 
+ * Form validation. Should call explicitly
  * */
 var formValidation = function (formName) {
     $(formName).validate({
@@ -239,7 +239,7 @@ $.fn.serializeObject = function () {
 
 //obsolete
 $("#btnUser").click(function (e) {
-//$('form').submit(function (e) {      
+//$('form').submit(function (e) {
     e.preventDefault();
     register("/rs/user/create", "location.html", null);
     $("#userId").val(userId);
@@ -327,8 +327,8 @@ $("#frmSignup").submit(function (e) {
                 });
             } else {
                 //fgAlert("Please verify reCAPTCHA!");
-                $('#divReCaptcha').effect('shake', 500);    
-                fgDialogBS("<h3>Please check reCAPTCHA!</h3>");                                
+                $('#divReCaptcha').effect('shake', 500);
+                fgDialogBS("<h3>Please check reCAPTCHA!</h3>");
                 loaderOff();
             }
             //log user in now
@@ -341,36 +341,36 @@ $("#frmSignup").submit(function (e) {
 });
 
 var usrObj, locObj; //for bank tab prevention
-userType = sessionStorage.getItem('userType');
+userType = localStorage.getItem('userType');
 var loadData = function (url) {
     loaderOn();
     $.getJSON(url, function (res) {
         loaderOff();
         //console.log(JSON.stringify(res));
         if (url.match('/rs/user/'))
-            usrObj = res; // sessionStorage.setItem("usrObj",res);
+            usrObj = res; // localStorage.setItem("usrObj",res);
         if (url.match('/rs/location/'))
-            locObj = res; //sessionStorage.setItem("locObj",res);
+            locObj = res; //localStorage.setItem("locObj",res);
         if (res !== null) {
             $.each(res, function (key, value) {
                 $('#' + key).val(value);
                 if (key === 'userType') {
-                    sessionStorage.setItem("userType", value);
+                    localStorage.setItem("userType", value);
                     userType = value;
                 }
                 if (url.match('/rs/user/') && key === 'id')
-                    sessionStorage.setItem("userId", value);
+                    localStorage.setItem("userId", value);
                 if (url.match('/rs/business/') && key === 'id')
-                    sessionStorage.setItem("busId", value);
+                    localStorage.setItem("busId", value);
             });
             console.log('User Type: ' + $('#userType').val());
             if ($('#userType').val() !== "B") {
                 //if( userType !== 'B') {
                 $('#tabBus').hide();//remove();//.hide();
                 $('#tabContBus').hide();//.remove();//.hide();
-            }else{
+            } else {
                 $('#tabBus').show();
-                //$('#tabContBus').show();//don't need it - displays loading...                
+                //$('#tabContBus').show();//don't need it - displays loading...
             }
         }
         createProfileLinks();
@@ -379,10 +379,10 @@ var loadData = function (url) {
 
 function createProfileLinks() {
     //create profile linkes
-    if($('#firstName').val()!=='' && $('#address').val()!=='')
-        $('#userprof').html('<a class="btn btn-default" target="_blank" href="userprofile.html#/' + sessionStorage.getItem("userId") + ' ">user profile</a>');
-    if (sessionStorage.getItem("userType") === 'B' && sessionStorage.getItem("busId")!==null)
-        $('#busprof').html('<a class="btn btn-default" target="_blank" href="businessprofile.html#/' + sessionStorage.getItem("busId") + '#' + sessionStorage.getItem("userId") + ' ">Business profile</a>');
+    if ($('#firstName').val() !== '' && $('#address').val() !== '')
+        $('#userprof').html('<a class="btn btn-default" target="_blank" href="userprofile.html#/' + localStorage.getItem("userId") + ' ">user profile</a>');
+    if (localStorage.getItem("userType") === 'B' && localStorage.getItem("busId") !== null)
+        $('#busprof').html('<a class="btn btn-default" target="_blank" href="businessprofile.html#/' + localStorage.getItem("busId") + '#' + localStorage.getItem("userId") + ' ">Business profile</a>');
     else
         $('#busprof').hide();
 }
@@ -442,8 +442,8 @@ $('#tabSrch').click(function (e) {
 
 $('#tabBank').click(function (e) {
     e.preventDefault();
-    //usrObj = sessionStorage.getItem("usrObj");
-    //locObj = sessionStorage.getItem("locObj");
+    //usrObj = localStorage.getItem("usrObj");
+    //locObj = localStorage.getItem("locObj");
     if (usrObj.firstName == null || usrObj.firstName == '') {
         fgDialogBS('<h3>Please fill out user and location information before setting up bank account!</h3>');
         return;
@@ -452,7 +452,7 @@ $('#tabBank').click(function (e) {
 //    if(locObj==null || locObj.address==null || locObj.address==''){
 //        fgAlert('Please fill out user and location information before setting up bank account!');
 //        return;
-//    } 
+//    }
     $("#tabContBank").load("bankaccount.html?t=" + Math.random());
     $('#tabBank').tab('show');
 });
@@ -494,7 +494,7 @@ var saveData = function (url, formId, method) {
             //fgAlert("Saved!");
             console.log(result);
             //console.log(status);
-            //console.log(xhr.getAllResponseHeaders());//.getResponseHeader('Set-Cookie'));            
+            //console.log(xhr.getAllResponseHeaders());//.getResponseHeader('Set-Cookie'));
         } //error: function (err) { not needed since I have the ajaxError handler
 //            loaderOff();
 //            fgAlert(JSON.stringify(err));
@@ -546,9 +546,30 @@ $.ajax({
         } else {
             console.log('User NOT logged in');
             $("a[href='register.html']").show(); //show all links to register
+            localStorage.clear();
+            localStorage.clear();
         }
     }
 });
+
+//addtional signin/out check cause of issue in qa
+if (localStorage.getItem("userId") === null) {
+    $('#signin').html('Sign In');
+    $('#signin').attr('href', 'account.html');
+    $('#signup').html('Sign Up');
+    $('#signup').attr('href', 'register.html');
+    $("a[href='register.html']").show(); //hide all links to register
+}
+
+//doesn't work - will fire even on leaving page
+//window.onbeforeunload = function () {
+//    alert('are you sure');
+//    //clear session or local storage when logging out
+//    localStorage.clear();
+//    localStorage.clear();
+//    //kill server session
+//    $.get('/jsp/logout.jsp');
+//}
 
 
 
@@ -584,7 +605,7 @@ var portfolioWidget = function (element, item, businessId) {
 var loadPortfolio = function (element, toLoad) {
     loaderOn();
     $.getJSON("/rs/public/all", function (data) {
-        //                $.each(data, function (i, item) {  
+        //                $.each(data, function (i, item) {
         //                    console.log(item);
         //                    portfolioWidget(item,item.businessId);
         //                    if(i===busId) return;
@@ -602,7 +623,7 @@ var loadPortfolio = function (element, toLoad) {
 };
 
 /**
- * Load portofolio 
+ * Load portofolio
  * */
 loadPortfolio('#invPortfolio');
 
@@ -616,7 +637,7 @@ loadPortfolio('#portfolioIndex', 3);
  * */
 $('#lnkPassReset').click(function () {
 //   $.get('/rs/resetpass/viplav.fauzdar@gmail.com',function(data){
-//      alert(data); 
+//      alert(data);
 //   });
     fgModal("modal-sm", "", "<h4>Please provide your email</h4> <input class='form-control' type=text id=txtPassReset> <button data-dismiss='modal' class='btn btn-default orange' id=btnPassReset>Reset Password</button>\n\
         <script>\n\
