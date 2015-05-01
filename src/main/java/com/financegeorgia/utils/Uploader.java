@@ -13,7 +13,6 @@ import java.io.InputStream;
 import java.io.OutputStream;
 import java.util.Iterator;
 import java.util.List;
-import java.util.logging.Level;
 
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
@@ -205,7 +204,7 @@ public class Uploader extends HttpServlet {
                         fin.close();
                     }
                     if (out != null) {
-                        out.close();
+                        //out.close();
                     }
                 } catch (IOException ex) {
                     throw new FGException(ex);

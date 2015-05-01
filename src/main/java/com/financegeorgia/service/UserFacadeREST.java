@@ -75,7 +75,7 @@ public class UserFacadeREST extends AbstractFacade<User> {
             logger.info("Adding audit record.." + audit.toString());
             af.create1(audit, request);
             //log user in now
-            request.login(email, pass);
+            request.login(email, pass); //plain password cause server.xml has SHA-512 in datasourcerealm
             request.getSession().setAttribute("userId", user.getId());
             //return user; //shouldn't return anything
             
