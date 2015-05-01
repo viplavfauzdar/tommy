@@ -83,7 +83,7 @@
         <web-resource-collection>
             <web-resource-name>Protected Area</web-resource-name>
             <!-- Define the context-relative URL(s) to be protected -->
-<!--            <url-pattern>/rs/*</url-pattern>-->
+            <!--            <url-pattern>/rs/*</url-pattern>-->
             <url-pattern>/admin.html</url-pattern>
             <!-- If you list http methods, only those methods are protected -->
             <http-method>DELETE</http-method>
@@ -152,7 +152,24 @@
             <!-- Anyone with one of the listed roles may access this area -->
             <!--            <role-name>admin</role-name>            -->
         </auth-constraint>
-    </security-constraint>                
+    </security-constraint> 
+    
+    <security-constraint>
+        <web-resource-collection>
+            <web-resource-name>Finance Georgia</web-resource-name>
+            <url-pattern>/index.html</url-pattern>
+            <http-method>GET</http-method>
+            <http-method>POST</http-method>
+            <http-method>PUT</http-method>
+            <http-method>DELETE</http-method>
+        </web-resource-collection>
+<!--        <auth-constraint>
+            <role-name>All Authenticated</role-name>
+        </auth-constraint>-->
+        <user-data-constraint>
+            <transport-guarantee>CONFIDENTIAL</transport-guarantee>
+        </user-data-constraint>
+    </security-constraint>               
     
     <!-- Security roles referenced by this web application -->
     <security-role>
@@ -175,7 +192,7 @@
     
     
     <error-page>
-<!--        <error-code>500</error-code> DOESN'T DO ANYTHING. ERROR 500 still going to Tomcat error 500 page.
+        <!--        <error-code>500</error-code> DOESN'T DO ANYTHING. ERROR 500 still going to Tomcat error 500 page.
         <location>/error.jsp</location>
         <exception-type>java.lang.Throwable</exception-type> 
         <location>/error.jsp</location>-->

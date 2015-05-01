@@ -176,6 +176,7 @@ public class Uploader extends HttpServlet {
     }
 
     private void stream(HttpServletResponse response) {
+        response.setContentType("application/pdf");
         FileInputStream fin = null;
         OutputStream out = null;
         File file = new File(path + filesep + filename);
@@ -204,7 +205,7 @@ public class Uploader extends HttpServlet {
                         fin.close();
                     }
                     if (out != null) {
-                        //out.close();
+                        out.close();
                     }
                 } catch (IOException ex) {
                     throw new FGException(ex);

@@ -7,7 +7,7 @@
         OutputStream out1 = null;
         File file = new File("/var/lib/openshift/549e56b25973cab96c000042/app-root/data/FG/42/execSumm.pdf");
         if (!file.exists()) {
-            out.println("Sending placeholder image");
+            System.out.println("Sending placeholder image");
             try {
                 //file = new File("/img/placeholder.png");
                 response.sendRedirect("/img/placeholder.png");
