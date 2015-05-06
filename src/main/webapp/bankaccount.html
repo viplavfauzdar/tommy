@@ -45,7 +45,7 @@
 
     <div class="col-md-4 text-left" id="showAcc" style="display:none">
         <h3>Account Information</h3>
-        <h4>Name on the Account: <span id="dispnameonacc"></span></h4>
+        <h4>Name: <span id="dispnameonacc"></span></h4>
         <h4>Routing Number: <span id="disproutnum"></span></h4>
         <h4>Account Number: <span  id="dispacctnum"></span></h4>
         <h4>Account Type: <span  id="dispacctype"></span></h4>
@@ -101,12 +101,16 @@
     getMyAcc();
     
     $("#btnDelBank").click(function () {
+        fgConfirmBS('','<h3>Are you sure you want to delete the account?</h3>', delConfirm);
+    });
+    
+    var delConfirm = function(){    
         loaderOn();
         $.ajax({
             method: 'DELETE',
             url: '/rs/balanced',
             success: function () {
-                fgAlert('Account deleted!');
+                fgDialogBS('<h3>Account deleted!</h3>');
                 $('#addAcc').show();
                 $('#showAcc').hide();                
                 $('.delbtn').hide();
@@ -116,10 +120,11 @@
                 $("select").attr("disabled", "disabled");
                 $("input").attr("value", "");
                 verified = false;
+                newacc = true;
                 loaderOff();
             }
         });
-    });
+    };
 
     $(".routnum").mask("999999999");
     //$("#accnum").mask("(999) 999-9999");    
@@ -203,7 +208,7 @@
                 fgAlert(resp.description);
                 verified = false;
             }else{
-                fgAlert('Your account has been verified!');
+                fgDialogBS('<h3>Thank you. Your account has been verified!</h3>');
                 $('#verifyAcc').hide();
                 $('.delbtn').hide();
                 verified = true;

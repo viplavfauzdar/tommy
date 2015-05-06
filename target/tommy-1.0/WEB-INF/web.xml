@@ -155,17 +155,9 @@
     </security-constraint> 
     
     <security-constraint>
-        <web-resource-collection>
-            <web-resource-name>Finance Georgia</web-resource-name>
-            <url-pattern>/index.html</url-pattern>
-            <http-method>GET</http-method>
-            <http-method>POST</http-method>
-            <http-method>PUT</http-method>
-            <http-method>DELETE</http-method>
+        <web-resource-collection>            
+            <url-pattern>/*</url-pattern>
         </web-resource-collection>
-<!--        <auth-constraint>
-            <role-name>All Authenticated</role-name>
-        </auth-constraint>-->
         <user-data-constraint>
             <transport-guarantee>CONFIDENTIAL</transport-guarantee>
         </user-data-constraint>

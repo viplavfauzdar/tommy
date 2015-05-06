@@ -251,20 +251,23 @@
                     $('#lnkLk').hide();
 
                 //causing errors in chrome something cast_sender.js
-                $('#businessVideo').attr("src", "//www.youtube.com/embed/zpOULjyy-n8?rel=0");// "/Uploader?action=stream&folder=" + uid + "&filename=financials.pdf");
+                console.log(item.videoUrl);
+                var vidurl = item.videoUrl;
+                $('#businessVideo').attr("src", vidurl.replace("http://","https://"));// "/Uploader?action=stream&folder=" + uid + "&filename=financials.pdf");
 
                 //console.log($('#businessLogo').css('height'));
             });
             
             //Invest button functionality
             $('#ivstComp').click(function(){
-               if(!isUsrLoggedIn || localStorage.getItem('userType')=='B'){
+               if(!isUsrLoggedIn || localStorage.getItem('userType')=='B' || localStorage.getItem('userType')=='N'){
                    fgDialogBS('<h4>You need to be logged in as an investor to perform this action!</h4>');
                }else{
                    window.location='invest.html' + '#' + busIdd;
-               }                   
+               }                 
             });
-            
+                       
+                
 
 //            uid = 143;
 //            lid = 39;

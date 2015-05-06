@@ -49,6 +49,8 @@
                             <option value="B">Business</option>
                             <option value="A">Investor - Accredited</option>
                             <option value="U">Investor - Un-Accredited</option>
+                            <option value="V">Advisor</option>
+                            <option value="N">Non-Profit</option>
                         </select><br>
 
                     </div>
@@ -119,6 +121,7 @@
             $("select").attr("disabled", "disabled");
             $("textarea").attr("disabled", "disabled");
             $('.editbtn').show();
+            $("#btnChgPass").attr("disabled","disabled");
         }
     });
     $('#btnChgPass').click(function () {

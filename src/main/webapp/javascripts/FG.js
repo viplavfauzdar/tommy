@@ -364,7 +364,7 @@ var loadData = function (url) {
                     localStorage.setItem("busId", value);
             });
             console.log('User Type: ' + $('#userType').val());
-            if ($('#userType').val() !== "B") {
+            if ($('#userType').val() !== "B" && $('#userType').val() !== "N") {
                 //if( userType !== 'B') {
                 $('#tabBus').hide();//remove();//.hide();
                 $('#tabContBus').hide();//.remove();//.hide();
@@ -378,10 +378,10 @@ var loadData = function (url) {
 };
 
 function createProfileLinks() {
-    //create profile linkes
+    //create profile linkes    
     if ($('#firstName').val() !== '' && $('#address').val() !== '')
         $('#userprof').html('<a class="btn btn-default" target="_blank" href="userprofile.html#/' + localStorage.getItem("userId") + ' ">user profile</a>');
-    if (localStorage.getItem("userType") === 'B' && localStorage.getItem("busId") !== null)
+    if ((localStorage.getItem("userType") === 'B' || localStorage.getItem("userType") === 'N') && localStorage.getItem("busId") !== null)
         $('#busprof').html('<a class="btn btn-default" target="_blank" href="businessprofile.html#/' + localStorage.getItem("busId") + '#' + localStorage.getItem("userId") + ' ">Business profile</a>');
     else
         $('#busprof').hide();
@@ -546,7 +546,6 @@ $.ajax({
         } else {
             console.log('User NOT logged in');
             $("a[href='register.html']").show(); //show all links to register
-            localStorage.clear();
             localStorage.clear();
         }
     }

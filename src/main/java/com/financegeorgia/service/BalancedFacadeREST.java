@@ -6,6 +6,7 @@
 package com.financegeorgia.service;
 
 import com.balancedpayments.BankAccount;
+import com.balancedpayments.Card;
 import com.balancedpayments.Customer;
 import com.balancedpayments.Debit;
 import com.balancedpayments.errors.HTTPError;
@@ -22,6 +23,7 @@ import java.util.Calendar;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.logging.Level;
 import javax.servlet.http.HttpServletRequest;
 import javax.ws.rs.Consumes;
 import javax.ws.rs.DELETE;
@@ -74,12 +76,16 @@ public class BalancedFacadeREST extends AbstractFacade<Balanced> {
         }
     }
 
+    /**
+     * Used for both CC and bank accounts
+     * Just need to check URI for bank_account or card
+    */
     @POST
     @Path("addacc")
     @Consumes({"application/xml", "application/json"})
-    public void addBankAcc(Balanced entity) {
+    public void addAcc(Balanced entity) {
         try {
-            logger.info("Bank Account: " + entity.getBankAccountUri());
+            logger.info("Account: " + entity.getBankAccountUri());
             
             Customer customer = null;
             //check is customer exists - in case account was deleted
@@ -108,16 +114,23 @@ public class BalancedFacadeREST extends AbstractFacade<Balanced> {
                 customer = new Customer(balanced.getCustomerUri());
             }
                 
+            BankAccount bankAccount = null;
+            Card card = null;
+            if(entity.getBankAccountUri().contains("bank_accounts")){
+                bankAccount = new BankAccount(entity.getBankAccountUri());
 
-            BankAccount bankAccount = new BankAccount(entity.getBankAccountUri());
+                //associate bank account to customer
+                bankAccount.associateToCustomer(customer);
+                bankAccount.save();
 
-            //associate bank account to customer
-            bankAccount.associateToCustomer(customer);
-            bankAccount.save();
-
-            //start ACH verification
-            bankAccount.verify();
-
+                //start ACH verification
+                bankAccount.verify();
+            }else{
+                //Credit Card
+                card = new Card(entity.getBankAccountUri());
+                card.associateToCustomer(customer);
+                card.save();
+            }
             //save both customer & bank account uri to table
             entity.setUserId(user.getId());
             entity.setCustomerUri(customer.href);
@@ -216,8 +229,8 @@ public class BalancedFacadeREST extends AbstractFacade<Balanced> {
                 BankAccount bankAccount = new BankAccount(balanced.getBankAccountUri());
                 Map<String, String> map = new HashMap<String, String>();
                 map.put("nameOnAccount", bankAccount.name);
-                map.put("accountNumber", bankAccount.account_number);
-                map.put("routingNumber", bankAccount.routing_number);
+                map.put("accountNumber", maskAcc(bankAccount.account_number));
+                map.put("routingNumber", maskAcc(bankAccount.routing_number));
                 map.put("accountType", bankAccount.account_type);
                 map.put("verificationStatus", bankAccount.verification.verification_status);
                 return map;
@@ -226,6 +239,15 @@ public class BalancedFacadeREST extends AbstractFacade<Balanced> {
             }
         } catch (HTTPError ex) {
             throw new FGException(ex);
+        }
+    }
+    
+    private String maskAcc(String acc){
+        if(acc!=null){
+            int len = acc.length();            
+            return "XXXXXXXX" + acc.substring(len-4, len);
+        }else{
+            return "";
         }
     }
 
@@ -268,5 +290,32 @@ public class BalancedFacadeREST extends AbstractFacade<Balanced> {
     public String countREST() {
         return String.valueOf(super.count());
     }
+    
+    
+    /** 
+     * Credit Cards from here on
+     * actually don't need separate calls
+     * just add - uri cards/bank_accounts to all methods above
+     */
+    
+    @GET
+    @Path("addcc")    
+    @Consumes({"application/xml", "application/json"})
+    public void addCard(Balanced entity){
+        
+    }
+    
+    @GET
+    @Path("chargecc")    
+    public void chargeCard(){
+        try {
+            Card card = new Card("/cards/CCBjv0IUbyhYmY7ZY5ONp2L");
+            Map<String, Object> payload = new HashMap<String, Object>();
+            payload.put("amount", "100");
+            card.debit(payload);
+        } catch (HTTPError ex) {
+            throw new FGException(ex);
+        }
+     }
 
 }

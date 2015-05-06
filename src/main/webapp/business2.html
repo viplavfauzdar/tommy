@@ -30,18 +30,28 @@
                     <input class='form-control' placeholder='Target Amount' id="targetAmount" name="targetAmount" type='text'>
                     <span class='glyphicon glyphicon-remove form-control-feedback'></span>
                 </div>
-                <h4>Equity You Are Offering (Shares)</h4>
+                <h4 id='eqtyLabel'>Equity You Are Offering (Shares)</h4>
                 <div class='col-md-6 input-group'>                    
                     <input class='form-control' placeholder='Equity Offered' id="equityOffered" name="equityOffered" type='text'>
                     <span class='glyphicon glyphicon-remove form-control-feedback'></span>
-                </div>                
+                </div>
+                <h4 id='eqtyLabel'>Video Link</h4>
+                <div class='col-md-6 input-group'>                    
+                    <input class='form-control' placeholder='Video Link' id="videoUrl" name="videoUrl" type='text'>
+                    <span class='glyphicon glyphicon-remove form-control-feedback'></span>
+                </div>   
             </div>
         </form>    
     </div>
 </div>
 
  
-<script>
+<script>    
+    if($('#userType').val()==='N') {
+        $('#equityOffered').hide();
+        $('#eqtyLabel').hide();
+    } //hide equity if non-profit
+    
     $('#targetAmount').number(true,2);// .autoNumeric('init', {aSign: '$', aPad: 'false'});
     $('#equityOffered').number(true,0);// .autoNumeric('init', {aSign: '', aPad: 'false'});
     $(".savebtn").hide();
