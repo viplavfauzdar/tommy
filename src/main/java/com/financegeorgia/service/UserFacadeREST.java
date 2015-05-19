@@ -36,7 +36,6 @@ public class UserFacadeREST extends AbstractFacade<User> {
 
     //@PersistenceContext(unitName = "tommy_tommy_war_1.0PU") //this doesn't work. below needed.
     //private final EntityManager em = Persistence.createEntityManagerFactory("tommy_tommy_war_1.0PU").createEntityManager();
-
     private static Logger logger = Logger.getLogger(UserFacadeREST.class);
     //private final static Genson genson = new Genson();
     private static final SaltedHash sh = SaltedHash.getInstance();
@@ -78,13 +77,16 @@ public class UserFacadeREST extends AbstractFacade<User> {
             request.login(email, pass); //plain password cause server.xml has SHA-512 in datasourcerealm
             request.getSession().setAttribute("userId", user.getId());
             //return user; //shouldn't return anything
-            
+
             // send email but trap exception as we don't want to stop signup process if 
             // something went wrong with smtp server
-            try{
+            try {
                 SendMail sm = new SendMail();
-                sm.send(email, "", "Thank you for signing up for Finance Georgia!", "Thank you for signing up for Finance Georgia!");
-            }catch(Exception ee){
+                sm.send(email, "", "Thank you for signing up!", "<h4>Thank you for signing up! We welcome you to Finance Georgia as an important member of the Georgia crowdfunding community.</h4>\n"
+                        + "<h5>- Finance Georgia Team</h5>\n"
+                        + "<a href='https://pr.financegeorgia.com'><img src=\"https://pr.financegeorgia.com/Assets/Finance-Georgia-Logo.png\" alt=\"Finance Georgia\"/></a>\n"
+                        + "<p><small>Finance Georgia &copy; 2014</small>");
+            } catch (Exception ee) {
                 logger.error(ee);
             }
         } catch (ServletException ex) {
@@ -103,7 +105,7 @@ public class UserFacadeREST extends AbstractFacade<User> {
             retmsg = "No user found by the email id of " + request.getRemoteUser();
         } else if (!user.getPassword1().equals(sh.get_SHA_512_SecurePassword(oldpass))) {
             retmsg = "The old password is incorrect!";
-        } else if(user.getPassword1().equals(sh.get_SHA_512_SecurePassword(newpass))){
+        } else if (user.getPassword1().equals(sh.get_SHA_512_SecurePassword(newpass))) {
             retmsg = "Cannot use the same password!";
         }
         if (retmsg == null) {
@@ -198,7 +200,7 @@ public class UserFacadeREST extends AbstractFacade<User> {
             return null;
         }
     }
-    
+
     @GET
     @Path("verifyemail/{email}")
     @Produces({"application/json"})//"application/xml", 
@@ -217,7 +219,7 @@ public class UserFacadeREST extends AbstractFacade<User> {
     public List<User> findAllByFirstname(@PathParam("firstname") String firstname) {
         return super.findByAllByField("User.findAllByFirstName", "firstName", firstname);
     }
-    
+
     @GET
     @Path("search/{keyword}")
     @Produces({"application/json"})//"application/xml", 

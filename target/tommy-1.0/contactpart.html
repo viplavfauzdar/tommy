@@ -163,7 +163,9 @@
         //below change to handle error not needed. servlet not returning any error message
         if ($("#frmContact").valid()) {
             loaderOn();
-            var message = "Name: " + $('#cntname').val() + "<br>Email: " + $('#cntemail').val() + "<br>Phone: " + $('#cntphone').val() + "<br>Message: " + $('#cntmessage').val();
+            var message = "<p><br>========================== Your Original message =======================<br>" +
+                    "<p>Name: " + $('#cntname').val() + "<br>Email: " + $('#cntemail').val() + "<br>Phone: " + $('#cntphone').val() + 
+                    "<br>Message: " + $('#cntmessage').val();
             var url = '/SendMail?type=contact&toAddress=' + $('#cntemail').val() + '&message=' + message;
             $.get(url, function (data) {
                 console.log(data);

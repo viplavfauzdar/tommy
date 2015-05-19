@@ -1,0 +1,144 @@
+<!-- User -->
+<style>
+    a:link  {
+        text-decoration: none;
+    }
+</style>
+<div class='container-fluid'>
+    <div class='col-md-3 text-left'>
+        <h2>Personal Info</h2>
+        <p>Please use the edit button below to add or update your information.</p>
+        <button class="btn btn-default editbtn" data-toggle="tooltip" data-placement="right" title="Click to Edit !">Edit</button>
+        <button class='btn btn-default orange savebtn' id="btnSaveUser" name="btnSaveUser">Save</button>
+        <button class="btn btn-default" disabled id="btnChgPass">Change Password</button>   
+        <span id="userprof"></span>
+    </div>
+    <div class='col-md-6 text-left'>
+        <!-- FIRST ROW -->
+        <form action="#" id='frmUser' name='frmUser'>
+            <div class="row">
+                <div class="col-md-4">
+                    <h4>Your First Name</h4>
+                    <div class='input-group'>                        
+                        <input class='form-control' disabled placeholder='Your First Name' id="firstName" name="firstName" type='text' style="text-transform: capitalize" required minlength="2" lettersOnly="true">
+                        <span class='glyphicon glyphicon-remove form-control-feedback'></span>
+                    </div>
+                </div>
+                <div class="col-md-3">
+                    <h4>Middle </h4>
+                    <div class='input-group'>                        
+                        <input class='form-control' placeholder='Middle' type='text' id="mi" name="mi" maxlength="1" style="text-transform: capitalize">
+<!--                        <span class='glyphicon glyphicon-remove form-control-feedback'></span>-->
+                    </div>
+                </div>
+                <div class="col-md-5">
+                    <h4>Your Last Name</h4>
+                    <div class='input-group'>                        
+                        <input class='form-control' placeholder='Your Last Name' id="lastName" name="lastName" type='text' style="text-transform: capitalize" required minlength="2" lettersOnly="true">
+                        <span class='glyphicon glyphicon-remove form-control-feedback'></span>
+                    </div>
+                </div>
+            </div>
+            <!-- END FIRST ROW -->           
+            <!-- END ROW -->
+            <div class="row">
+                <div class="col-md-12">
+                    <h4>Registration Type</h4>
+                    <div class='input-group'>                        
+                        <select id="userType" name="userType" disabled>
+                            <option value="B">Business</option>
+                            <option value="A">Investor - Accredited</option>
+                            <option value="U">Investor - Un-Accredited</option>
+                            <option value="V">Advisor</option>
+                            <option value="N">Non-Profit</option>
+                        </select><br>
+
+                    </div>
+                </div>
+            </div>
+            <div class="row">
+                <div class="col-md-12">
+                    <div class='input-group'>
+                        <h4>Your Birthday</h4>                                                
+                        <input type="text" data-role="date" name="dob" readonly id="dob" placeholder="mm/dd/yyyy" required date="true" style="text-transform: uppercase">
+                        <script>
+                            $("#dob").datepicker({
+                                changeYear: true,
+                                changeMonth: true,
+                                minDate: "-100Y",
+                                maxDate: "-21Y",
+                                yearRange: '1900:2013'
+                            });//.datepicker("setDate", "01/01/1980");
+                        </script>
+                    </div>
+                </div>
+            </div>
+            <!-- END ROW -->           
+            <div class="row">
+                <div class="col-md-12">
+                    <h4>Tell us about yourself</h4>
+                    <div class='input-group'>                
+                        <textarea class="form-control" name="aboutMe" id="aboutMe" cols="40" rows="5" maxlength="200"></textarea>
+                        <span class='glyphicon glyphicon-remove form-control-feedback'></span>
+                    </div>            
+                </div>
+            </div>
+        </form>                                
+    </div>
+</div>
+<!-- Bootstrap JS. NEED HERE FOR THE DARN TOOLTIP TO WORK. THERE HAS TO BE A BETTER WAY -->
+<script src="javascripts/bootstrap.min.js" type="text/javascript"></script>
+<script>         
+    $('.savebtn').tooltip({
+        title: 'Click to Save!',
+        placement: 'right'
+    });
+
+    $('[data-toggle="tooltip"]').tooltip();
+    $(".savebtn").hide();
+    $("input").attr("disabled", "disabled");
+    $("select").attr("disabled", "disabled");
+    $("textarea").attr("disabled", "disabled");
+    $('.editbtn').click(function () {
+        $("input").removeAttr("disabled");
+//        $("select").removeAttr("disabled");
+        $("textarea").removeAttr("disabled");
+        $('.editbtn').hide();
+        $(".savebtn").show();
+        $("#btnChgPass").removeAttr("disabled");
+    });
+    formValidation('#frmUser');
+    $("#btnSaveUser").click(function (e) {
+        e.preventDefault();
+        if ($("#frmUser").valid()) {
+            if ($('#userType').val() !== 'B') {
+                $('#tabBus').hide();//.remove();//.hide(); //removing cause it to not appear on pressing back button
+                $('#tabContBus').hide();//.remove();//.hide(); //since during testing I am logging in as both investor and business
+            }
+            saveData("/rs/user/updateme", "#frmUser", "PUT");
+            $(".savebtn").hide();
+            $("input").attr("disabled", "disabled");
+            $("select").attr("disabled", "disabled");
+            $("textarea").attr("disabled", "disabled");
+            $('.editbtn').show();
+            $("#btnChgPass").attr("disabled","disabled");
+        }
+    });
+    $('#btnChgPass').click(function () {
+        // fgAlert('blah blah blah blah blah blah!!!');
+        fgModal("modal-sm", "", "", "changepassword.html", null, false);
+    });
+    
+    //seeing some gotchas to adding this - 
+    //this is causing the business tab to be always hidden unless page refreshed.
+    //prolly because the session data is not yet set till after the page loads.
+//    if(localStorage.getItem("userType")!=='B'){
+//        $('#tabBus').remove();
+//        $('#tabContBus').remove();
+//    }
+    //hitting back form another page was making the user type default to business
+    //below prevents that
+    $('#userType').val(localStorage.getItem("userType"));
+    
+</script>
+

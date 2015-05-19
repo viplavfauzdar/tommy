@@ -14,10 +14,13 @@ import java.util.Date;
 import java.util.Properties;
 import javax.mail.Message;
 import javax.mail.MessagingException;
+import javax.mail.Multipart;
 import javax.mail.Session;
 import javax.mail.internet.AddressException;
 import javax.mail.internet.InternetAddress;
+import javax.mail.internet.MimeBodyPart;
 import javax.mail.internet.MimeMessage;
+import javax.mail.internet.MimeMultipart;
 import org.apache.log4j.Logger;
 
 /**
@@ -141,6 +144,11 @@ public class Mailer {
 
         msg.setSubject(title);
         //msg.setText(message, "utf-8");
+        //Multipart multiPart = new MimeMultipart("alternative");
+        //MimeBodyPart htmlPart = new MimeBodyPart();
+        //htmlPart.setContent(message, "text/html; charset=utf-8");
+        //multiPart.addBodyPart(htmlPart);
+        //msg.setContent(multiPart);//, "multipart/alternative");
         msg.setContent(message, "text/html; charset=utf-8");
         msg.setSentDate(new Date());
 

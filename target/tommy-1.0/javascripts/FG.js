@@ -391,9 +391,9 @@ $('#tabLegal').click(function (e) {
     loaderOn();
     e.preventDefault();
     var docType;
-    if ($('#userType').val() == 'B')
+    if ($('#userType').val() == 'B' || $('#userType').val() == 'N')
         docType = "listingagreement.pdf"
-    if ($('#userType').val() == 'U')
+    if ($('#userType').val() == 'U' || $('#userType').val() == 'V')
         docType = "checklist_unaccinvestor.pdf"
     if ($('#userType').val() == 'A')
         docType = "checklist_accinvestor.pdf"
@@ -412,7 +412,7 @@ $('#tabFile').click(function (e) {
 
 $('#tabBus').click(function (e) {
     e.preventDefault();
-    $("#tabContBus").load("business2.html?t=" + Math.random());
+    $("#tabContBus").load("business.html?t=" + Math.random());
     loadData("/rs/business/getme");
     $('#tabBus').tab('show');
 });
@@ -428,7 +428,7 @@ $('#tabInvst').click(function (e) {
 $('#tabLoc').click(function (e) {
     e.preventDefault();
     console.log('loading location');
-    $("#tabContLoc").load("location2.html?t=" + Math.random());
+    $("#tabContLoc").load("location.html?t=" + Math.random());
     loadData("/rs/location/getme");
     $('#tabLoc').tab('show');
 });
@@ -441,9 +441,10 @@ $('#tabSrch').click(function (e) {
 });
 
 $('#tabBank').click(function (e) {
-    e.preventDefault();
+    e.preventDefault();    
     //usrObj = localStorage.getItem("usrObj");
     //locObj = localStorage.getItem("locObj");
+    if (usrObj.firstName == null || usrObj.firstName == '') loadUser(); //load user since the user tab wasn't clicked again
     if (usrObj.firstName == null || usrObj.firstName == '') {
         fgDialogBS('<h3>Please fill out user and location information before setting up bank account!</h3>');
         return;
@@ -461,7 +462,7 @@ var hash = window.location.hash; //for admin crap. not sure i need it
 var userId = hash.substring(hash.indexOf('/') + 1, hash.length);
 function loadUser() {
     console.log('loading user');
-    $("#tabContUser").load("user2.html?t=" + Math.random());
+    $("#tabContUser").load("user.html?t=" + Math.random());
     if ((userId !== null && userId !== '')) {
         loadData("/rs/user/" + userId);
     } else {
@@ -471,7 +472,7 @@ function loadUser() {
 
 $('#tabUser').click(function (e) {
     e.preventDefault();
-    $("#tabContUser").load("user2.html?t=" + Math.random());
+    $("#tabContUser").load("user.html?t=" + Math.random());
     //loadData("/rs/user/getme");
     loadUser();
     $('#tabUser').tab('show');

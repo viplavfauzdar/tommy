@@ -44,7 +44,11 @@
     function sendEmail(){
         console.log($('#emailSubscription').val());
             loaderOn();
-            $.get('/SendMail?type=subscription&toAddress=' + $('#emailSubscription').val() + '&t=' + Math.random() + '&message=<h1>Thank you for requesting subscription to Finance Georgia!</h1>', function (res) {
+            $.post('/SendMail?type=subscription&toAddress=' + $('#emailSubscription').val() + '&t=' + Math.random() + 
+                    "&message=<h4>Thank you for subscribing to Finance Georgia; we will make sure to update you with our latest news and happenings.</h4>\n"
+                        + "<h5>- Finance Georgia Team</h5>\n"
+                        + "<a href='https://pr.financegeorgia.com'><img src=\"https://pr.financegeorgia.com/Assets/Finance-Georgia-Logo.png\" alt=\"Finance Georgia\"/></a>\n"
+                        + "<p><small>Finance Georgia &copy; 2014</small>", function (res) {
                 loaderOff();
                 console.log(res);
                 //if(res.match('Message sent!'))

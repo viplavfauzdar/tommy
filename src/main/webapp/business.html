@@ -1,0 +1,81 @@
+<!-- Business -->
+<div class='container-fluid'>
+    <div class='col-md-3 text-left'>
+        <h2>Company, Business etc</h2>        
+        <p>Please use the edit button below to add or update your information.</p>
+        <button class="btn btn-default editbtn">Edit</button>
+        <button class='btn btn-default orange savebtn' id="btnSaveBusiness" name="btnSaveBusiness" >Save</button>
+        <span id="busprof"></span>
+    </div>
+    <div class='col-md-6'>    
+        <form action='#' class='row' id='frmBusiness' name='frmBusiness'>
+            <div class="">
+                <h4>Your Business Name</h4>
+                <div class='col-md-12 input-group'>                    
+                    <input class='form-control' placeholder='Your Business Name' id="businessName" name="businessName" type='text' style="text-transform: capitalize" minlength="10" maxlength="100" required>
+                    <span class='glyphicon glyphicon-remove form-control-feedback'></span>
+                </div>
+                <h4>Your Service or Product</h4>
+                <div class='col-md-12 input-group'>                    
+                    <textarea class="form-control" placeholder='Your Service or Product' id="summary" name="summary" rows="4" cols="100" minlength="10" maxlength="500" required></textarea>
+                    <span class='glyphicon glyphicon-remove form-control-feedback'></span>
+                </div>
+                <h4>About Your Company</h4>
+                <div class='col-md-12 input-group'>                    
+                    <textarea class="form-control" placeholder='About Your Company' id="description" name="description" rows="15" cols="100" minlength="10" maxlength="4000" required></textarea>
+                    <span class='glyphicon glyphicon-remove form-control-feedback'></span>
+                </div>
+                <h4>Amount You Want to Raise (USD)</h4>
+                <div class='col-md-6 input-group'>                    
+                    <input class='form-control' placeholder='Target Amount' id="targetAmount" name="targetAmount" type='text'>
+                    <span class='glyphicon glyphicon-remove form-control-feedback'></span>
+                </div>
+                <h4 id='eqtyLabel'>Equity You Are Offering (Shares)</h4>
+                <div class='col-md-6 input-group'>                    
+                    <input class='form-control' placeholder='Equity Offered' id="equityOffered" name="equityOffered" type='text'>
+                    <span class='glyphicon glyphicon-remove form-control-feedback'></span>
+                </div>
+                <h4 id='eqtyLabel'>Video Link</h4>
+                <div class='col-md-6 input-group'>                    
+                    <input class='form-control' placeholder='Video Link' id="videoUrl" name="videoUrl" type='text'>
+                    <span class='glyphicon glyphicon-remove form-control-feedback'></span>
+                </div>   
+            </div>
+        </form>    
+    </div>
+</div>
+
+ 
+<script>    
+    if($('#userType').val()==='N') {
+        $('#equityOffered').hide();
+        $('#eqtyLabel').hide();
+    } //hide equity if non-profit
+    
+    $('#targetAmount').number(true,2);// .autoNumeric('init', {aSign: '$', aPad: 'false'});
+    $('#equityOffered').number(true,0);// .autoNumeric('init', {aSign: '', aPad: 'false'});
+    $(".savebtn").hide();
+    $("input").attr("disabled", "disabled");
+    $("select").attr("disabled", "disabled");
+    $("textarea").attr("disabled", "disabled");
+    $('.editbtn').click(function () {
+        $("input").removeAttr("disabled");
+        $("select").removeAttr("disabled");
+        $("textarea").removeAttr("disabled");
+        $('.editbtn').hide();
+        $(".savebtn").show();
+    });
+    formValidation('#frmBusiness');
+    $("#btnSaveBusiness").click(function (e) {
+        //$('form').submit(function (e) {
+        e.preventDefault();
+        if ($("#frmBusiness").valid()) {
+            saveData("/rs/business/updateme", "#frmBusiness", "PUT");
+            $(".savebtn").hide();
+            $("input").attr("disabled", "disabled");
+            $("select").attr("disabled", "disabled");
+            $("textarea").attr("disabled", "disabled");
+            $('.editbtn').show();
+        }
+    });
+</script>

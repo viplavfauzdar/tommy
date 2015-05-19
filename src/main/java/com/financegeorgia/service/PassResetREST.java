@@ -14,10 +14,7 @@ import java.security.SecureRandom;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.ws.rs.core.Context;
-import javax.ws.rs.core.UriInfo;
 import javax.ws.rs.PathParam;
-import javax.ws.rs.Consumes;
-import javax.ws.rs.PUT;
 import javax.ws.rs.Path;
 import javax.ws.rs.GET;
 import javax.ws.rs.Produces;
@@ -63,9 +60,9 @@ public class PassResetREST {
             user.setPassresetKey(request.getSession().getId());
             uf.edit(user);
             SendMail sm = new SendMail();
-            sm.send(email, "", "Password reset request received", "Please <a href='" + request.getRequestURL() + "/" + request.getSession().getId() + "'>click here</a> to reset the password!");
+            sm.send(email, "", "Password reset request received", "<h4>Thank you for requesting a password reset. <p>Please <a href='" + request.getRequestURL() + "/" + request.getSession().getId() + "'>click here</a> to reset the password!<h4><h5>- Finance Georgia Team</h5><a href='https://pr.financegeorgia.com'><img src=\"https://pr.financegeorgia.com/Assets/Finance-Georgia-Logo.png\" alt=\"Finance Georgia\"/></a><p><small>Finance Georgia &copy; 2014</small>");
             if(logger.isDebugEnabled()) logger.debug("An email with a link to reset your password has been sent to " + email);
-            return "An email with a link to reset your password has been sent!";
+            return "An email with a link to reset your password has been sent! Please make sure to check your spam or junk email folder if you don't receive the email.";
         }
     }
     
@@ -85,7 +82,7 @@ public class PassResetREST {
                 user.setPassword1(sh.get_SHA_512_SecurePassword(newpass));
                 uf.edit(user);
                 SendMail sm = new SendMail();
-                sm.send(email, "", "Password reset!", "Here is your new password - " + newpass +"<p>It is advisable to change your password once you log in!");
+                sm.send(email, "", "Password reset!", "<h4>Here is your new password - " + newpass +"<p>It is advisable to change your password once you log in!</h4><h5>- Finance Georgia Team</h5><a href='https://pr.financegeorgia.com'><img src=\"https://pr.financegeorgia.com/Assets/Finance-Georgia-Logo.png\" alt=\"Finance Georgia\"/></a><p><small>Finance Georgia &copy; 2014</small>");
                 if(logger.isDebugEnabled()) logger.debug("Password reset and email sent to " + email);
                 //important - remove the pass reset key from table so the same email link can't be used again
                 user.setPassresetKey(null);

@@ -57,20 +57,21 @@ public class SendMail extends HttpServlet {
 //            out.println("</html>");
 
             String type = request.getParameter("type");
-
+            String message = request.getParameter("message");
             String toAddress = request.getParameter("toAddress"); //can be comma separated list
             String subject = null, ccAddress = null;
             if (type.equals("contact")) {
                 subject = res.getResource("contactSubject");//request.getParameter("subject");
                 ccAddress = res.getResource("contactFGEmail");
+                message  = res.getResource("contactMessage") + message;
             } else if (type.equals("subscription")) {
                 subject = res.getResource("subscriptionSubject");
                 ccAddress = res.getResource("subscriptionFGEMail");
+                message  = res.getResource("subscriptionMessage");
             } else {
                 subject = request.getParameter("subject");
                 ccAddress = request.getParameter("ccemail");
             }
-            String message = request.getParameter("message");
             if (toAddress.equals("")) {
                 out.println("No email address provided!"); //throw new FGException("No email address provided!");
             } else if (message.equals("")) {
