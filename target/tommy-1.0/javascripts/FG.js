@@ -588,13 +588,13 @@ var portfolioWidget = function (element, item, businessId) {
             "</div>" +
             "<div class='info' style='height:270px'>" +
             "<h4>" + item.businessName + "</h4>" +
-            "<h5>" + item.address + " " + item.city + " " + item.state + //" " + item.zip + "</h5>" +
+            "<h5 style='text-transform: capitalize'>" + item.address + " " + item.city + " " + item.state + //" " + item.zip + "</h5>" +
             "<h6><span class='target'>TARGET: <b>$" + trgAmt + "</b></span><span class='pledged'> PLEDGED: <b>$" + amtInvstd + "</b></span></h6>" +
             "<div class='progress'>" +
             "<div aria-valuemax='100' aria-valuemin='0' aria-valuenow='50' class='progress-bar progress-bar-success' role='progressbar' style='width:" + (100 * item.amountInvested / item.targetAmount) + "%'>" +
             "</div>" +
             "</div>" +
-            "<p style='width:260px;height:50px'>" + item.summary.substring(0, 100) + "</p>" +
+            "<p style='width:260px;height:50px'>" + item.summary.substring(0, 100) + " .....</p>" +
             "<a class='btn btn-default' href='businessprofile.html#/" + businessId + "#" + item.userId + "'>View Details</a>" +
             "</div>" +
             "</div>" +
@@ -605,6 +605,8 @@ var portfolioWidget = function (element, item, businessId) {
 var loadPortfolio = function (element, toLoad) {
     loaderOn();
     $.getJSON("/rs/public/all", function (data) {
+        data.sort(function(a,b){return parseInt(b.displayOrder)-parseInt(a.displayOrder)});
+        //console.log(JSON.stringify(data));
         //                $.each(data, function (i, item) {
         //                    console.log(item);
         //                    portfolioWidget(item,item.businessId);

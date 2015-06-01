@@ -82,10 +82,10 @@ public class UserFacadeREST extends AbstractFacade<User> {
             // something went wrong with smtp server
             try {
                 SendMail sm = new SendMail();
-                sm.send(email, "", "Thank you for signing up!", "<h4>Thank you for signing up! We welcome you to Finance Georgia as an important member of the Georgia crowdfunding community.</h4>\n"
+                sm.send(email, "", "Thank you for signing up!", "<h4>Thank you for signing up! We welcome you to Finance Georgia. You are now an important member of the Georgia investment community.</h4>\n"
                         + "<h5>- Finance Georgia Team</h5>\n"
                         + "<a href='https://pr.financegeorgia.com'><img src=\"https://pr.financegeorgia.com/Assets/Finance-Georgia-Logo.png\" alt=\"Finance Georgia\"/></a>\n"
-                        + "<p><small>Finance Georgia &copy; 2014</small>");
+                        + "<p><small>Finance Georgia &copy; 2015</small>");
             } catch (Exception ee) {
                 logger.error(ee);
             }

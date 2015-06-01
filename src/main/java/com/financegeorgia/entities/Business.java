@@ -26,7 +26,7 @@ import javax.xml.bind.annotation.XmlRootElement;
 @Table(name = "business")
 @XmlRootElement
 @NamedQueries({
-    @NamedQuery(name = "Business.findAll", query = "SELECT b FROM Business b"),
+    @NamedQuery(name = "Business.findAll", query = "SELECT b FROM Business b WHERE b.approved = 1 order by b.displayOrder"),
     @NamedQuery(name = "Business.findById", query = "SELECT b FROM Business b WHERE b.id = :id"),
     @NamedQuery(name = "Business.findByUserEmail", query = "SELECT b FROM Business b INNER JOIN User u WHERE b.userId = u.id and u.email = :email"),
     @NamedQuery(name = "Business.findByUserId", query = "SELECT b FROM Business b WHERE b.userId = :userId"),
@@ -79,6 +79,8 @@ public class Business implements Serializable {
     private Integer equityCommPercent;
     @Column(name = "approved")
     private Short approved;
+    @Column(name = "display_order")
+    private Integer displayOrder;
 
     public Business() {
     }
@@ -211,6 +213,16 @@ public class Business implements Serializable {
     public void setApproved(Short approved) {
         this.approved = approved;
     }
+
+    public Integer getDisplayOrder() {
+        return displayOrder;
+    }
+
+    public void setDisplayOrder(Integer displayOrder) {
+        this.displayOrder = displayOrder;
+    }
+    
+    
 
     @Override
     public int hashCode() {

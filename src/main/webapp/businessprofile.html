@@ -120,7 +120,7 @@
                                 </div>
                                 <p id='summary1'></p>
                                 <a class='btn btn-default invest' id="ivstComp" href='#about' style="width: 250px">Invest in this company</a>
-                                <a class='btn btn-default' href='#' id="execSumm" target="_blank" style="width: 250px">Executive Summary</a>
+                                <a class='btn btn-default opennew' href='#' id="execSumm" target="_blank" style="width: 250px">Executive Summary</a>
                                 <a class='btn btn-default' href='#' id="businessPlan" target="_blank" style="width: 250px">Business Plan</a>
                                 <a class='btn btn-default' href='#' id="financials" target="_blank" style="width: 250px">Financials</a>
                                 <a class='icon fa fa-globe' id='lnkWs' target='_blank' href='#'></a>
@@ -171,7 +171,7 @@
         <!-- FG -->
         <script src="javascripts/FG.js" type="text/javascript"></script>
 
-        <script>
+        <script>                        
 
             //** incase of missing pics or pics that didn't load
             $("img").error(function () {
@@ -253,7 +253,7 @@
                 //causing errors in chrome something cast_sender.js
                 console.log(item.videoUrl);
                 var vidurl = item.videoUrl;
-                $('#businessVideo').attr("src", vidurl.replace("http://","https://"));// "/Uploader?action=stream&folder=" + uid + "&filename=financials.pdf");
+                if(vidurl !=null) $('#businessVideo').attr("src", vidurl.replace("http://","https://"));// "/Uploader?action=stream&folder=" + uid + "&filename=financials.pdf");
 
                 //console.log($('#businessLogo').css('height'));
             });
@@ -312,7 +312,18 @@
 //            //causing errors in chrome something cast_sender.js
 //            $('#businessVideo').attr("src", "//www.youtube.com/embed/zpOULjyy-n8?rel=0");// "/Uploader?action=stream&folder=" + uid + "&filename=financials.pdf");
 
-
+            //tried to open new tabs for links
+            //below doesn't work. opens a new tab but also sends the parent to the link
+            //$('.opennew').click(function(e){
+            //    e.preventDefault();
+               //alert($('.opennew').attr('href'));
+               //var url=$('.opennew').attr('href');
+              // return window.open(url);
+               //$('.opennew').attr('href','#');
+               //return false;
+            //});
+            
+    
         </script>
     </body>
 </html>

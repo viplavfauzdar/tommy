@@ -6,6 +6,7 @@
 package com.financegeorgia.service;
 
 import com.financegeorgia.entities.Investment;
+import com.owlike.genson.Genson;
 import java.util.List;
 import javax.servlet.http.HttpServletRequest;
 import javax.ws.rs.Consumes;
@@ -16,6 +17,7 @@ import javax.ws.rs.Path;
 import javax.ws.rs.PathParam;
 import javax.ws.rs.Produces;
 import javax.ws.rs.core.Context;
+import org.apache.log4j.Logger;
 
 /**
  *
@@ -25,7 +27,7 @@ import javax.ws.rs.core.Context;
 @Path("investment")
 public class InvestmentFacadeREST extends AbstractFacade<Investment> {
 
-
+    private static Logger logger = Logger.getLogger(InvestmentFacadeREST.class);
 
     public InvestmentFacadeREST() {
         super(Investment.class);
@@ -94,6 +96,7 @@ public class InvestmentFacadeREST extends AbstractFacade<Investment> {
         return String.valueOf(super.count());
     }
     
+    private final static Genson genson = new Genson();
     //investments made by me in various businesses
     @GET
     @Path("getbyme")
@@ -106,6 +109,7 @@ public class InvestmentFacadeREST extends AbstractFacade<Investment> {
         }else{
             investments = super.findByField("Investment.findByUserId", "userId", userId);            
         }
+        if(logger.isDebugEnabled()) logger.debug(genson.serialize(investments));
         return investments;
     }
 

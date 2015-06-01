@@ -18,7 +18,7 @@
     </div>
 </div>
 <script>
-    if ($('#userType').val() === 'B') {
+    if ($('#userType').val() === 'B' || $('#userType').val() === 'N') {
         $('#invstDesc').html('Here is a look at Investments made in your business');
         $.getJSON("/rs/investment/getinme", function (data) {
             var invst = '<thead><tr><th>#<th>Date<th>Investor<th>Amount ($)<th>Equity</thead>';

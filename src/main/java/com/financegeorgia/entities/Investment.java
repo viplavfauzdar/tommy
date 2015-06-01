@@ -20,12 +20,15 @@ import javax.persistence.Table;
 import javax.persistence.Temporal;
 import javax.persistence.TemporalType;
 import javax.xml.bind.annotation.XmlRootElement;
+import org.eclipse.persistence.annotations.Cache;
+import static org.eclipse.persistence.config.CacheIsolationType.ISOLATED;
 
 /**
  *
  * @author Viplav
  */
 @Entity
+@Cache(isolation=ISOLATED) //to prevent caching since the date wasn't being being updated as it is inserted by the DB
 @Table(name = "investment")
 @XmlRootElement
 @NamedQueries({
@@ -58,7 +61,7 @@ public class Investment implements Serializable {
     private Integer equityObtained;
     @Column(name = "commission_taken")
     private Integer commissionTaken;
-    @Column(name = "investment_date")
+    @Column(name = "investment_date", insertable = false, updatable = false) //added 5-20-15 because it started inserting NULL all of a sudden. Don't know why because it was working fine before
     @Temporal(TemporalType.TIMESTAMP)
     private Date investmentDate;
 

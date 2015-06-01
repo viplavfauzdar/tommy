@@ -105,6 +105,17 @@ public class BusinessFacadeREST extends AbstractFacade<Business> {
     public Business find(@PathParam("id") Integer id) {
         return super.find(id);
     }
+    
+    @GET
+    @Path("name/{name}")
+    @Produces({"application/json"})
+    public Business findNyName(@PathParam("id") String name) {
+        List<Business> busList = super.findByField("Business.findByBusinessName", "businessName", name);
+        if(busList != null && busList.size()>0)
+            return busList.get(0);
+        else
+            return null;
+    }
 
     @GET
     @Override

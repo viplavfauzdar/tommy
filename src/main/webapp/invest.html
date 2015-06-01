@@ -45,9 +45,13 @@
                             </div>
                             <div class='col-md-9 text-left'>
 
+                                <h3>Subscription Agreement</h3>
+                                <h4>Please carefully review and sign the document below before making an investment</h4>
+<!--                                <iframe id="ifrmSubAgr" src='loader.html' style='border: 0px solid red; width: 800px; height: 750px' scrolling='no'></iframe>    
+                                <iframe id="ifrmSubAgr" src='https://secure.echosign.com/public/esignWidget?wid=2AAABLblqZhBSptnKHI7TTfqEbFFdWkETFwsBYJvgPtaXNJ-I5QpYQOD-myyHPLe6d_kjLEUhR_k*' style='border: 0px solid red; width: 800px; height: 750px' scrolling='no'></iframe>    
+                                <script type='text/javascript' language='JavaScript' src='https://secure.echosign.com/public/embeddedWidget?wid=2AAABLblqZhBSptnKHI7TTfqEbFFdWkETFwsBYJvgPtaXNJ-I5QpYQOD-myyHPLe6d_kjLEUhR_k*'></script>-->
+                                
                                 <form action='#' class='row' id='frmInvest' name='frmInvest'>
-                                    <h3>Subscription Agreement</h3>
-                                    <h4>Please carefully review the document below before making an investment</h4>
                                     <h3><span class="busName text-primary"></span> is offering <span id="eqtOffr" class="text-danger"></span> shares for USD <span id="trgAmt" class="text-danger"></span></h3>
                                     <h4>Please enter either an amount or the number of shares you want to purchase</h4>    
 
@@ -63,9 +67,7 @@
                                             <span class='glyphicon glyphicon-remove form-control-feedback'></span></div>                                        
                                     </div>
                                     <br><button class="btn btn-default orange" id="btnInvst">Invest</button>
-<!--                                    <iframe id="ifrmSubAgr" src='loader.html' style='border: 0px solid red; width: 800px; height: 750px' scrolling='no'></iframe>    -->
                                 </form>
-
 
                             </div>
                         </div>
@@ -146,17 +148,17 @@
             $('#btnInvst').click(function (e) {
                 e.preventDefault();
                 if ($("#frmInvest").valid()) {
-                    fgConfirm('Confirmation!','<h4>You are about to invest $' + $.number($('#invstAmt').val(),2) + ' for ' 
-                        + $('#invstEqt').val() + ' shares!</h4> <h4>Are you sure you want to continue!</h4>',invest);
+                    fgConfirm('Confirmation!', '<h4>You are about to invest $' + $.number($('#invstAmt').val(), 2) + ' for '
+                            + $('#invstEqt').val() + ' shares!</h4> <h4>Are you sure you want to continue!</h4>', invest);
                 }
             });
-            var invest = function(){                
+            var invest = function () {
                 loaderOn();
                 $.get('/rs/balanced/debit/' + $('#invstAmt').val() + '/' + busId, function () {
                     fgDialog('Success!', 'Thank you for your investment!');
                     loaderOff();
-                });                
-            };               
+                });
+            };
         </script>
     </body>
 </html>

@@ -133,9 +133,13 @@ public class Uploader extends HttpServlet {
                             filecontent = fileItem.getInputStream();
                         }
                         if (filename == null) {
-                            filename = fileItem.getName();
+                            filename = fileItem.getName();//.toLowerCase();                            
                         }
                     }
+                    
+                    //make sure file ext is lower case when saving
+                    String[] fileAndext = filename.split("\\.");                    
+                    filename = fileAndext[0] + "." + fileAndext[1].toLowerCase();
 
                     if (allowedFileTypes) {
 

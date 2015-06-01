@@ -46,6 +46,7 @@ public class PublicAccessREST {
             map.put("businessId", bus.getId());
             map.put("businessName", bus.getBusinessName());
             map.put("summary", bus.getSummary());
+            map.put("displayOrder", bus.getDisplayOrder());
             Location loc = lf.findByUser(bus.getUserId());
             if (loc != null) {
                 map.put("address", loc.getAddress());
