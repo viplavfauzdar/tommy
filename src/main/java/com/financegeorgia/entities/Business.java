@@ -17,16 +17,19 @@ import javax.persistence.NamedQueries;
 import javax.persistence.NamedQuery;
 import javax.persistence.Table;
 import javax.xml.bind.annotation.XmlRootElement;
+import org.eclipse.persistence.annotations.Cache;
+import static org.eclipse.persistence.config.CacheIsolationType.ISOLATED;
 
 /**
  *
  * @author Viplav
  */
 @Entity
+@Cache(isolation=ISOLATED)
 @Table(name = "business")
 @XmlRootElement
 @NamedQueries({
-    @NamedQuery(name = "Business.findAll", query = "SELECT b FROM Business b WHERE b.approved = 1 order by b.displayOrder"),
+    @NamedQuery(name = "Business.findAll", query = "SELECT b FROM Business b order by b.displayOrder"),
     @NamedQuery(name = "Business.findById", query = "SELECT b FROM Business b WHERE b.id = :id"),
     @NamedQuery(name = "Business.findByUserEmail", query = "SELECT b FROM Business b INNER JOIN User u WHERE b.userId = u.id and u.email = :email"),
     @NamedQuery(name = "Business.findByUserId", query = "SELECT b FROM Business b WHERE b.userId = :userId"),

@@ -1,0 +1,51 @@
+<!DOCTYPE html>
+<!--
+To change this license header, choose License Headers in Project Properties.
+To change this template file, choose Tools | Templates
+and open the template in the editor.
+-->
+<html>
+    <head>
+        <title>TODO supply a title</title>
+        <meta charset="UTF-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+        <!-- jQuery -->    
+        <script src="//ajax.googleapis.com/ajax/libs/jquery/2.1.1/jquery.min.js"></script>
+        <script src="https://d7630u3gvmjyq.cloudfront.net/static_assets/v2/iframes/kyc/kyc_iframe.js"></script>
+    </head>
+    <body>
+        <iframe id="synapse_iframe" style="top:0; height:0%;width:0%;position:fixed;z-index:100000;visibility:hidden;" frameborder="0"></iframe>
+
+        <script>            
+            
+            //colors of your choosing
+            var colors = {'trim': '#059db1', 'unfocused': '#95a5a6', 'text': '#212121', 'background': 'white'};
+
+            setupKYCIframe("ptvEg1Q7ZIsciYzOBPdiMdyW2z4gKXtKEbQMPBcq", null, colors, true); //needs to be true for sandbox Yvrg9EXbfQmp1QEKmcLDxzPIvLSLFpsOUGby4GpS
+
+            //when ready, make iFrame visible
+            $("#synapse_iframe").css("visibility", "visible");
+            $("#synapse_iframe").css("height", "100%");
+            $("#synapse_iframe").css("width", "100%");
+
+            identityReciver = function (e) {
+                try {
+                    var json = JSON.parse(e.data);
+                    if (json.success) {
+                        $("#synapse_iframe").css("visibility", "hidden");
+                        $("#synapse_iframe").css("height", "0%");
+                        $("#synapse_iframe").css("width", "0%");
+                        $("#synapse_iframe").prop("src", "");
+                        // thats it. do what you want next. The user has been authenticated
+                        window.location='synapse2-1.html';
+                    }
+                    ;
+                } catch (e) {
+                    // console.log(e);
+                }
+                ;
+            };
+            window.addEventListener('message', identityReciver, false);
+        </script>
+    </body>
+</html>

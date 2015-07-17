@@ -70,9 +70,10 @@
     	e.stopPropagation();
     });
 
-    $('html').click(function(){
-    	$('nav').removeClass('toggled');
-    });
+    //$('html').click(function(){
+    	//$('nav').removeClass('toggled');
+    //    $('nav').toggleClass('toggled');
+    //});
 
     $('section').each(function() {
         $(this).waypoint(function(direction){

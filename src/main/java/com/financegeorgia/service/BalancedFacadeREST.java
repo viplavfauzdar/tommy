@@ -187,7 +187,7 @@ public class BalancedFacadeREST extends AbstractFacade<Balanced> {
                 double ta = bus.getTargetAmount();            
                 ivst.setEquityObtained(new Double(amt*eo/ta).intValue());
             }
-            ivf.create1(ivst);
+            ivf.create(ivst);
         } catch (HTTPError ex) {
             throw new FGException(ex);
         }

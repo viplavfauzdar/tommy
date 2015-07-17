@@ -16,12 +16,15 @@ import javax.persistence.NamedQueries;
 import javax.persistence.NamedQuery;
 import javax.persistence.Table;
 import javax.xml.bind.annotation.XmlRootElement;
+import org.eclipse.persistence.annotations.Cache;
+import static org.eclipse.persistence.config.CacheIsolationType.ISOLATED;
 
 /**
  *
  * @author Viplav
  */
 @Entity
+@Cache(isolation=ISOLATED)
 @Table(name = "location")
 @XmlRootElement
 @NamedQueries({

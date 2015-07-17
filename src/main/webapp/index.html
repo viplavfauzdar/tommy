@@ -20,23 +20,38 @@
                 //min-width: 200px;
                 width: auto;
             }
+
         </style>
         <script>
-            //google analytics - not sure if I need this
-            (function (i, s, o, g, r, a, m) {
-                i['GoogleAnalyticsObject'] = r;
-                i[r] = i[r] || function () {
-                    (i[r].q = i[r].q || []).push(arguments)
-                }, i[r].l = 1 * new Date();
-                a = s.createElement(o),
-                        m = s.getElementsByTagName(o)[0];
-                a.async = 1;
-                a.src = g;
-                m.parentNode.insertBefore(a, m)
-            })(window, document, 'script', '//www.google-analytics.com/analytics.js', 'ga');
+            //google analytics - not sure if I need this - MOVED TO COPYRIGHT
+//            (function (i, s, o, g, r, a, m) {
+//                i['GoogleAnalyticsObject'] = r;
+//                i[r] = i[r] || function () {
+//                    (i[r].q = i[r].q || []).push(arguments)
+//                }, i[r].l = 1 * new Date();
+//                a = s.createElement(o),
+//                        m = s.getElementsByTagName(o)[0];
+//                a.async = 1;
+//                a.src = g;
+//                m.parentNode.insertBefore(a, m)
+//            })(window, document, 'script', '//www.google-analytics.com/analytics.js', 'ga');
+//
+//            ga('create', 'UA-62343904-1', 'auto');
+//            ga('send', 'pageview');
 
-            ga('create', 'UA-62343904-1', 'auto');
-            ga('send', 'pageview');
+            //temporary solution cause this is not reliable and will mess up the analytics because of incorrect url
+//            if (screen.width <= 800) {
+//                window.location = "https://pr.financegeorgia.com";
+//            }
+
+            console.log(window.location.hostname);
+            //needs some tweaking - still keeping the frame which needs to go away. 
+            //remove frame-masked forwarding 
+            //wait till SSL cause pr.fg willgive SSL warning
+            if(window.location.hostname==='tommy-financegeorgia.rhcloud.com'){
+                //prod so go to PR, else you are in right place. fixes mobile issue with frames
+                window.location = "https://us.financegeorgia.com";
+            }
 
         </script>
     </head>
@@ -88,8 +103,9 @@
                                 <br>
                                 <br>                                                                
                                 <h1>The opportunity to invest in companies before they go public</h1>
-                                                                <a class='btn btn-default' href='faq.html'>Learn More</a>
-                                                                <p></p>                                
+                                <a class='btn btn-default' href='faq.html'>Learn More</a>
+                                <p></p>   
+                                <small>* The site is optimized for Google Chrome. Please use Chrome browser.</small>                            
                             </div>
                         </li>
 
@@ -205,21 +221,21 @@
         <!-- Waypoints -->
         <script src="javascripts/waypoints.min.js" type="text/javascript"></script>
         <!-- Contactform -->
-<!--        <script src="javascripts/validation.js" type="text/javascript"></script>-->
+<!--                <script src="javascripts/validation.js" type="text/javascript"></script>-->
         <!-- Maps -->
         <script src="https://maps.googleapis.com/maps/api/js" type="text/javascript"></script>
         <script>
-                                    var myLatlng = new google.maps.LatLng(33.761348, -84.387899);
-                                    var mapOptions = {
-                                        zoom: 14,
-                                        center: myLatlng,
-                                        scrollwheel: false,
-                                        disableDefaultUI: true,
-                                        draggable: false,
-                                        mapTypeId: google.maps.MapTypeId.ROADMAP,
-                                        streetViewControl: false
-                                    };
-                                    var map = new google.maps.Map(document.getElementById("maps"), mapOptions);
+            var myLatlng = new google.maps.LatLng(33.761348, -84.387899);
+            var mapOptions = {
+                zoom: 14,
+                center: myLatlng,
+                scrollwheel: false,
+                disableDefaultUI: true,
+                draggable: false,
+                mapTypeId: google.maps.MapTypeId.ROADMAP,
+                streetViewControl: false
+            };
+            var map = new google.maps.Map(document.getElementById("maps"), mapOptions);
         </script>
         <!-- Functions -->
         <script src="javascripts/functions.js" type="text/javascript"></script>
@@ -230,9 +246,9 @@
         <!-- masked input -->
         <script src="javascripts/jquery.maskedinput.min.js" type="text/javascript"></script>
         <script>
-                                    var hash = window.location.hash;
-                                    var busId = hash.substring(hash.indexOf('/') + 1, hash.length);
-                                    console.log("Bus ID: " + busId);
+            var hash = window.location.hash;
+            var busId = hash.substring(hash.indexOf('/') + 1, hash.length);
+            console.log("Bus ID: " + busId);                        
         </script>
     </body>
 </html>

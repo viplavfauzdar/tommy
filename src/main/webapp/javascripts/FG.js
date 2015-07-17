@@ -171,7 +171,7 @@ var fgAlert = function (msg) {
 //    });
     $('#fgalert').show();
     //diabled for QA since testers can't grab screen shots
-    $('#fgalert').addClass("in").fadeOut(20000);//.effect('shake', 500);//
+    //$('#fgalert').addClass("in").fadeOut(20000);//.effect('shake', 500);//
     //$('#fgalert').hide(5000);
 };
 
@@ -347,11 +347,17 @@ var loadData = function (url) {
     $.getJSON(url, function (res) {
         loaderOff();
         //console.log(JSON.stringify(res));
-        if (url.match('/rs/user/'))
-            usrObj = res; // localStorage.setItem("usrObj",res);
+        if (url.match('/rs/user/')) {
+            usrObj = res;
+            localStorage.setItem("usrObj", JSON.stringify(res));
+            console.log(usrObj);
+            if (usrObj.approved != 1)
+                fgAlert('<h4>Please complete your profile and sign the legal documents! \n\
+                Your profile must be complete and approved before you can invest.</h4>');
+        }
         if (url.match('/rs/location/'))
             locObj = res; //localStorage.setItem("locObj",res);
-        if (res !== null) {
+        if (res !== null && res !== undefined) {
             $.each(res, function (key, value) {
                 $('#' + key).val(value);
                 if (key === 'userType') {
@@ -394,7 +400,7 @@ $('#tabLegal').click(function (e) {
     if ($('#userType').val() == 'B' || $('#userType').val() == 'N')
         docType = "listingagreement.pdf"
     if ($('#userType').val() == 'U' || $('#userType').val() == 'V')
-        docType = "checklist_unaccinvestor.pdf"
+        docType = "partialriskdisclosure.pdf"
     if ($('#userType').val() == 'A')
         docType = "checklist_accinvestor.pdf"
     $('#ifrmLegal').attr('src', "/EchoSign?action=widget&fileToBeUploaded=" + docType + "&jsorurl=js");
@@ -441,10 +447,11 @@ $('#tabSrch').click(function (e) {
 });
 
 $('#tabBank').click(function (e) {
-    e.preventDefault();    
+    e.preventDefault();
     //usrObj = localStorage.getItem("usrObj");
     //locObj = localStorage.getItem("locObj");
-    if (usrObj.firstName == null || usrObj.firstName == '') loadUser(); //load user since the user tab wasn't clicked again
+    if (usrObj.firstName == null || usrObj.firstName == '')
+        loadUser(); //load user since the user tab wasn't clicked again
     if (usrObj.firstName == null || usrObj.firstName == '') {
         fgDialogBS('<h3>Please fill out user and location information before setting up bank account!</h3>');
         return;
@@ -605,7 +612,9 @@ var portfolioWidget = function (element, item, businessId) {
 var loadPortfolio = function (element, toLoad) {
     loaderOn();
     $.getJSON("/rs/public/all", function (data) {
-        data.sort(function(a,b){return parseInt(b.displayOrder)-parseInt(a.displayOrder)});
+        data.sort(function (a, b) {
+            return parseInt(b.displayOrder) - parseInt(a.displayOrder)
+        });
         //console.log(JSON.stringify(data));
         //                $.each(data, function (i, item) {
         //                    console.log(item);
@@ -663,5 +672,17 @@ $('.savebtn').tooltip({
     placement: 'right'
 });
 
+//create synapse user if doesn't exist - check approved first. applies for businesses too
+function createSynapseUser() {
+    var usrObj = JSON.parse(localStorage.getItem('usrObj'));
+    if (usrObj !== undefined && usrObj !== null && usrObj.approved === 1 && (usrObj.userType == 'B' || usrObj.userType == 'N')) {
+        $.get('/rs/synapseuser/getme', function (data) {
+            if (data === undefined || data === null) {
+                //call create
+                $.get('/rs/synapseuser/createme');
+            } 
+        });
+    }
+}
 
 

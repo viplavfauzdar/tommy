@@ -1,6 +1,6 @@
 {
     "widgetCreationInfo": {
-        "name": "My Test Widget",
+        "name": "Finance Georgia Document",
         "securityOptions": {
             "passwordProtection": "NONE",
             "kbaProtection": "NONE",
@@ -12,5 +12,8 @@
         },               
         "signatureFlow": "SENDER_SIGNATURE_NOT_REQUIRED"        
     },    
-    "AppliesTo": "NONE"
+    "AppliesTo": "NONE",
+    "widgetSignerSecurityOption": {
+        "authenticationMethod ": "NONE"
+    }
 }

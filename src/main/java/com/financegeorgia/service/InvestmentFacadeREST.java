@@ -33,11 +33,18 @@ public class InvestmentFacadeREST extends AbstractFacade<Investment> {
         super(Investment.class);
     }
 
+//    @POST
+//    @Path("create")
+//    @Consumes({"application/xml", "application/json"})
+//    public void create1(Investment entity) {
+//        super.create(entity);
+//    }
+    
     @POST
     @Path("create")
     @Consumes({"application/xml", "application/json"})
-    public void create1(Investment entity) {
-        super.create(entity);
+    public Investment create(Investment entity) {
+        return super.create(entity);
     }
 
     @PUT

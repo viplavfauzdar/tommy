@@ -105,9 +105,11 @@ public class DownloadDocumentsOfAgreement {
         // Get ID and name of each document.
         String documentId = (String) document.get("documentId");
         String documentName = (String) document.get("name");
-        if (documentName == null) {
+        if (documentName == null) {             
             documentName = docName;
         }
+        //- because of sub agreement cause we want multiple copies
+        if(documentName.contains("subscription")) documentName = System.currentTimeMillis() + "_" + documentName;
 
         logger.debug("Document ID & Name: " + documentId + " - " + documentName);
 

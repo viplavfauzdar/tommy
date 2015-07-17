@@ -1,2 +1,3 @@
 <%=request.getRemoteUser()%>
-<%=request.getUserPrincipal().getName()%>
+<%//=request.getUserPrincipal().getName()%>
+<%="execSumm.pdf".toLowerCase().contains(".pdf")%>

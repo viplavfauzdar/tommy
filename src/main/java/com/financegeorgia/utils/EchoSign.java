@@ -84,12 +84,44 @@ public class EchoSign extends HttpServlet {
                 //out.print("Document Key: " + documentKey);
                 DownloadDocumentsOfAgreement da = new DownloadDocumentsOfAgreement();
                 da.setAgreementId(documentKey);
-                da.setDocumentName(request.getParameter("docName"));
+                String docName = request.getParameter("docName");
+                //do this since same investor will have multiple sub agrees
+                if(docName.contains("subscription")) docName = System.currentTimeMillis() + "_" + docName;
+                da.setDocumentName("docName");
                 //user id will come from echosign call back hence can't come from session
                 da.setFileDownloadPath(Path.getUserHomeDir() + Path.fileSep + Path.fgDataDir + Path.fileSep + request.getParameter("userId") + Path.fileSep);
                 da.run();
-                out.print("<h3>Thank you! We have received a copy of the document.</h3><h4>* A copy has also been emailed to you.</h4>");
-            }
+                if(docName.contains("subscription"))
+                    response.sendRedirect("/synapse.html");
+                else    
+                    out.print("<h3>Thank you! We have received a copy of the document.</h3><h4>* A copy has also been emailed to you.</h4>");
+            } 
+            //come back and add this for subs. need to pass the path to the fileutils object from business's folder
+            //for now putting bus subs in echosing/res. Will need a redeployment each time a bus is registered
+//            else if(action.equals("subagree")){
+//                String fileToBeUploaded = request.getParameter("fileToBeUploaded");
+//                logger.debug("File to be uploaded: " + fileToBeUploaded);
+//                String userId = request.getSession().getAttribute("userId").toString();
+//                String bus_userId = request.getParameter("bus_userId");
+//                File file = new File(Path.getUserHomeDir() + Path.fileSep + Path.fgDataDir + Path.fileSep + bus_userId + Path.fileSep + fileToBeUploaded);
+//                if (!file.exists()) {
+//                    CreateNewWidgetWithCounerSigners cw = new CreateNewWidgetWithCounerSigners();
+//                    cw.setUserId(userId);
+//                    cw.setDocName(fileToBeUploaded);
+//                    cw.setCallbackURL(request.getRequestURL().toString());
+//                    if (fileToBeUploaded != null) {
+//                        cw.setfileToBeUploaded(fileToBeUploaded);
+//                    }
+//                    cw.run();
+//                    if (request.getParameter("jsorurl").equals("js")) {
+//                        logger.debug("Getting Widget JavaScript");
+//                        out.print(cw.getWidgetJS());
+//                    } else {
+//                        logger.debug("Getting Widget URL");
+//                        out.print(cw.getWidgetURL());
+//                    }
+//                }
+//            }
         } catch (Exception ex) {
             throw new FGException(ex);
         } finally {

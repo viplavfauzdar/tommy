@@ -59,13 +59,22 @@ public class Uploader extends HttpServlet {
      * response)
      */
     @Override
-    protected void service(HttpServletRequest request, HttpServletResponse response) {
+    protected void service(HttpServletRequest request, HttpServletResponse response) throws IOException {
         // TODO Auto-generated method stub
 
         //folder is the uid
         String folder = request.getParameter("folder");
         //filename needs to come from client as its fixed
         String filename = request.getParameter("filename");
+        logger.debug("filename: " + filename);
+        //don't allow users not logged in to view docs
+        if(filename.toLowerCase().contains(".pdf")){ 
+            logger.debug("User: " + request.getRemoteUser());
+            if(request.getRemoteUser()==null){
+                response.getWriter().print("Illegal action - user needs to be logged in!");
+                return;
+            }
+        }
 
         if (folder == null || folder.equals("")) {
             folder = request.getSession().getAttribute("userId").toString();
@@ -85,6 +94,8 @@ public class Uploader extends HttpServlet {
             stream(response);
         } else if (action.equals("delete")) {
             delete(response);
+        }else if (action.equals("check")){
+            response.getWriter().print(checkFile());
         }
 
     }
@@ -177,6 +188,14 @@ public class Uploader extends HttpServlet {
             }
 
         }//end of if multipart
+    }
+    
+    public boolean checkFile(){
+        File file = new File(path + filesep + filename);
+        if (!file.exists())
+            return false;
+        else
+            return true;
     }
 
     private void stream(HttpServletResponse response) {

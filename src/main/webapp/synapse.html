@@ -1,0 +1,41 @@
+<!DOCTYPE html>
+<!--
+To change this license header, choose License Headers in Project Properties.
+To change this template file, choose Tools | Templates
+and open the template in the editor.
+-->
+<html>
+    <head>
+        <title>KYC Widget</title>
+        <meta charset="UTF-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    </head>
+    <body>
+        <h4>Finance Georgia utilizes an industry-leading payment processing and safety mechanism. Your transaction and required anti-fraud verification will be completed seamlessly through the window below. <br>If you require any assistance, please email info@financegeorgia.com</h4>
+        <!-- jQuery -->    
+        <script src="//ajax.googleapis.com/ajax/libs/jquery/2.1.1/jquery.min.js"></script>
+        <script>
+            //query tommy db for refresh oauth-token by user id, if not present then create user in synapse and store their info
+            var syOauthToken;
+            $.get('/rs/synapseuser/getme',function(data){               
+               if(data===undefined){
+                   //call create
+                   $.get('/rs/synapseuser/createme',function(data1){ //should really change this or add a query to synapse too
+                       syOauthToken = data1.syOauthToken;
+                       localStorage.setItem('syOauthToken',syOauthToken);
+                       //present KYC widget from where go to bank widget
+                       window.location='synapse_kyc.html';
+                   });
+               }else{
+                   syOauthToken = data.syOauthToken;
+                   localStorage.setItem('syOauthToken',syOauthToken);
+                   //don't present KYC widget - go directly to bank widget
+                   window.location='synapse_bank.html';
+               }
+            });
+            //user refresh token to get new oauth-token
+            //store this token in local storage for bank widget
+            //render kyc widget below with the oauth-token
+        </script>
+    </body>
+</html>

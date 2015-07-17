@@ -22,12 +22,15 @@ import javax.persistence.Table;
 import javax.persistence.Temporal;
 import javax.persistence.TemporalType;
 import javax.xml.bind.annotation.XmlRootElement;
+import org.eclipse.persistence.annotations.Cache;
+import static org.eclipse.persistence.config.CacheIsolationType.ISOLATED;
 
 /**
  *
  * @author Viplav
  */
 @Entity
+@Cache(isolation=ISOLATED)
 @Table(name = "user")
 @XmlRootElement
 @NamedQueries({
@@ -44,7 +47,7 @@ import javax.xml.bind.annotation.XmlRootElement;
     @NamedQuery(name = "User.findByPptosnda", query = "SELECT u FROM User u WHERE u.pptosnda = :pptosnda"),
     @NamedQuery(name = "User.findByDob", query = "SELECT u FROM User u WHERE u.dob = :dob"),
     @NamedQuery(name = "User.findByAboutMe", query = "SELECT u FROM User u WHERE u.aboutMe = :aboutMe"),
-    @NamedQuery(name = "User.findByLocked", query = "SELECT u FROM User u WHERE u.locked = :locked"),
+    @NamedQuery(name = "User.findByApproved", query = "SELECT u FROM User u WHERE u.approved = :approved"),
     @NamedQuery(name = "User.findByPassresetKey", query = "SELECT u FROM User u WHERE u.passresetKey = :passresetKey")})
 public class User implements Serializable {
     private static final long serialVersionUID = 1L;
@@ -74,8 +77,8 @@ public class User implements Serializable {
     private Date dob;
     @Column(name = "about_me")
     private String aboutMe;
-    @Column(name = "locked")
-    private Short locked;
+    @Column(name = "approved")
+    private Short approved;
     @Column(name = "passreset_key")
     private String passresetKey;
     
@@ -186,12 +189,12 @@ public class User implements Serializable {
         this.aboutMe = aboutMe;
     }
 
-    public Short getLocked() {
-        return locked;
+    public Short getApproved() {
+        return approved;
     }
 
-    public void setLocked(Short locked) {
-        this.locked = locked;
+    public void setApproved(Short approved) {
+        this.approved = approved;
     }
 
     public String getPassresetKey() {

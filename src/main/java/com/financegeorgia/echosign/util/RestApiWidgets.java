@@ -66,7 +66,7 @@ public class RestApiWidgets {
     if (requestJson != null) {
       JSONObject widgetCreationInfo = (JSONObject) requestJson.get("widgetCreationInfo");
       JSONObject widgetCompletionInfo = new JSONObject();// requestJson.get("widgetCompletionInfo");
-      widgetCompletionInfo.put("deframe", "true");
+      widgetCompletionInfo.put("deframe", "false");
       widgetCompletionInfo.put("url", callbackURL + "?action=redirect&userId=" + userId + "&docName=" + docName);
 //      String widgetCompletionInfo = "\"widgetCompletionInfo\": {" +
 //            "\"deframe\": \"true\"," +

@@ -1,0 +1,55 @@
+<!DOCTYPE html>
+<!--
+To change this license header, choose License Headers in Project Properties.
+To change this template file, choose Tools | Templates
+and open the template in the editor.
+-->
+<html>
+    <head>
+        <title>TODO supply a title</title>
+        <meta charset="UTF-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+        <!-- jQuery -->    
+        <script src="//ajax.googleapis.com/ajax/libs/jquery/2.1.1/jquery.min.js"></script>
+        <script src="https://d7630u3gvmjyq.cloudfront.net/static_assets/v2/iframes/kyc/kyc_iframe.js"></script>
+    </head>
+    <body>
+        <h4>Finance Georgia utilizes an industry-leading payment processing and safety mechanism. Your transaction and required anti-fraud verification will be completed seamlessly through the window below. <br>If you require any assistance, please email info@financegeorgia.com</h4>
+        <iframe id="synapse_iframe" style="top:0; height:0%;width:0%;position:fixed;z-index:100000;visibility:hidden;" frameborder="0"></iframe>
+
+        <script>    
+            var devEnv = true;
+            if(window.location.hostname==='tommy-financegeorgia.rhcloud.com' || window.location.hostname==='us.financegeorgia.com'){
+                devEnv = false;
+            }
+            console.log("dev env: " + devEnv);
+            
+            //colors of your choosing
+            var colors = {'trim': '#059db1', 'unfocused': '#95a5a6', 'text': '#212121', 'background': 'white'};
+
+            setupKYCIframe(localStorage.getItem('syOauthToken'), null, colors, devEnv); //needs to be true for sandbox Yvrg9EXbfQmp1QEKmcLDxzPIvLSLFpsOUGby4GpS
+
+            //when ready, make iFrame visible
+            $("#synapse_iframe").css("visibility", "visible");
+            $("#synapse_iframe").css("height", "100%");
+            $("#synapse_iframe").css("width", "100%");
+
+            identityReciver = function (e) {
+                try {
+                    var json = JSON.parse(e.data);
+                    if (json.success) {
+                        $("#synapse_iframe").css("visibility", "hidden");
+                        $("#synapse_iframe").css("height", "0%");
+                        $("#synapse_iframe").css("width", "0%");
+                        $("#synapse_iframe").prop("src", "");
+                        // thats it. do what you want next. The user has been authenticated
+                        window.location='synapse_bank.html';
+                    }
+                } catch (e) {
+                    console.log(e);
+                }
+            };
+            window.addEventListener('message', identityReciver, false);
+        </script>
+    </body>
+</html>

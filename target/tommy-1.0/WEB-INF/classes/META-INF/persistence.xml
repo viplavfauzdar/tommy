@@ -12,6 +12,9 @@
     <class>com.financegeorgia.entities.Balanced</class>
     <class>com.financegeorgia.entities.Document</class>
     <class>com.financegeorgia.entities.ArmorAccount</class>
+    <class>com.financegeorgia.entities.Investnowbutton</class>
+    <class>com.financegeorgia.entities.SynapseUser</class>
+    <class>com.financegeorgia.entities.SynapseOrder</class>
     <exclude-unlisted-classes>false</exclude-unlisted-classes>
     <properties>
       <!--<property name="javax.persistence.jdbc.url" value="jdbc:mysql://localhost:3306/finga1?zeroDateTimeBehavior=convertToNull"/>

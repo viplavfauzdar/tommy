@@ -1,0 +1,48 @@
+<!DOCTYPE html>
+<!--
+To change this license header, choose License Headers in Project Properties.
+To change this template file, choose Tools | Templates
+and open the template in the editor.
+-->
+<html>
+    <head>
+        <title>Synapse Test</title>
+        <meta charset="UTF-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+        <script src="https://d7630u3gvmjyq.cloudfront.net/static_assets/express/synapse_express_v2.js"></script>
+    </head>
+    <body>
+        <iframe id="synapse_iframe" frameborder="0" height="700" scrolling="no" width="400"></iframe>
+
+        <input type="submit" id="synapsepay" value="Pay">
+
+        <script>    
+            
+            //retreive oauth-token from local storage and use that to render below widget - 
+            //security: I am guessing if success=false in kyc step then the oauth-token will not work here
+
+            setupSynapseSite('Ef2aeSO57wWssMP7NZz4', //client_id
+                    'oZslaR5KPu6gEI57DOw5miHklKRJNWhqdEAlBu5I', //client_secret
+                    '10846', //seller_id
+                    'Chonchol Gupta', //user full_name
+                    '', //phone_number
+                    'cgupta@financegeorgia.com', //user email
+                    '10.00', //order amount
+                    'https://pr.financegeorgia.com/Assets/Finance-Georgia-Logo.png', //logo url 120x120 for now
+                    'order_url', //webhook where you want us to post the order and bank ID. Eg of payload below
+                    'true' //set true if you wish to ping the sandbox APIs
+                    );
+
+            messageReceiver = function (e) {                
+                alert(e.data);
+                var json = JSON.parse(e.data);
+                    if (json.success) {
+                        //window.location='../welcome.html'; //use this or the order_url above
+                        document.write('<h4>Thank you for the order</h4>');
+                    }
+            };
+            
+            window.addEventListener('message', messageReceiver, false); //changed ' around message - they were wrongin character set  
+        </script>        
+    </body>
+</html>

@@ -8,6 +8,7 @@ package com.financegeorgia.service;
 import com.financegeorgia.entities.Business;
 import com.financegeorgia.entities.Location;
 import com.financegeorgia.entities.User;
+import java.io.File;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
@@ -127,4 +128,15 @@ public class PublicAccessREST {
         }
         return map;
     }
+    
+//    @GET
+//    @Path("folder/{id}/filename/{filename}")
+//    @Produces({"application/json"})
+//    public boolean checkFile(@PathParam("id") Integer id, @PathParam("id") String filename) {
+//        File file = new File(path + filesep + filename);
+//        if (!file.exists())
+//            return false;
+//        else
+//            return true;
+//    }
 }

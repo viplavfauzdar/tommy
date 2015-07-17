@@ -1,0 +1,96 @@
+<!DOCTYPE html>
+<!--
+To change this license header, choose License Headers in Project Properties.
+To change this template file, choose Tools | Templates
+and open the template in the editor.
+-->
+<html>
+    <head>
+        <title>TODO supply a title</title>
+        <meta charset="UTF-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+        <script src="//ajax.googleapis.com/ajax/libs/jquery/2.1.1/jquery.min.js"></script>
+        <script src="https://d7630u3gvmjyq.cloudfront.net/static_assets/v2/iframes/express/synapse_express_v2.js"></script>
+    </head>
+    <body>
+        <h4>Finance Georgia utilizes an industry-leading payment processing and safety mechanism. Your transaction and required anti-fraud verification will be completed seamlessly through the window below. <br>If you require any assistance, please email info@financegeorgia.com</h4>
+        <p><iframe id="synapse_iframe" style="top:0; height:0%;width:0%;position:fixed;z-index:100000;visibility:hidden;" frameborder="0"></iframe>
+
+        <div id="usrMsg"></div>  
+        
+        <script>
+            var devEnv = true, sellerId = 10846; //dev id
+            if(window.location.hostname==='tommy-financegeorgia.rhcloud.com' || window.location.hostname==='us.financegeorgia.com'){
+                devEnv = false;
+                sellerId = 5657;
+            }
+            console.log("dev env: " + devEnv);
+            
+            var colors = {
+                'trim': '#059db1 ',
+                'unfocused': '#95a5a6 ',
+                'text': '#212121 ',
+                'background': 'white'
+            };
+            var userInfo = {
+                'oauth_consumer_key': localStorage.getItem('syOauthToken'),
+            };
+            //you can also supply the user info like how you could in V1
+            //var userInfo = {
+            //    'client_id':'YOUR_SYNAPSE_EXPRESS_CLIENT_ID',
+            //    'client_secret':'YOUR_SYNAPSE_EXPRESS_CLIENT_SECRET',
+            //    'email':'test117@synapsepay.com',
+            //    'full_name':'Test User',
+            //    'phone_number':'(901)861-1010'
+            //};
+            var payload = {
+                'colors': colors,
+                'userInfo': userInfo,
+                'seller_id': sellerId, //localStorage.getItem('syUserId'), //from local storage - stored in invest.html. NEEDS TO BE FG
+                'amount': localStorage.getItem('ivstAmt'), //from local storage - stored in invest.html
+                //'order_url':'https://myorderurl.com',
+		'company_logo':'https://us.financegeorgia.com/Assets/Finance-Georgia-Logo.png',
+                'development_mode': devEnv
+            };
+            setupSynapseSite(payload);
+            $("#synapse_iframe").css("visibility", "visible");
+            $("#synapse_iframe").css("height", "100%");
+            $("#synapse_iframe").css("width", "100%");
+
+            expressReciver = function (e) {
+                try {
+                    var json = JSON.parse(e.data);
+                    if (json.success) {
+                        //transaction went through, so do something
+                        $("#synapse_iframe").css("visibility", "hidden");
+                        $("#synapse_iframe").css("height", "0%");
+                        $("#synapse_iframe").css("width", "0%");
+                        $("#synapse_iframe").prop("src", "");
+                        console.log(JSON.stringify(json));
+                        var orderId = json.api_response.id;
+                        var orderAmt = json.api_response.amount;
+                        var ivstBusId = localStorage.getItem('ivstBusId');
+                        console.log();
+                        //record order in tommy
+                        $.get('/rs/synapseorder/' + orderId + '/' + orderAmt + '/' + ivstBusId, function(){
+                            $('#usrMsg').html('<h4>Thank you<p>Your order id is ' + orderId + ' in the amount of $' + orderAmt + '.00</h4>');
+                        }); 
+                    } else if (json.cancel) {
+                        //user hit go back, so close the iFrame
+                        $("#synapse_iframe").css("visibility", "hidden");
+                        $("#synapse_iframe").css("height", "0%");
+                        $("#synapse_iframe").css("width", "0%");
+                        $("#synapse_iframe").prop("src", "");
+                    } else {
+                        //transaction failed.
+                        $('#usrMsg').html('<h4>There was a problem processing your transaction. Please try again later</h4>');
+                    }
+                } catch (e) {
+                    console.log(e);
+                }
+            };
+            window.addEventListener('message', expressReciver, false);
+
+        </script>
+    </body>
+</html>

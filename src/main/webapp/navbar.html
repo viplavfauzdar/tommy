@@ -14,12 +14,12 @@
     <div class='branding text-left'>
         <a href='index.html'><img src="Assets/Finance-Georgia-Logo.png" alt="Finance Georgia"/></a>
     </div>
-    <nav>
-        <!--        <a class='menu-toggle toggle' href='#'>
-                    <div class='bar'></div>
-                    <div class='bar'></div>
-                    <div class='bar'></div>
-                </a>-->
+    <nav class="">
+        <a class='menu-toggle toggle' href='#'>
+            <div class='bar'></div>
+            <div class='bar'></div>
+            <div class='bar'></div>
+        </a>
         <ul>
             <li>
                 <a class='home' href='index.html'>Home</a>
@@ -45,23 +45,18 @@
             <li>
                 <a class='Sign-In' href='account.html' id="signin">Sign-in</a>    
             </li>                 
-            
-            
-            
-<!--        doesn't work right    <li class="dropdown">
-                <a class='Sign-In dropdown-toggle' data-toggle="dropdown" href='account.html' id="signin">Sign-in</a>    
-                <ul class="dropdown-menu">
-                    <li><a class='contact' href="#">Three</a></li>
-                    <li><a class='contact' href="#">Four</a></li>
-                </ul>
-            </li>-->
-            <!--            <li class='toggle-close toggle'>
-                            <a href='#'>
-                                <span class='fa fa-times'></span>
-                            </a>
-                        </li>-->
+            <li class='toggle-close toggle'>
+                <a href='#'>
+                    <span class='fa fa-times'></span>
+                </a>
+            </li>
         </ul>
     </nav>
-<!--    <a href="#" style="position:absolute;right:0px;top:0px">B</a>-->
 </div>
-<!--</div>-->
+<!--</div>-->    
+<script>
+    $('nav').click(function(){
+        //alert('asdsa');
+        $('nav').toggleClass('toggled');
+    });
+</script>

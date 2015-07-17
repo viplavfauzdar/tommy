@@ -80,7 +80,7 @@
         <web-resource-collection>
             <web-resource-name>Protected Area</web-resource-name>
             <!-- Define the context-relative URL(s) to be protected -->
-            <!--            <url-pattern>/rs/*</url-pattern>-->
+            <url-pattern>/rs/*</url-pattern>
             <url-pattern>/admin.html</url-pattern>
             <!-- If you list http methods, only those methods are protected -->
             <http-method>DELETE</http-method>
@@ -114,9 +114,13 @@
             <url-pattern>/userprofile.html</url-pattern>
             <url-pattern>/account.html</url-pattern>
             <url-pattern>/rs/business/*</url-pattern>
+            <!--<url-pattern>/rs/investnowbutton/*</url-pattern> supress for now cause of session exp issue -->
             <!-- to allow investor access to business details -->
             <url-pattern>/invest.html</url-pattern>
             <url-pattern>/rs/user/updatemypassword/*</url-pattern>
+            <!-- synapse stuff. may need to change like getme above so a user has access to only their info -->
+            <url-pattern>/rs/synapseuser/*</url-pattern>
+            <url-pattern>/rs/synapseorder/*</url-pattern>
             <!-- If you list http methods, only those methods are protected -->
             <http-method>DELETE</http-method>
             <http-method>GET</http-method>
@@ -139,20 +143,20 @@
             <url-pattern>/rs/resetpass/*</url-pattern>
             <url-pattern>/rs/user/verifyemail/*</url-pattern>
             <url-pattern>/rs/bp/*</url-pattern>
+            <!--<url-pattern>/rs/investnowbutton/*</url-pattern> --><!-- remove and move to user/admin above NOT USED ANYMORE-->
 <!--            <url-pattern>/rs/balanced/*</url-pattern>  for balanced testing remove later           -->
             <!-- If you list http methods, only those methods are protected -->
             <!--            <http-method>DELETE</http-method>--> <!-- for balanced testing remove later -->
             <!--            <http-method>GET</http-method>-->
             <!--            <http-method>POST</http-method>--> <!-- for balanced testing remove later -->
-            <http-method>PUT</http-method>
-          for balanced testing remove later --&gt;          
+            <http-method>PUT</http-method>                  
             </web-resource-collection>
         <auth-constraint>
             <!-- Anyone with one of the listed roles may access this area -->
             <!--            <role-name>admin</role-name>            -->
         </auth-constraint>
     </security-constraint>
-    <security-constraint>
+    <security-constraint> 
         <web-resource-collection>
             <url-pattern>/*</url-pattern>
         </web-resource-collection>
@@ -184,4 +188,9 @@
         <exception-type>java.lang.Exception</exception-type>
         <location>/error.jsp</location>
     </error-page>
+    
+<!--    <welcome-file-list>
+        <welcome-file>index.jsp</welcome-file>
+    </welcome-file-list>-->
+
 </web-app>

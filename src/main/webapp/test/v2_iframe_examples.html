@@ -1,0 +1,150 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Examples | SynapsePay</title>
+  <link rel="shortcut icon" href="https://s3.amazonaws.com/synapse_django/static_assets/marketing/images/favicon.ico">
+  <!-- Bootstrap Core CSS -->
+   <link href="https://s3.amazonaws.com/synapse_django/static_assets/v2/css/bootstrap.min.css" rel="stylesheet">
+  <!-- Custom CSS -->
+  <link href='https://fonts.googleapis.com/css?family=Roboto:400,100,100italic,300,300italic,400italic,500,500italic,700,700italic,900' rel='stylesheet' type='text/css'>
+  <link rel="stylesheet" type="text/css" href="https://s3.amazonaws.com/synapse_django/static_assets/v2/css/style.css">
+  <link rel="stylesheet" href="https://s3.amazonaws.com/synapse_django/static_assets/v2/global.css">
+  <link href="https://s3.amazonaws.com/synapse_django/static_assets/v2/css/sb-admin.css" rel="stylesheet">
+  <style type="text/css">
+    body{
+      font-family: 'Roboto', sans-serif;
+    }
+  </style>
+</head>
+<body>
+{% verbatim %}
+  <script type="text/x-handlebars">
+    <iframe id="synapse_iframe" style="top:0; height:0%;width:0%;position:fixed;z-index:100000;visibility:hidden;" frameborder="0"></iframe>
+    <div class="container">
+      <div class="row">
+        <div class="col-xs-2 sidebar">
+          <img src="https://s3.amazonaws.com/synapse_django/static_assets/v2/synapse%20logo-white-horizontal.png" width=250/>
+          <div class="sidebuttons">
+            {{#link-to 'express'}}Synapse Express{{/link-to}}
+            {{#link-to 'kyc'}}KYC Widget{{/link-to}}
+            {{#link-to 'linkbank'}}Bank Login Widget{{/link-to}}
+          </div>
+        </div>
+        <div class="col-xs-10 maincontent" style="min-height:1000px;">{{outlet}}</div>
+      </div>
+    </div>
+  </script>
+
+  <script type="text/x-handlebars" id="express">
+  <h1>Synapse Express Example</h1>
+  <hr>
+  <div class="discription">
+    <p>This is an example implementation of Synapse Express. To learn more about Synapse Express go to our <a href="http://api.synapsepay.com/v2.0/blog/synapse-express">API blog post</a>. You can try mock credentials if you wish.<br>
+    u: <b>synapse_good</b>
+    | pw: <b>test1234</b>
+    | mfa: <b>test_answer</b></p><br>
+    {{#if enableButton}}
+      <button class="btn btnoutline btn-lg" {{action 'launch'}} style="cursor:pointer">Launch Synapse Express</button>
+    {{else}}
+      <button class="btn btnoutline btn-lg disabled" {{action 'launch'}} style="cursor:pointer">Launching widget...</button>
+    {{/if}}
+  </div>
+  </script>
+
+  <script type="text/x-handlebars" id="kyc">
+  <h1>KYC Widget Example</h1>
+  <hr>
+  <div class="discription">
+    <p>This is an example implementation of our KYC Widget. Developers can use this widget to make their customers finish the Synapse KYC process. You can try mock credentials if you wish:<br>
+    SSN: <b>0000</b></p><br>
+    {{#if enableButton}}
+      <button class="btn btnoutline btn-lg" {{action 'launch'}}>Click here to begin</button>
+    {{else}}
+      <button class="btn btnoutline btn-lg disabled" {{action 'launch'}}>Launching widget...</button>
+    {{/if}}
+  </div>
+  </script>
+
+  <script type="text/x-handlebars" id="linkbank">
+  <h1>Link Bank Example</h1>
+  <hr>
+  <div class="discription">
+    <p>This is an example implementation of our Link bank widget. Developers can use this widget to allow their customers to link bank to their Synapse instance. You can try mock credentials if you wish.<br>
+    u: <b>synapse_good</b>
+    | pw: <b>test1234</b>
+    | mfa: <b>test_answer</b></p><br>
+    {{#if enableButton}}
+      <button class="btn btnoutline btn-lg" {{action 'launch'}}>Click here to begin</button>
+    {{else}}
+      <button class="btn btnoutline btn-lg disabled" {{action 'launch'}}>Launching widget...</button>
+    {{/if}}
+  </div>
+  </script>
+
+  <!-- jQuery Version 1.11.0 -->
+  <script src="https://s3.amazonaws.com/synapse_django/static_assets/v2/js/jquery-1.11.0.js"></script>
+  <script src="https://s3.amazonaws.com/synapse_django/static_assets/dashboard/js/typeahead.bundle.js"></script>
+  <!-- Bootstrap Core JavaScript -->
+  <script src="https://s3.amazonaws.com/synapse_django/static_assets/v2/js/bootstrap.min.js"></script>
+  <script src="https://s3.amazonaws.com/synapse_django/static_assets/cookie.js"></script>
+  <script src="https://s3.amazonaws.com/synapse_django/static_assets/marketing/js/libs/handlebars-v1.3.0.min.js"></script>
+  <script src="https://s3.amazonaws.com/synapse_django/static_assets/marketing/js/libs/ember-1.8.1.min.js"></script>
+  <script src="https://s3.amazonaws.com/synapse_django/static_assets/v2/js/moment.js"></script>
+  <script src="https://s3.amazonaws.com/synapse_django/static_assets/v2/js/fuse.min.js"></script>
+  <script src="https://s3.amazonaws.com/synapse_django/static_assets/express_oauth/synapse_express.js"></script>
+  <script src="https://s3.amazonaws.com/synapse_django/static_assets/v2/iframes/kyc/kyc_iframe.js"></script>
+  <script src="https://s3.amazonaws.com/synapse_django/static_assets/v2/iframes/questions/questions_iframe.js"></script>
+  <script src="https://s3.amazonaws.com/synapse_django/static_assets/v2/iframes/bank_login/bank_login_iframe.js"></script>
+  <script src="https://s3.amazonaws.com/synapse_django/static_assets/v2/examples/app.js"></script>
+  <script type="text/javascript">
+    function alertSize() {
+      var myWidth = 0, myHeight = 0;
+      if( typeof( window.innerWidth ) == 'number' ) {
+        //Non-IE
+        myWidth = window.innerWidth;
+        myHeight = window.innerHeight;
+      } else if( document.documentElement && ( document.documentElement.clientWidth || document.documentElement.clientHeight ) ) {
+        //IE 6+ in 'standards compliant mode'
+        myWidth = document.documentElement.clientWidth;
+        myHeight = document.documentElement.clientHeight;
+      } else if( document.body && ( document.body.clientWidth || document.body.clientHeight ) ) {
+        //IE 4 compatible
+        myWidth = document.body.clientWidth;
+        myHeight = document.body.clientHeight;
+      }
+      $(".maincontent").css("min-height",myHeight+"px");
+    }
+    setTimeout(func, 1000);
+    function func() {
+      alertSize();
+    }
+    $(window).resize(function(){
+      func(); 
+    });
+  </script>
+  <!-- begin olark code -->
+  <script data-cfasync="false" type='text/javascript'>/*<![CDATA[*/window.olark||(function(c){var f=window,d=document,l=f.location.protocol=="https:"?"https:":"http:",z=c.name,r="load";var nt=function(){
+  f[z]=function(){
+  (a.s=a.s||[]).push(arguments)};var a=f[z]._={
+  },q=c.methods.length;while(q--){(function(n){f[z][n]=function(){
+  f[z]("call",n,arguments)}})(c.methods[q])}a.l=c.loader;a.i=nt;a.p={
+  0:+new Date};a.P=function(u){
+  a.p[u]=new Date-a.p[0]};function s(){
+  a.P(r);f[z](r)}f.addEventListener?f.addEventListener(r,s,false):f.attachEvent("on"+r,s);var ld=function(){function p(hd){
+  hd="head";return["<",hd,"></",hd,"><",i,' onl' + 'oad="var d=',g,";d.getElementsByTagName('head')[0].",j,"(d.",h,"('script')).",k,"='",l,"//",a.l,"'",'"',"></",i,">"].join("")}var i="body",m=d[i];if(!m){
+  return setTimeout(ld,100)}a.P(1);var j="appendChild",h="createElement",k="src",n=d[h]("div"),v=n[j](d[h](z)),b=d[h]("iframe"),g="document",e="domain",o;n.style.display="none";m.insertBefore(n,m.firstChild).id=z;b.frameBorder="0";b.id=z+"-loader";if(/MSIE[ ]+6/.test(navigator.userAgent)){
+  b.src="javascript:false"}b.allowTransparency="true";v[j](b);try{
+  b.contentWindow[g].open()}catch(w){
+  c[e]=d[e];o="javascript:var d="+g+".open();d.domain='"+d.domain+"';";b[k]=o+"void(0);"}try{
+  var t=b.contentWindow[g];t.write(p());t.close()}catch(x){
+  b[k]=o+'d.write("'+p().replace(/"/g,String.fromCharCode(92)+'"')+'");d.close();'}a.P(2)};ld()};nt()})({
+  loader: "static.olark.com/jsclient/loader0.js",name:"olark",methods:["configure","extend","declare","identify"]});
+  /* custom configuration goes here (www.olark.com/documentation) */
+  olark.identify('2431-390-10-2677');/*]]>*/</script><noscript><a href="https://www.olark.com/site/2431-390-10-2677/contact" title="Contact us" target="_blank">Questions? Feedback?</a> powered by <a href="http://www.olark.com?welcome" title="Olark live chat software">Olark live chat software</a></noscript>
+  <!-- end olark code -->
+  {% endverbatim %}
+</body>
+</html>
