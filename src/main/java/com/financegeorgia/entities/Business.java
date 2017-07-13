@@ -29,8 +29,8 @@ import static org.eclipse.persistence.config.CacheIsolationType.ISOLATED;
 @Table(name = "business")
 @XmlRootElement
 @NamedQueries({
-    @NamedQuery(name = "Business.findAll", query = "SELECT b FROM Business b order by b.displayOrder"),
-    @NamedQuery(name = "Business.findById", query = "SELECT b FROM Business b WHERE b.id = :id"),
+    @NamedQuery(name = "Business.findAll", query = "SELECT b FROM Business b where b.approved = 1 order by b.displayOrder"),
+    @NamedQuery(name = "Business.findById", query = "SELECT b FROM Business b WHERE b.approved = 1 and b.id = :id"),
     @NamedQuery(name = "Business.findByUserEmail", query = "SELECT b FROM Business b INNER JOIN User u WHERE b.userId = u.id and u.email = :email"),
     @NamedQuery(name = "Business.findByUserId", query = "SELECT b FROM Business b WHERE b.userId = :userId"),
     @NamedQuery(name = "Business.findByBusinessName", query = "SELECT b FROM Business b WHERE b.businessName = :businessName"),

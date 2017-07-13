@@ -593,20 +593,24 @@ var portfolioWidget = function (element, item, businessId) {
             "</div>" +
             "<img style='width:350px;height:250px' src='/Uploader?action=stream&folder=" + item.userId + "&filename=businessLogo.jpg&t=" + Math.random() + "'>" +
             "</div>" +
-            "<div class='info' style='height:270px'>" +
+            //"<div class='info' style='height:270px'>" + //progress and amounts removed for now. uncomment this when restored
+            "<div class='info' style='height:230px'>" +
             "<h4>" + item.businessName + "</h4>" +
-            "<h5 style='text-transform: capitalize'>" + item.address + " " + item.city + " " + item.state + //" " + item.zip + "</h5>" +
-            "<h6><span class='target'>TARGET: <b>$" + trgAmt + "</b></span><span class='pledged'> PLEDGED: <b>$" + amtInvstd + "</b></span></h6>" +
-            "<div class='progress'>" +
-            "<div aria-valuemax='100' aria-valuemin='0' aria-valuenow='50' class='progress-bar progress-bar-success' role='progressbar' style='width:" + (100 * item.amountInvested / item.targetAmount) + "%'>" +
-            "</div>" +
-            "</div>" +
-            "<p style='width:260px;height:50px'>" + item.summary.substring(0, 100) + " .....</p>" +
-            "<a class='btn btn-default' href='businessprofile.html#/" + businessId + "#" + item.userId + "'>View Details</a>" +
+            "<h5 style='text-transform: capitalize'>" + item.address.substring(0, 25) + ", " + item.city + //" " + item.state + //" " + item.zip + "</h5>" +
+            "<h6><span class='target'>TARGET: <b>$" + trgAmt + "</b></span></h6>" + //"<span class='pledged'> PLEDGED: <b>$" + amtInvstd + "</b></span></h6>" +
+            //"<div class='progress'>" +
+            //"<div aria-valuemax='100' aria-valuemin='0' aria-valuenow='50' class='progress-bar progress-bar-success' role='progressbar' style='width:" + (100 * item.amountInvested / item.targetAmount) + "%'>" +
+            //"</div>" +
+            //"</div>" +
+            //"<p><p style='width:260px;height:50px'>" + item.summary.substring(0, 100) + " .....</p>" + //progress and amounts removed for now. uncomment this when restored
+            "<p><p style='width:260px;height:50px'>" + item.summary.substring(0, 100) + " .....</p>" +
+            "<a class='btn btn-default' style='position:absolute;bottom:5px' href='businessprofile.html#/" + businessId + "#" + item.userId + "'>View Details</a>" +
             "</div>" +
             "</div>" +
             "</div>";
     $(element).append(markup);
+    //$(element).hide();
+    //$(element).show('fold');
 };
 
 var loadPortfolio = function (element, toLoad) {
